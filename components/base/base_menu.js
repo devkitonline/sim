@@ -1,11 +1,13 @@
-import Link from 'next/link'
+import Link from 'next/link';
+import axios from "axios";
 
-function Base_menu({data}) {
+const Base_menu = ({menuItems}) => {
+    console.log(menuItems);
     return (
         <div className="collapse navbar-collapse" id="navbar-menu">
             <div className="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                 <ul className="navbar-nav">
-                    {data.map(item => {
+                    {menuItems.map(item => {
                         item.has_child ?
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
@@ -40,16 +42,5 @@ function Base_menu({data}) {
     )
 }
 
-export async function getServerSideProps(context) {
-    console.log(context);
-    const res = await fetch('/api/base/menu');
-    const data = await res.json()
-
-    return {
-        props: {
-            data
-        }
-    }
-}
 
 export default Base_menu;
