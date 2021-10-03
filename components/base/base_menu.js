@@ -1,13 +1,16 @@
 import Link from 'next/link';
-import axios from "axios";
+import {useEffect, useState} from "react";
 
 const Base_menu = ({menuItems}) => {
-    console.log(menuItems);
+    const [items, setItems] = useState([]);
+    useEffect(() => {
+        setItems(menuItems.menuItems);
+    }, [menuItems]);
     return (
         <div className="collapse navbar-collapse" id="navbar-menu">
             <div className="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                 <ul className="navbar-nav">
-                    {menuItems.map(item => {
+                    {items.map(item => {
                         item.has_child ?
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">

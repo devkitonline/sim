@@ -26,7 +26,7 @@ export const getServerSideProps = async () => {
     const menuItems = res.data;
     return {
         props: {
-            menuItems: menuItems
+            menuItems
         }
     }
 }
