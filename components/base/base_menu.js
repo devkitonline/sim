@@ -13,7 +13,7 @@ export default function Base_menu() {
                         </Link>
                     </li>
                     <li className="nav-item dropdown">
-                        <a className="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                        <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                             <span className="nav-link-title">Interface</span>
                         </a>
                         <div className="dropdown-menu">
