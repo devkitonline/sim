@@ -1,5 +1,10 @@
 [
     {
+        "name": "TRANG CHỦ",
+        "has_child": false,
+        "link": "/"
+    },
+    {
         "name": "Interface",
         "has_child": true,
         "children": [
