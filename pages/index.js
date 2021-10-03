@@ -10,11 +10,10 @@ function Home() {
                 <title>Trang chủ</title>
             </Head>
             <Page_header />
-            <Page_menu />
             <div className="page-wrapper">
                 <div className="page-body">
                     <div className="container-xl">
-                        <h1 className="text-center">Trần Khánh Toàn</h1>
+                        <h1 className="text-center">Trần Khánh Toàn - Trần Lê Khánh Hồng</h1>
                     </div>
                 </div>
             </div>

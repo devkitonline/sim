@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
                     <link rel='stylesheet' href='/tabler.min.css'/>
                     <link rel='stylesheet' href='/tabler-vendors.min.css'/>
                 </Head>
-                <body className={'antialiased'}>
+                <body className='antialiased '>
                 <div className="wrapper">
                     <Main/>
                 </div>
