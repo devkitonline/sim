@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import {cookie} from "../lib/cookie";
+import {cookie} from "../lib/utils/cookie";
 import {useEffect} from "react";
+import Image from "next/image";
 
 export default function Login() {
     useEffect(() => {
@@ -20,7 +21,7 @@ export default function Login() {
                 <div className="container-tight py-4">
                     <div className="text-center mb-4">
                         <Link href={'/'}>
-                            <a><img src="/logo.png" height="36" alt=""/></a>
+                            <a><Image src="/logo.png" height="36" width='100%' alt=""/></a>
                         </Link>
                     </div>
                     <form className="card card-md" autoComplete="off">
