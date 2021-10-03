@@ -1,38 +1,23 @@
-import Skeleton from 'react-loading-skeleton'
+import Head from 'next/head'
+import Base_header from "../components/base/base_header";
+import Base_footer from "../components/base/base_footer";
 
-import Nav from '@/components/nav'
-import Container from '@/components/container'
-import Entries from '@/components/entries'
-
-import { useEntries } from '@/lib/swr-hooks'
-
-export default function IndexPage() {
-  const { entries, isLoading } = useEntries()
-
-  if (isLoading) {
+const Home = (menuItems) => {
     return (
-      <div>
-        <Nav />
-        <Container>
-          <Skeleton width={180} height={24} />
-          <Skeleton height={48} />
-          <div className="my-4" />
-          <Skeleton width={180} height={24} />
-          <Skeleton height={48} />
-          <div className="my-4" />
-          <Skeleton width={180} height={24} />
-          <Skeleton height={48} />
-        </Container>
-      </div>
+        <div>
+            <Head>
+                <title>Trang chủ</title>
+            </Head>
+            <Base_header menuItems={menuItems}/>
+            <div className="page-wrapper">
+                <div className="page-body">
+                    <div className="container-xl">
+                        <h1 className="text-center">Trần Khánh Toàn - Trần Lê Khánh Hồng</h1>
+                    </div>
+                </div>
+            </div>
+            <Base_footer/>
+        </div>
     )
-  }
-
-  return (
-    <div>
-      <Nav />
-      <Container>
-        <Entries entries={entries} />
-      </Container>
-    </div>
-  )
 }
+export default Home
