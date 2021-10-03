@@ -2,13 +2,13 @@ import Head from 'next/head'
 import Base_header from "../components/base/base_header";
 import Base_footer from "../components/base/base_footer";
 
-const Home = (menuItems) => {
+const Home = () => {
     return (
         <div>
             <Head>
                 <title>Trang chủ</title>
             </Head>
-            <Base_header menuItems={menuItems}/>
+            <Base_header/>
             <div className="page-wrapper">
                 <div className="page-body">
                     <div className="container-xl">
@@ -20,4 +20,5 @@ const Home = (menuItems) => {
         </div>
     )
 }
+
 export default Home

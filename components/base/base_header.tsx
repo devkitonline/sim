@@ -5,7 +5,7 @@ import {IconLogin, IconUserPlus} from '@tabler/icons';
 import {useEffect, useState} from "react";
 import {isLogined} from "@/lib/auth/auth";
 
-const Base_header=({menuItems})=> {
+const Base_header=()=> {
     const [logined, setLogined] = useState(0);
     useEffect(() => {
         setLogined(isLogined());
@@ -57,7 +57,7 @@ const Base_header=({menuItems})=> {
                         </div>
                     }
                 </div>
-                <Base_menu menuItems={menuItems}/>
+                <Base_menu/>
             </div>
         </header>
     )

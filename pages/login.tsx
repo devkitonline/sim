@@ -4,7 +4,7 @@ import {cookie} from "@/lib/utils/cookie";
 import {useEffect} from "react";
 import Image from "next/image";
 
-export default function Login() {
+function Login() {
     useEffect(() => {
         cookie.delete('sim_login');
     }, []);
@@ -53,3 +53,5 @@ export default function Login() {
         </div>
     )
 }
+
+export default Login;
