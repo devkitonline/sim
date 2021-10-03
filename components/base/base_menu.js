@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export default function Base_menu() {
+function Base_menu({data}) {
     return (
         <div className="collapse navbar-collapse" id="navbar-menu">
             <div className="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
@@ -231,3 +231,23 @@ export default function Base_menu() {
         </div>
     )
 }
+
+export async function getServerSideProps(context) {
+    console.log(context);
+    const res = await fetch('/api/base/menu');
+    const data = await res.json()
+
+    if (!data) {
+        return {
+            notFound: true,
+        }
+    }
+
+    return {
+        props: {
+            data
+        }
+    }
+}
+
+export default Base_menu;
