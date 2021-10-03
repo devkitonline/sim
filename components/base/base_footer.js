@@ -1,7 +1,4 @@
-import Link from 'next/link'
-import Image from "next/image";
-
-export default function Page_footer() {
+export default function Base_footer() {
     return (
         <footer className="footer footer-transparent d-print-none">
             <div className="container">

@@ -1,23 +1,20 @@
 import Link from 'next/link'
-import Image from "next/image";
 
-export default function Page_menu() {
+export default function Base_menu() {
     return (
         <div className="collapse navbar-collapse" id="navbar-menu">
             <div className="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <a className="nav-link" href="./index.html">
-                            <span className="nav-link-title">
-                      Home
-                    </span>
-                        </a>
+                        <Link href='/'>
+                            <a className='nav-link'>
+                                <span className="nav-link-title">Home</span>
+                            </a>
+                        </Link>
                     </li>
                     <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                            <span className="nav-link-title">
-                      Interface
-                    </span>
+                            <span className="nav-link-title">Interface</span>
                         </a>
                         <div className="dropdown-menu">
                             <div className="dropdown-menu-columns">
