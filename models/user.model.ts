@@ -84,31 +84,30 @@ export const findOneById = (id: string, callback: Function) => {
     })
 }
 
-export const update = (user: IUser, callback: Function) => {
+export const update = async (user: IUser, callback: Function) => {
     const queryString = `UPDATE users
                          SET email=?,
-                             pwd = ?,
                              last_name=?,
                              first_name=?,
-                             role=?,
-                             is_admin=?
+                             role=?
                          WHERE id = ?`;
-    query(
-        queryString,
-        [
-            filter.clean(user.email),
-            filter.clean(user.pwd),
-            filter.clean(user.lastName),
-            filter.clean(user.firstName),
-            filter.clean(user.role),
-            user.isAdmin ? 1 : 0,
-            filter.clean(user.id)
-        ]
-    )
-    .then(result => {
-        callback(null);
-    })
-    .catch(err => {
-        callback(err);
-    })
+    try{
+        const result: any = await query(
+            queryString,
+            [
+                filter.clean(user.email),
+                filter.clean(user.lastName),
+                filter.clean(user.firstName),
+                filter.clean(user.role),
+                filter.clean(user.id)
+            ]
+        );
+        if (result.affectedRows > 0) {
+            const updateId = (<OkPacket>result).insertId;
+            callback(null, updateId);
+        }
+    }catch (e){
+        const error = new Error(e.message);
+        callback(error.props);
+    }
 }
