@@ -25,7 +25,9 @@ create table users
     first_name varchar(255),
     last_name varchar(255),
     role varchar(255) not null ,
-    is_admin tinyint default 0 not null
+    is_admin tinyint default 0 not null,
+    date_created datetime not null default  now(),
+    date_modified datetime not null default  now()
 );
 
 create table roles
