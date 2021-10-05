@@ -5,4 +5,6 @@ export interface IUsers {
     email:string;
     firstName: string;
     lastName:string;
+    role?:string;
+    isAdmin?: boolean;
 }
