@@ -1,4 +1,4 @@
-import {IUsers} from "@/lib/utils/interfaces";
+import {IUser} from "@/lib/utils/interfaces";
 import {v4 as uuidv4} from 'uuid';
 import {create} from "models/user.model";
 
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
                 res.status(200).json({code: 103, message: `Expression parameter not all.`});
             }
 
-            const newUser: IUsers = {
+            const newUser: IUser = {
                 username: bodyRequest.username,
                 pwd: md5(bodyRequest.password),
                 email: bodyRequest.email,

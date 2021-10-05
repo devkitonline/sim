@@ -1,4 +1,4 @@
-import {IUsers} from "@/lib/utils/interfaces";
+import {IUser} from "@/lib/utils/interfaces";
 import jwt from 'jsonwebtoken';
 import {findOne} from "models/user.model";
 
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
                 return;
             }
 
-            await findOne(bodyRequest.username, md5(bodyRequest.password), (err: string, user: IUsers) => {
+            await findOne(bodyRequest.username, md5(bodyRequest.password), (err: string, user: IUser) => {
                 if (err) {
                     res.status(200).json({code: 104, message: `Username or Password is incorrect.`});
                     return;
@@ -52,7 +52,6 @@ export default async function handler(req, res) {
                         },
                     );
 
-                    res.status(200).json({code: 103, message: `Expression parameter not all.`});
                     return;
                 }
             });

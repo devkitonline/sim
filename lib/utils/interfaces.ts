@@ -1,4 +1,4 @@
-export interface IUsers {
+export interface IUser {
     id?: string; //If an user hasn't his id, the user is new user.
     username: string;
     pwd: string;
