@@ -6,7 +6,7 @@ import Error from "next/error";
 
 const filter = new Filter();
 
-export const create = async (user: IUser, callback: Function) => {
+const create = async (user: IUser, callback: Function) => {
     const queryString = `INSERT INTO users (id, username, pwd, email, first_name, last_name, role)
                          VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
@@ -34,8 +34,19 @@ export const create = async (user: IUser, callback: Function) => {
 
 }
 
-export const findOne = (username: string, hash: string, callback: Function) => {
-    const queryString = "SELECT id, username, pwd, email, first_name, last_name, role, is_admin  FROM users  WHERE username = ? AND pwd = ?";
+const findOne = (username: string, hash: string, callback: Function) => {
+    const queryString = `SELECT u.id,
+                                u.username,
+                                u.pwd,
+                                u.email,
+                                u.first_name,
+                                u.last_name,
+                                r.name as role,
+                                u.is_admin
+                         FROM users u
+                                  LEFT JOIN roles r ON u.role = r.id
+                         WHERE u.username = ?
+                           AND u.pwd = ?`;
     query(
         queryString,
         [username, hash]
@@ -59,8 +70,18 @@ export const findOne = (username: string, hash: string, callback: Function) => {
     })
 }
 
-export const findOneById = (id: string, callback: Function) => {
-    const queryString = "SELECT id, username, pwd, email, first_name, last_name, role, is_admin  FROM users  WHERE id = ? ";
+const findOneById = (id: string, callback: Function) => {
+    const queryString = `SELECT u.id,
+                                u.username,
+                                u.pwd,
+                                u.email,
+                                u.first_name,
+                                u.last_name,
+                                r.name as role,
+                                u.is_admin
+                         FROM users u
+                                  LEFT JOIN roles r ON u.role = r.id
+                         WHERE u.id = ? `;
     query(
         queryString,
         [id]
@@ -84,14 +105,53 @@ export const findOneById = (id: string, callback: Function) => {
     })
 }
 
-export const update = async (user: IUser, callback: Function) => {
+const findAll = (callback: Function) => {
+    const queryString = `SELECT u.id,
+                                u.username,
+                                u.pwd,
+                                u.first_name,
+                                u.last_name,
+                                u.email,
+                                u.is_admin,
+                                r.name as role
+                         FROM users u
+                                  LEFT JOIN roles r on u.role = r.id`;
+
+    query(queryString)
+    .then(result => {
+        const rows = <RowDataPacket[]>result;
+        let users: IUser[] = [];
+
+        rows.forEach(row => {
+            const user: IUser = {
+                email: row.email,
+                firstName: row.first_name,
+                id: row.id,
+                isAdmin: row.is_admin == 1,
+                lastName: row.last_name,
+                pwd: row.pwd,
+                role: row.role,
+                username: row.username
+            }
+            users.push(user);
+        });
+
+        callback(null, users);
+    })
+    .catch(err => {
+        callback(err);
+    })
+}
+
+const update = async (user: IUser, callback: Function) => {
     const queryString = `UPDATE users
                          SET email=?,
                              last_name=?,
                              first_name=?,
-                             role=?
+                             role=?,
+                             date_modified= now()
                          WHERE id = ?`;
-    try{
+    try {
         const result: any = await query(
             queryString,
             [
@@ -106,8 +166,32 @@ export const update = async (user: IUser, callback: Function) => {
             const updateId = (<OkPacket>result).insertId;
             callback(null, updateId);
         }
-    }catch (e){
+    } catch (e) {
         const error = new Error(e.message);
         callback(error.props);
     }
+}
+
+const updatePwd = (userId: string, newPwd: string, callback: Function) => {
+    const queryString = `UPDATE users
+                         SET pwd          = ?,
+                             date_modified= now()
+                         WHERE id = ?`;
+    query(queryString,
+        [newPwd, userId])
+    .then(result => {
+        callback(null);
+    })
+    .catch(err => {
+        callback(err);
+    })
+}
+
+export const userModel = {
+    create,
+    findOne,
+    findOneById,
+    findAll,
+    update,
+    updatePwd
 }

@@ -1,6 +1,6 @@
 import {IUser} from "@/lib/utils/interfaces";
 import {v4 as uuidv4} from 'uuid';
-import {create} from "models/user.model";
+import {userModel} from "models/user.model";
 
 const md5 = require('md5');
 
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
             }
 
             // Create new User
-            await create(newUser, (err: string, insertId: number) => {
+            await userModel.create(newUser, (err: string, insertId: number) => {
                 if (err) {
                     if (err.search("ER_DUP_ENTRY") > -1 && err.search("username") > -1) {
                         res.status(200).json({code: 101, message: `Username is exists.`});
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
                         res.status(200).json({code: 102, message: `Email is already registered.`});
                         return;
                     }
-                    res.status(200).json({code: 103, message: `Expression parameter not all or error.`});
+                    res.status(200).json({code: 400, message: err});
                 }else{
                     //Successful
                     res.status(200).json({code: 1, message: `Register successful.`});

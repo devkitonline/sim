@@ -1,6 +1,6 @@
 import {IUser} from "@/lib/utils/interfaces";
 import jwt from 'jsonwebtoken';
-import {findOne} from "models/user.model";
+import {userModel} from "models/user.model";
 
 const md5 = require('md5');
 
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
                 return;
             }
 
-            await findOne(bodyRequest.username, md5(bodyRequest.password), (err: string, user: IUser) => {
+            await userModel.findOne(bodyRequest.username, md5(bodyRequest.password), (err: string, user: IUser) => {
                 if (err) {
                     res.status(200).json({code: 104, message: `Username or Password is incorrect.`});
                     return;

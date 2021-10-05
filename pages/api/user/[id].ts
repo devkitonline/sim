@@ -1,5 +1,5 @@
 import { apiHandler } from 'helpers/api/api-handle';
-import {findOneById, update} from "models/user.model";
+import {userModel} from "models/user.model";
 import {IUser} from "@/lib/utils/interfaces";
 
 export default apiHandler(userHandler);
@@ -12,7 +12,7 @@ async function userHandler(req, res) {
     
     switch (method) {
         case 'GET':
-            findOneById(id, (err, user: IUser)=>{
+            userModel.findOneById(id, (err, user: IUser)=>{
                 if (err){
                     res.status(200).json({code: 106, message: `The user is not exists.`});
                     return;
@@ -40,13 +40,13 @@ async function userHandler(req, res) {
                 role: bodyRequest.role
             }
 
-            await update(updateUser, (err, updateRow: number) => {
+            await userModel.update(updateUser, (err, updateRow: number) => {
                 if (err){
                     if (err.search("ER_DUP_ENTRY") > -1 && err.search("email") > -1) {
                         res.status(200).json({code: 102, message: `Email is already registered.`});
                         return;
                     }
-                    res.status(200).json({code: 103, message: `Expression parameter not all or error.`});
+                    res.status(200).json({code: 400, message: err});
                     return;
                 }else{
                     res.status(200).json({code: 1, message: `Update successfully.`});
