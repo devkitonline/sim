@@ -21,7 +21,7 @@ create table users
     id varchar(255) primary key ,
     username varchar(255) not null unique ,
     pwd varchar(255) not null ,
-    email varchar(255),
+    email varchar(255) unique ,
     first_name varchar(255),
     last_name varchar(255),
     role varchar(255) not null ,
