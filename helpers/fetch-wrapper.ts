@@ -1,9 +1,9 @@
 import getConfig from 'next/config';
 import {userService} from 'services/user.service';
 
-const { publicRuntimeConfig } = getConfig();
+const {publicRuntimeConfig} = getConfig();
 
-const get = (url)=> {
+const get = (url) => {
     const requestOptions: RequestInit = {
         method: 'GET',
         headers: authHeader(url)
@@ -11,11 +11,10 @@ const get = (url)=> {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-const  post = (url, body) => {
+const post = (url, body) => {
     const requestOptions: RequestInit = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader(url) },
-        credentials: 'include',
+        headers: {'Content-Type': 'application/json', ...authHeader(url)},
         body: JSON.stringify(body)
     };
     return fetch(url, requestOptions).then(handleResponse);
@@ -24,7 +23,7 @@ const  post = (url, body) => {
 const put = (url, body) => {
     const requestOptions: RequestInit = {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', ...authHeader(url) },
+        headers: {'Content-Type': 'application/json', ...authHeader(url)},
         body: JSON.stringify(body)
     };
     return fetch(url, requestOptions).then(handleResponse);
@@ -47,7 +46,7 @@ const authHeader = (url) => {
     const isLoggedIn = user && user.token;
     const isApiUrl = url.startsWith(publicRuntimeConfig.apiUrl);
     if (isLoggedIn && isApiUrl) {
-        return { Authorization: `Bearer ${user.token}` };
+        return {Authorization: `Bearer ${user.token}`};
     } else {
         return {};
     }

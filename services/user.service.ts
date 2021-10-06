@@ -8,10 +8,11 @@ const baseUrl = `${publicRuntimeConfig.apiUrl}/auth`;
 const userSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('user')));
 
 const  login = (username, password) => {
-    return fetchWrapper.post(`${baseUrl}/login`, { username, password })
+    return fetchWrapper.post(`${baseUrl}/login`, { 'username': username, 'password': password })
     .then(result => {
-
-        const body:any = JSON.stringify(result.body);
+        console.log(result);
+        const body:any = JSON.parse(result);
+        console.log(body);
 
         userSubject.next(body.user);
 
