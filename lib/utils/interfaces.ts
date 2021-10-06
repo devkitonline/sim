@@ -6,5 +6,19 @@ export interface IUser {
     firstName: string;
     lastName:string;
     role?:string; //role's name
+    roleId?:string;
     isAdmin?: boolean;
+}
+
+export interface IRole{
+    id: string;
+    name: string;
+    description?:string;
+}
+
+export interface ITag {
+    id: string;
+    name: string;
+    slug: string;
+    description?: string;
 }

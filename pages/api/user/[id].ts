@@ -25,34 +25,41 @@ async function userHandler(req, res) {
         case 'PUT':
             const bodyRequest = req.body;
 
-            if (!checkParams(bodyRequest)) {
-                res.status(200).json({code: 103, message: `Expression parameter not all.`});
+            if (Object.getOwnPropertyNames(bodyRequest).length < 1){
+                res.status(200).json({code: 103, message: `Expression parameter must at least 1.`});
                 return;
             }
 
-            const updateUser: IUser = {
-                id: id,
-                username: null, //not update in there
-                pwd: null,// not update in there
-                email: bodyRequest.email,
-                lastName: bodyRequest.last_name,
-                firstName: bodyRequest.first_name,
-                role: bodyRequest.role
-            }
-
-            await userModel.update(updateUser, (err, updateRow: number) => {
+            await userModel.findOneById(id, (err, user: IUser) => {
                 if (err){
-                    if (err.search("ER_DUP_ENTRY") > -1 && err.search("email") > -1) {
-                        res.status(200).json({code: 102, message: `Email is already registered.`});
-                        return;
-                    }
-                    res.status(200).json({code: 400, message: err});
+                    res.status(200).json({code: 104, message: `User is not exists.`});
                     return;
                 }else{
-                    res.status(200).json({code: 1, message: `Update successfully.`});
-                    return;
+                    const updateUser: IUser = {
+                        id: user.id,
+                        username: null, //not update in there
+                        pwd: null,// not update in there
+                        email: bodyRequest.hasOwnProperty('email') ? bodyRequest.email : user.email,
+                        lastName: bodyRequest.hasOwnProperty('last_name') ? bodyRequest.last_name : user.lastName,
+                        firstName: bodyRequest.hasOwnProperty('first_name') ? bodyRequest.first_name : user.firstName,
+                        roleId: bodyRequest.hasOwnProperty('role_id') ? bodyRequest.role_id : user.roleId
+                    }
+
+                    userModel.update(updateUser, (err, updateRow: number) => {
+                        if (err){
+                            if (err.search("ER_DUP_ENTRY") > -1 && err.search("email") > -1) {
+                                res.status(200).json({code: 102, message: `Email is already registered.`});
+                                return;
+                            }
+                            res.status(200).json({code: 400, message: err});
+                            return;
+                        }else{
+                            res.status(200).json({code: 1, message: `Update successfully.`});
+                            return;
+                        }
+                    });
                 }
-            });
+            })
 
             break;
         default:
@@ -61,6 +68,3 @@ async function userHandler(req, res) {
     }
 }
 
-const checkParams = (body): boolean =>{
-    return !(!body.email || !body.last_name || !body.first_name || !body.role);
-}
