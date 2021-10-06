@@ -22,3 +22,12 @@ export interface ITag {
     slug: string;
     description?: string;
 }
+
+export interface ICategory{
+    id: string;
+    name: string;
+    slug: string;
+    description?: string;
+    image?:string; //link
+    categoryParent?: string; //parent's id
+}

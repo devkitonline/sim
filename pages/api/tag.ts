@@ -2,8 +2,7 @@ import {apiHandler} from "../../helpers/api/api-handle";
 import {tagModel} from "../../models/tag.model";
 import {ITag} from "@/lib/utils/interfaces";
 import {v4 as uuidv4} from 'uuid';
-
-const slugify = require('slugify');
+import {slugHelper} from "../../helpers/slug";
 
 export default apiHandler(handler);
 
@@ -34,7 +33,7 @@ async function handler(req, res) {
             const newTag: ITag = {
                 id: uuidv4(),
                 name: bodyRequest.name,
-                slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : generateSlug(bodyRequest.name),
+                slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : slugHelper.generateSlug(bodyRequest.name),
                 description: bodyRequest.hasOwnProperty('description') ? bodyRequest.description : ""
             }
 
@@ -61,8 +60,4 @@ async function handler(req, res) {
 
 const checkPostParams = (body) =>{
     return !(!body.name); //slug and description are optional params
-}
-
-const generateSlug = (name): string => {
-    return slugify(name);
 }
