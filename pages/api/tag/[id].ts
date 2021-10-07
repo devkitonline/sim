@@ -12,7 +12,7 @@ async function handler(req, res) {
 
     switch (method) {
         case 'PUT':
-            const bodyRequest = JSON.parse(req.body);
+            const bodyRequest = req.body;
 
             if (Object.getOwnPropertyNames(bodyRequest).length < 1){
                 res.status(200).json({code: 103, message: `Expression parameter must at least 1.`});

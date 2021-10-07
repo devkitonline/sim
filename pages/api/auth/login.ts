@@ -12,10 +12,10 @@ export default async function handler(req, res) {
         query: {id, name},
         method,
     } = req
-
+    // console.log('req',req);
     switch (method) {
         case 'POST':
-            const bodyRequest = JSON.parse(req.body);
+            const bodyRequest = req.body;
             if (!checkParams(bodyRequest)) {
                 res.status(200).json({code: 103, message: `Expression parameter not all.`});
                 return;

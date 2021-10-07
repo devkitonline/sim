@@ -19,7 +19,7 @@ function Login() {
 
         userService.login(username, password)
         .then(result => {
-               console.log(result);
+            console.log(result);
         });
 
         Router.push('/');
@@ -49,17 +49,17 @@ function Login() {
                             <div className="mb-2">
                                 <label className="form-label">
                                     Mật khẩu
-                                    <span className="form-label-description">
-                                        <Link href={'/forgot-password'}>
-                                            <a>Quên mật khẩu</a>
-                                        </Link>
-                                    </span>
                                 </label>
                                 <div className="input-group input-group-flat">
                                     <input type="password" className="form-control" placeholder="Mật khẩu" autoComplete="off"
                                            value={password} onChange={(e) => setPassword(e.target.value)}
                                     />
                                 </div>
+                                <span className="form-label-description mt-1">
+                                        <Link href={'/forgot-password'}>
+                                            <a>Quên mật khẩu</a>
+                                        </Link>
+                                    </span>
                             </div>
                             <div className="form-footer">
                                 <button onClick={doLogin} type="button" className="btn btn-primary w-100">Đăng nhập</button>

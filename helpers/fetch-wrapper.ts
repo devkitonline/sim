@@ -11,10 +11,14 @@ const get = (url) => {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-const post = (url, body) => {
+const post =  (url, body) => {
     const requestOptions: RequestInit = {
         method: 'POST',
-        headers: {'Content-Type': 'application/json', ...authHeader(url)},
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            ...authHeader(url)
+        },
         body: JSON.stringify(body)
     };
     return fetch(url, requestOptions).then(handleResponse);
@@ -53,6 +57,7 @@ const authHeader = (url) => {
 }
 
 const handleResponse = (response) => {
+    console.log('res', response);
     return response.text().then(text => {
         const data = text && JSON.parse(text);
 
