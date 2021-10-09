@@ -157,11 +157,11 @@ const update = async (user: IUser, callback: Function) => {
         const result: any = await query(
             queryString,
             [
-                filter.clean(user.email),
-                filter.clean(user.lastName),
-                filter.clean(user.firstName),
-                filter.clean(user.role),
-                filter.clean(user.id)
+                user.email,
+                user.lastName,
+                user.firstName,
+                user.roleId,
+                user.id
             ]
         );
         if (result.affectedRows > 0) {
