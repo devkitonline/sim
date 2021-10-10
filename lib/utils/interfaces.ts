@@ -31,3 +31,73 @@ export interface ICategory{
     image?:string; //link
     categoryParent?: string; //parent's id
 }
+
+export interface IPage {
+    id: string;
+    title: string;
+    content: string;
+    excerpt: string;
+    pageStatus: string;
+    pageStatusId?: string;
+    dateCreated?: any;
+    dateModified?: any;
+    datePublishes?: any;
+    formatType: string;
+    formatTypeId?: string;
+    author: string;
+    authorId?: string;
+    publisher: string;
+    publisherId?: string;
+    slug: string;
+    image?: string;
+    tags?: ITag[];
+    allowComment: boolean;
+    SEOMetaData: IMetaData;
+}
+
+export interface IPost {
+    id: string;
+    title: string;
+    content: string;
+    excerpt: string;
+    pageStatus: string;
+    pageStatusId?: string;
+    dateCreated?: any;
+    dateModified?: any;
+    datePublishes?: any;
+    formatType: string;
+    formatTypeId?: string;
+    author: string;
+    authorId?: string;
+    publisher: string;
+    publisherId?: string;
+    slug: string;
+    image?: string;
+    tags?: ITag[];
+    categories?: ICategory[];
+    allowComment: boolean;
+    SEOMetaData: IMetaData;
+}
+
+export interface IMetaData {
+    metaDescription: string;
+    metaRobots: string;
+    metaCanonical: string;
+    ogLocale: string;
+    ogSiteName: string;
+    ogType: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogUrl: string;
+    ogImage: string;
+    ogImageSecureUrl: string;
+    ogImageWidth: string;
+    ogImageHeight: string;
+    articlePublishedTime: string;
+    articlePublisher: string;
+    twitterCard: string;
+    twitterTitle: string;
+    twitterDomain: string;
+    twitterDescription: string;
+    twitterImage: string;
+}

@@ -1,17 +1,21 @@
-export default function handler(req, res) {
+import {apiHandler} from "../../helpers/api/api-handle";
+
+export default apiHandler(handler);
+
+async function handler(req, res) {
     const {
-        query: { id, name },
+        query: { tag, author },
         method,
     } = req
 
     switch (method) {
         case 'GET':
             // Get list of categories
-            res.status(200).json({ id, name: `User ${id}` })
+            res.status(200).json({  name: `User` })
             break
         case 'POST':
             // New a category
-            res.status(200).json({ id, name: name || `User ${id}` })
+            res.status(200).json({ name: `User` });
             break
         default:
             res.setHeader('Allow', ['GET', 'POST'])
