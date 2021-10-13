@@ -1,0 +1,9 @@
+node_modules
+.next
+.gitignore
+.git
+.env.local
+.env.local.examplene
+sim.sql
+docker-compose.yml
+Dockerfile
