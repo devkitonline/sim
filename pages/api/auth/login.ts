@@ -46,7 +46,7 @@ export default async function handler(req, res) {
                                 return;
                             } else {
                                 /* Send succes with token */
-                                res.status(200).json({code: 1, message: `Login successful.`, user: {id: user.id, token: token}});
+                                res.status(200).json({code: 1, message: `Login successful.`, user: {token: token, id: user.id, first_name: user.firstName, last_name: user.lastName, username: user.username, email: user.email, role: user.role, roleId: user.roleId, is_admin: user.isAdmin}});
                                 return;
                             }
                         },
