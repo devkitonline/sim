@@ -83,7 +83,8 @@ create table posts(
     meta_twitter_domain varchar(255),
     meta_twitter_title varchar(255),
     meta_twitter_description varchar(255),
-    meta_twitter_image varchar(255)
+    meta_twitter_image varchar(255),
+    deleted tinyint default  0
 );
 
 create table pages(
@@ -121,7 +122,8 @@ create table pages(
                       meta_twitter_domain varchar(255),
                       meta_twitter_title varchar(255),
                       meta_twitter_description varchar(255),
-                      meta_twitter_image varchar(255)
+                      meta_twitter_image varchar(255),
+                      deleted tinyint default  0
 );
 
 create table posts_categories
