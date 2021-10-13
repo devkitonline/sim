@@ -2,25 +2,30 @@
     {
         "name": "TRANG CHỦ",
         "has_child": false,
-        "link": "/"
+        "link": "/",
+        "icon": "fa fa-user"
     },
     {
         "name": "Interface",
         "has_child": true,
+        "icon": "fa fa-user",
         "children": [
             {
                 "name": "Empty page",
                 "link": "/empty",
+                "icon": "fa fa-user",
                 "has_child": false
             },
             {
                 "name": "Empty page2",
                 "link": "/empty2",
+                "icon": "fa fa-user",
                 "has_child": false
             },
             {
                 "name": "Empty page3",
                 "link": "/empty3",
+                "icon": "fa fa-user",
                 "has_child": false
             }
         ]
@@ -28,6 +33,7 @@
     {
         "name": "Empty page",
         "has_child": false,
-        "link": "/empty"
+        "link": "/empty",
+        "icon": "fa fa-user"
     }
 ]
