@@ -57,7 +57,6 @@ const authHeader = (url) => {
 }
 
 const handleResponse = (response) => {
-    console.log('res', response);
     return response.text().then(text => {
         const data = text && JSON.parse(text);
 

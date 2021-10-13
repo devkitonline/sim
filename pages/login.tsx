@@ -16,13 +16,14 @@ function Login() {
     }, []);
 
     const doLogin = () => {
-
         userService.login(username, password)
-        .then(result => {
-            console.log(result);
+        .then(loginSucceed => {
+            if (loginSucceed) {
+                Router.push('/');
+            } else {
+                console.log(loginSucceed);
+            }
         });
-
-        Router.push('/');
     };
 
     return (

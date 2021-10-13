@@ -2,14 +2,8 @@ import Link from 'next/link'
 import Image from "next/image";
 import Base_menu from "./base_menu";
 import {IconLogin, IconUserPlus} from '@tabler/icons';
-import {useEffect, useState} from "react";
-import {isLogined} from "@/lib/auth/auth";
 
 const Base_header=()=> {
-    const [logined, setLogined] = useState(0);
-    useEffect(() => {
-        setLogined(isLogined());
-    }, []);
     return (
         <header className="navbar navbar-expand-md navbar-light d-print-none sticky-top">
             <div className="container-xl">
