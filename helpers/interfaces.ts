@@ -1,3 +1,5 @@
+import {EFilterOperator} from "./enums";
+
 export interface IUser {
     id?: string; //If an user hasn't his id, the user is new user.
     username: string;
@@ -52,31 +54,11 @@ export interface IPage {
     image?: string;
     tags?: ITag[];
     allowComment: boolean;
-    SEOMetaData: IMetaData;
+    SEOMetaData?: IMetaData;
 }
 
-export interface IPost {
-    id: string;
-    title: string;
-    content: string;
-    excerpt: string;
-    pageStatus: string;
-    pageStatusId?: string;
-    dateCreated?: any;
-    dateModified?: any;
-    datePublishes?: any;
-    formatType: string;
-    formatTypeId?: string;
-    author: string;
-    authorId?: string;
-    publisher: string;
-    publisherId?: string;
-    slug: string;
-    image?: string;
-    tags?: ITag[];
+export interface IPost extends IPage{
     categories?: ICategory[];
-    allowComment: boolean;
-    SEOMetaData: IMetaData;
 }
 
 export interface IMetaData {
@@ -101,3 +83,14 @@ export interface IMetaData {
     twitterDescription: string;
     twitterImage: string;
 }
+
+/* for query with filter */
+export interface IFilterCondition {
+    operator: EFilterOperator;
+    field: string;
+    filterValue?: string | [];
+    filterValueTo?: string | [];
+    conditions: IFilterCondition[];
+    logicalOperator?: string;
+}
+

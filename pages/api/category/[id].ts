@@ -1,6 +1,6 @@
 import {apiHandler} from "../../../helpers/api/api-handle";
 import {categoryModel} from "../../../models/category.model";
-import {ICategory} from "@/lib/utils/interfaces";
+import {ICategory} from "helpers/interfaces";
 
 export default apiHandler(handler);
 

@@ -4,7 +4,7 @@ export default apiHandler(handler);
 
 async function handler(req, res) {
     const {
-        query: { tag, author },
+        query: { tag, author, publisher, slug },
         method,
     } = req
 

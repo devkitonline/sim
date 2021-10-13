@@ -1,4 +1,4 @@
-import {IUser} from "@/lib/utils/interfaces";
+import {IUser} from "helpers/interfaces";
 import {v4 as uuidv4} from 'uuid';
 import {userModel} from "models/user.model";
 

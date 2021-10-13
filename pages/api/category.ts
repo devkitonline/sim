@@ -1,6 +1,6 @@
 import {apiHandler} from "../../helpers/api/api-handle";
 import {categoryModel} from "../../models/category.model";
-import {ICategory} from "@/lib/utils/interfaces";
+import {ICategory} from "helpers/interfaces";
 import {v4 as uuidv4} from 'uuid';
 import {slugHelper} from "../../helpers/slug";
 

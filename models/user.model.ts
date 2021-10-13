@@ -1,6 +1,6 @@
 import {OkPacket, RowDataPacket} from "mysql2";
 import {query} from "@/lib/db/db";
-import {IUser} from "@/lib/utils/interfaces";
+import {IUser} from "helpers/interfaces";
 import Filter from 'bad-words';
 import Error from "next/error";
 

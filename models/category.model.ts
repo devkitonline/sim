@@ -1,4 +1,4 @@
-import {ICategory} from "@/lib/utils/interfaces";
+import {ICategory} from "helpers/interfaces";
 import {query} from "@/lib/db/db";
 import {OkPacket, RowDataPacket} from "mysql2";
 import Error from "next/error";

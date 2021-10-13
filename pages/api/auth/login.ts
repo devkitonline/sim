@@ -1,4 +1,4 @@
-import {IUser} from "@/lib/utils/interfaces";
+import {IUser} from "helpers/interfaces";
 import jwt from 'jsonwebtoken';
 import {userModel} from "models/user.model";
 

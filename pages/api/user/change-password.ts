@@ -1,5 +1,5 @@
 import {userModel} from "../../../models/user.model";
-import {IUser} from "@/lib/utils/interfaces";
+import {IUser} from "helpers/interfaces";
 import {apiHandler} from "../../../helpers/api/api-handle";
 const md5 = require('md5');
 

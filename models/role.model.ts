@@ -1,6 +1,6 @@
 import {query} from "@/lib/db/db";
 import {RowDataPacket} from "mysql2";
-import {IRole} from "@/lib/utils/interfaces";
+import {IRole} from "helpers/interfaces";
 
 const findAll = (callback: Function) =>{
     const queryString = `SELECT id, name, description

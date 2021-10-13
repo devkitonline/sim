@@ -1,6 +1,6 @@
 import { apiHandler } from 'helpers/api/api-handle';
 import {userModel} from "models/user.model";
-import {IUser} from "@/lib/utils/interfaces";
+import {IUser} from "helpers/interfaces";
 
 export default apiHandler(userHandler);
 

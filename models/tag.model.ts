@@ -1,8 +1,9 @@
 import {query} from "@/lib/db/db";
 import {OkPacket, RowDataPacket} from "mysql2";
-import {ITag, IUser} from "@/lib/utils/interfaces";
+import {ITag} from "helpers/interfaces";
 import Error from "next/error";
 import Filter from 'bad-words';
+import {EPostType} from "../helpers/enums";
 
 const filter = new Filter();
 
@@ -33,7 +34,7 @@ const findAll = (callback: Function) => {
 
 const findOne = (id: string, callback: Function) => {
     const queryString = `SELECT id, name, slug, description
-                         FROM tags 
+                         FROM tags
                          WHERE id = ? `;
     query(
         queryString,
@@ -116,9 +117,46 @@ const _delete = (id: string, callback: Function) => {
     })
 }
 
+const findPostTags = (type: EPostType, postId: string, callback: Function) => {
+    let queryString = "";
+    if (type == EPostType.post) {
+        queryString = `SELECT t.id, t.name, t.slug, t.description
+                       FROM posts_tags pt
+                                INNER JOIN tags t ON pt.tag_id = t.id
+                       WHERE post_id = ?`;
+    } else {
+        queryString = `SELECT t.id, t.name, t.slug, t.description
+                       FROM pages_tags pt
+                                INNER JOIN tags t ON pt.tag_id = t.id
+                       WHERE page_id = ?`;
+    }
+
+    query(queryString , [postId])
+    .then(result => {
+        const rows = <RowDataPacket[]>result;
+        let tags: ITag[] = [];
+
+        rows.forEach(row => {
+            const tag: ITag = {
+                id: row.id,
+                name: row.name,
+                description: row.description,
+                slug: row.slug,
+            }
+            tags.push(tag);
+        });
+
+        callback(null, tags);
+    })
+    .catch(err => {
+        callback(err);
+    });
+}
+
 export const tagModel = {
     findAll,
     findOne,
+    findPostTags,
     create,
     update,
     delete: _delete

@@ -1,6 +1,6 @@
 import {apiHandler} from "../../../helpers/api/api-handle";
 import {tagModel} from "../../../models/tag.model";
-import {ITag} from "@/lib/utils/interfaces";
+import {ITag} from "helpers/interfaces";
 
 export default apiHandler(handler);
 
