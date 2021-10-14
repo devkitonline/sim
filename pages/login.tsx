@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import {cookie} from "@/lib/utils/cookie";
+import {cookie} from "helpers/utils";
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import {userService} from 'services/user.service';

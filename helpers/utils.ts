@@ -1,3 +1,5 @@
+import {IUser} from "./interfaces";
+
 export const cookie = {
     set: (name, value, days) => {
         var expires = "";
@@ -21,4 +23,24 @@ export const cookie = {
     delete: (name) => {
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
+}
+
+/* DATA NORMALIZATION HELPER FUNCTIONS */
+
+const normalizedUser = (data): IUser =>{
+    return {
+        email: data.email != undefined ? data.email : "",
+        firstName: data.firstName !=undefined ? data.firstName : "",
+        id: data.id != undefined ? data.id : "",
+        isAdmin: data.isAdmin != undefined ? data.isAdmin : false,
+        lastName: data.lastName != undefined ? data.lastName : "",
+        pwd: data.pwd != undefined ? data.pwd : "",
+        role: data.role != undefined ? data.role : "",
+        roleId: data.roleId != undefined ? data.roleId : "",
+        username: data.username != undefined ? data.username : ""
+    };
+}
+
+export const dataNormalization = {
+    normalizedUser
 }

@@ -2,6 +2,8 @@ import getConfig from 'next/config';
 import Router from 'next/router';
 import {fetchWrapper} from 'helpers/fetch-wrapper';
 import {BehaviorSubject} from "rxjs";
+import {dataNormalization} from "../helpers/utils";
+import {IUser} from "../helpers/interfaces";
 // import {axiosWrapper} from "../helpers/axios-wrapper";
 
 const {publicRuntimeConfig} = getConfig();
@@ -13,9 +15,12 @@ const login = (username, password) => {
     .then(result => {
         if (result.code == 1) {
             userSubject.next(result.user);
-            localStorage.setItem('token', result.user.token);
-            localStorage.setItem('user', result.user.id);
-            localStorage.setItem('user', JSON.stringify(result.user));
+
+            const user: IUser = dataNormalization.normalizedUser(result.user);
+
+            // localStorage.setItem('token', result.user.token);
+            // localStorage.setItem('user', result.user.id);
+            // localStorage.setItem('user', JSON.stringify(result.user));
             return true;
         } else {
             return false;
