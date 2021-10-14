@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import {cookie} from "@/lib/utils/cookie";
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import {userService} from 'services/user.service';
@@ -12,7 +11,7 @@ function Login() {
     const [password, setPassword] = useState<string>("");
 
     useEffect(() => {
-        cookie.delete('sim_login');
+
     }, []);
 
     const doLogin = () => {

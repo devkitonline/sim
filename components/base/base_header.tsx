@@ -2,8 +2,15 @@ import Link from 'next/link'
 import Image from "next/image";
 import Base_menu from "./base_menu";
 import {IconLogin, IconUserPlus} from '@tabler/icons';
+import {isLogined} from "../../helpers/utils";
+import {useEffect, useState} from "react";
+import {IUser} from "../../helpers/interfaces";
 
-const Base_header=()=> {
+const Base_header = () => {
+    const [user, setUser] = useState<IUser>();
+    useEffect(() => {
+        setUser(JSON.parse(localStorage.getItem('sim_user')));
+    }, []);
     return (
         <header className="navbar navbar-expand-md navbar-light d-print-none sticky-top">
             <div className="container-xl">
@@ -16,13 +23,13 @@ const Base_header=()=> {
                     </Link>
                 </h1>
                 <div className="navbar-nav flex-row order-md-last">
-                    {logined ?
+                    {isLogined() ?
                         <div className="nav-item dropdown">
                             <a href="#" className="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
                                 <span className="avatar avatar-sm" style={{backgroundImage: 'url(/avatars/000m.jpg)'}}/>
                                 <div className="d-none d-xl-block ps-2">
-                                    <div>Paweł Kuna</div>
-                                    <div className="mt-1 small text-muted">UI Designer</div>
+                                    {/*<div>{user.username}</div>*/}
+                                    {/*<div className="mt-1 small text-muted">{user.firstName}</div>*/}
                                 </div>
                             </a>
                             <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
