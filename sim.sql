@@ -165,6 +165,16 @@ create table comments
     parent_id varchar(255)
 );
 
+# THÊM BẢNG MENUS
+create table menus
+(
+    id        varchar(255) primary key,
+    name      varchar(255),
+    link      varchar(255),
+    icon      varchar(255),
+    parent_id varchar(255)
+);
+
 ############ Ràng buộc khóa ngoại ############
 
 ALTER TABLE categories ADD CONSTRAINT fk_category_category FOREIGN KEY (parent_id) REFERENCES categories(id);
@@ -208,6 +218,8 @@ ALTER TABLE comments ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERE
 ALTER TABLE comments ADD CONSTRAINT fk_comment_comment FOREIGN KEY (parent_id) REFERENCES comments(id);
 
 ALTER TABLE comments ADD CONSTRAINT fk_comment_status FOREIGN KEY (status) REFERENCES comments_status(id);
+
+ALTER TABLE menus ADD CONSTRAINT fk_menu_menu FOREIGN KEY (parent_id) REFERENCES menus(id);
 
 #################### Dữ liệu đầu tiên ################
 
