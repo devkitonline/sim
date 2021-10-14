@@ -42,6 +42,7 @@ const findOne = (username: string, hash: string, callback: Function) => {
                                 u.first_name,
                                 u.last_name,
                                 r.name as role,
+                                r.id as role_id,
                                 u.is_admin
                          FROM users u
                                   LEFT JOIN roles r ON u.role = r.id
@@ -61,6 +62,7 @@ const findOne = (username: string, hash: string, callback: Function) => {
             firstName: row.first_name,
             lastName: row.last_name,
             role: row.role,
+            roleId: row.role_id,
             isAdmin: row.is_admin == 1
         }
         callback(null, user);
