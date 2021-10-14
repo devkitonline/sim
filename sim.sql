@@ -172,7 +172,8 @@ create table menus
     name      varchar(255),
     link      varchar(255),
     icon      varchar(255),
-    parent_id varchar(255)
+    parent_id varchar(255),
+    sort_order numeric default 0
 );
 
 ############ Ràng buộc khóa ngoại ############
