@@ -2,7 +2,7 @@ import {menuModel} from "../../models/menu.model";
 import {IMenu} from "../../helpers/interfaces";
 import {dataNormalization} from "../../helpers/utils";
 
-export async function handler(req, res) {
+export default async function handler(req, res) {
     const {
         method,
     } = req
@@ -21,10 +21,15 @@ export async function handler(req, res) {
 
             break;
         case 'POST':
-            const bodyRequest = JSON.parse(req.body);
+            const bodyRequest = req.body;
+            if (!checkPostParams(bodyRequest)){
+                res.status(200).json({code: 103, message: `Expression parameter "menus" is required.`});
+                return;
+            }
+
             let menus: IMenu[] = [];
-            for (let ele of bodyRequest){
-                const menu = dataNormalization.normalizedMenu(bodyRequest);
+            for (let ele of bodyRequest.menus){
+                const menu = dataNormalization.normalizedMenu(ele);
                 menus.push(menu);
             }
             await menuModel.create(menus, (err) => {
@@ -41,4 +46,8 @@ export async function handler(req, res) {
             res.setHeader('Allow', ['GET', 'POST']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
+}
+
+const checkPostParams = (body) =>{
+    return !(!body.menus);
 }

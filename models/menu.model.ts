@@ -11,7 +11,6 @@ const findAll = (callback: Function) => {
     .then(result => {
         const rows = <RowDataPacket[]>result;
         let menus: IMenu[] = [];
-
         rows.forEach(row => {
             const menu: IMenu = {
                 icon: row.icon,
@@ -19,13 +18,16 @@ const findAll = (callback: Function) => {
                 orderSort: row.sort_order,
                 id: row.id,
                 name: row.name,
-                parentId: row.parent_id
+                parentId: row.parent_id,
+                children: []
             }
 
             if (menu.parentId) {
                 //Find parent menu
-                const parentIndex = menus.findIndex(menu => menu.id == menu.parentId);
-                menus[parentIndex].children.push(menu);
+                const parentIndex = menus.findIndex(m => m.id == menu.parentId);
+                if (parentIndex > -1) {
+                    menus[parentIndex].children.push(menu);
+                }
             } else {
                 menus.push(menu);
             }
@@ -34,13 +36,23 @@ const findAll = (callback: Function) => {
         callback(null, menus);
     })
     .catch(err => {
+        console.log(err);
         callback(err);
     })
 }
 
 
 const create = async (menus: IMenu[], callback: Function) => {
-
+    ///////////////////////////////////////////NOTES/////////////////////////////////////////
+    // Cannot delete or update a parent row: a foreign key constraint fails
+    // SO, WE HAVE TO DROP FOREIGN KEY fk_menu_menu FIRST
+    try {
+        const dropFKResult = await query(`ALTER TABLE menus
+            DROP FOREIGN KEY fk_menu_menu`);
+    } catch (e) { //Drop Fk fails
+        callback("Cannot delete or update a parent row: a foreign key constraint fails");
+    }
+    // Drop FK successful, then
     //Delete all rows in table
     const deleteQuery = `DELETE
                          FROM menus`;
@@ -48,24 +60,28 @@ const create = async (menus: IMenu[], callback: Function) => {
     query(deleteQuery)
     .then(async (result) => { //Delete successful
         let insertQuery = `INSERT INTO menus (id, name, link, icon, parent_id, sort_order)
-                           VALUES ?`;
+                           VALUES `;
         // Build query
         let valuesQueryArray = [];
         for (let menu of menus) {
             valuesQueryArray.push(generateInsertValuesSQLQuery(menu));
         }
-        let valuesQuery = valuesQueryArray.join(' ');
+        let valuesQuery = valuesQueryArray.join(" , ");
 
         //Execute query
         try {
             const insertRes: any = await query(
-                insertQuery,
-                [
-                   valuesQuery
-                ],
+                `${insertQuery} ${valuesQuery}`
             );
+
+            // INSERT successful, then ADD FOREIGN KEY
+            const addFKResult = await query(`ALTER TABLE menus
+                ADD CONSTRAINT fk_menu_menu FOREIGN KEY (parent_id) REFERENCES menus (id);`);
+
             callback(null);
+
         } catch (e) { //Can't insert rows
+            console.log(e);
             const error = new Error(e.message);
             callback(error.props);
         }
@@ -87,10 +103,10 @@ const generateInsertValuesSQLQuery = (menu: IMenu): string => {
         }
     }
 
-    let menuQuery = `('${menu.id}' , '${menu.name}', '${menu.link}' , '${menu.icon}', '${menu.parentId}', '${menu.orderSort}' )`;
+    let menuQuery = `(${menu.id} , '${menu.name}', '${menu.link}' , '${menu.icon}', ${menu.parentId ? menu.parentId : null}, '${menu.orderSort}' )`;
     valuesArray.push(menuQuery);
 
-    return valuesArray.join(' ');
+    return valuesArray.join(' , ');
 }
 
 

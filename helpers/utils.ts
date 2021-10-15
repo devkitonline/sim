@@ -50,7 +50,6 @@ const normalizedMenu = (data): IMenu => {
             menuChildren.push(menuChild);
         }
     }
-
     return {
         children: menuChildren,
         icon: data.icon != undefined ? data.icon : "",

@@ -24,7 +24,7 @@ async function handler(req, res) {
             });
             break
         case 'POST':
-            const bodyRequest = JSON.parse(req.body);
+            const bodyRequest = req.body;
             if (!checkPostParams(bodyRequest)){
                 res.status(200).json({code: 103, message: `Expression parameter "name" is required.`});
                 return;
