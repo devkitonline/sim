@@ -84,6 +84,16 @@ export interface IMetaData {
     twitterImage: string;
 }
 
+export interface IMenu {
+    id: string;
+    name: string;
+    link: string;
+    icon?: string;
+    orderSort: number;
+    parentId?: string;
+    children?: IMenu[];
+}
+
 /* for query with filter */
 export interface IFilterCondition {
     operator: EFilterOperator;

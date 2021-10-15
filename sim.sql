@@ -168,12 +168,12 @@ create table comments
 # THÊM BẢNG MENUS
 create table menus
 (
-    id        varchar(255) primary key,
+    id        int primary key,
     name      varchar(255),
     link      varchar(255),
     icon      varchar(255),
-    parent_id varchar(255),
-    sort_order numeric default 0
+    parent_id int,
+    sort_order int default 0
 );
 
 ############ Ràng buộc khóa ngoại ############

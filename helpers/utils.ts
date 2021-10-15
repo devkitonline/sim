@@ -1,4 +1,4 @@
-import {IUser} from "./interfaces";
+import {IMenu, IUser} from "./interfaces";
 
 export const cookie = {
     set: (name, value, days) => {
@@ -27,10 +27,10 @@ export const cookie = {
 
 /* DATA NORMALIZATION HELPER FUNCTIONS */
 
-const normalizedUser = (data): IUser =>{
+const normalizedUser = (data): IUser => {
     return {
         email: data.email != undefined ? data.email : "",
-        firstName: data.firstName !=undefined ? data.firstName : "",
+        firstName: data.firstName != undefined ? data.firstName : "",
         id: data.id != undefined ? data.id : "",
         isAdmin: data.isAdmin != undefined ? data.isAdmin : false,
         lastName: data.lastName != undefined ? data.lastName : "",
@@ -41,6 +41,28 @@ const normalizedUser = (data): IUser =>{
     };
 }
 
+const normalizedMenu = (data): IMenu => {
+    let menuChildren: IMenu[] = [];
+
+    if (data?.children != undefined && Array.isArray(data.children) && data.children.length > 0) {
+        for (let child of data.children) {
+            const menuChild: IMenu = normalizedMenu(child);
+            menuChildren.push(menuChild);
+        }
+    }
+
+    return {
+        children: menuChildren,
+        icon: data.icon != undefined ? data.icon : "",
+        id: data.id != undefined ? data.id : "",
+        link: data.link != undefined ? data.link : "",
+        name: data.name != undefined ? data.name : "",
+        orderSort: data.orderSort != undefined ? data.orderSort : "",
+        parentId: data.parentId != undefined ? data.parentId : ""
+    }
+}
+
 export const dataNormalization = {
-    normalizedUser
+    normalizedUser,
+    normalizedMenu
 }
