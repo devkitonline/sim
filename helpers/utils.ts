@@ -27,41 +27,37 @@ export const cookie = {
 
 /* DATA NORMALIZATION HELPER FUNCTIONS */
 
-const normalizedUser = (data): IUser => {
-    return {
-        email: data.email != undefined ? data.email : "",
-        firstName: data.firstName != undefined ? data.firstName : "",
-        id: data.id != undefined ? data.id : "",
-        isAdmin: data.isAdmin != undefined ? data.isAdmin : false,
-        lastName: data.lastName != undefined ? data.lastName : "",
-        pwd: data.pwd != undefined ? data.pwd : "",
-        role: data.role != undefined ? data.role : "",
-        roleId: data.roleId != undefined ? data.roleId : "",
-        username: data.username != undefined ? data.username : ""
-    };
-}
+export const dataNormalization = {
+    normalizedUser : (data): IUser => {
+        return {
+            email: data.email != undefined ? data.email : "",
+            firstName: data.firstName != undefined ? data.firstName : "",
+            id: data.id != undefined ? data.id : "",
+            isAdmin: data.isAdmin != undefined ? data.isAdmin : false,
+            lastName: data.lastName != undefined ? data.lastName : "",
+            pwd: data.pwd != undefined ? data.pwd : "",
+            role: data.role != undefined ? data.role : "",
+            roleId: data.roleId != undefined ? data.roleId : "",
+            username: data.username != undefined ? data.username : ""
+        };
+    },
+    normalizedMenu: (data): IMenu =>{
+        let menuChildren: IMenu[] = [];
 
-const normalizedMenu = (data): IMenu => {
-    let menuChildren: IMenu[] = [];
-
-    if (data?.children != undefined && Array.isArray(data.children) && data.children.length > 0) {
-        for (let child of data.children) {
-            const menuChild: IMenu = normalizedMenu(child);
-            menuChildren.push(menuChild);
+        if (data?.children != undefined && Array.isArray(data.children) && data.children.length > 0) {
+            for (let child of data.children) {
+                const menuChild: IMenu = dataNormalization.normalizedMenu(child);
+                menuChildren.push(menuChild);
+            }
+        }
+        return {
+            children: menuChildren,
+            icon: data.icon != undefined ? data.icon : "",
+            id: data.id != undefined ? data.id : "",
+            link: data.link != undefined ? data.link : "",
+            name: data.name != undefined ? data.name : "",
+            orderSort: data.orderSort != undefined ? data.orderSort : "",
+            parentId: data.parentId != undefined ? data.parentId : ""
         }
     }
-    return {
-        children: menuChildren,
-        icon: data.icon != undefined ? data.icon : "",
-        id: data.id != undefined ? data.id : "",
-        link: data.link != undefined ? data.link : "",
-        name: data.name != undefined ? data.name : "",
-        orderSort: data.orderSort != undefined ? data.orderSort : "",
-        parentId: data.parentId != undefined ? data.parentId : ""
-    }
-}
-
-export const dataNormalization = {
-    normalizedUser,
-    normalizedMenu
 }
