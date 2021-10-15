@@ -30,7 +30,7 @@ async function handler(req, res) {
                         slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : category.slug,
                         description: bodyRequest.hasOwnProperty('description') ? bodyRequest.description : category.description,
                         image: bodyRequest.hasOwnProperty('image') ? bodyRequest.image : category.image,
-                        categoryParent: bodyRequest.hasOwnProperty('parent_id') ? bodyRequest.parent_id : category.categoryParent
+                        categoryParent: bodyRequest.hasOwnProperty('categoryParent') ? bodyRequest.categoryParent : category.categoryParent
                     }
 
                     categoryModel.update(updateCate, (err) => {

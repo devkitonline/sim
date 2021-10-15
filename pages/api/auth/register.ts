@@ -1,6 +1,7 @@
 import {IUser} from "helpers/interfaces";
 import {v4 as uuidv4} from 'uuid';
 import {userModel} from "models/user.model";
+import {ERole} from "../../../helpers/enums";
 
 const md5 = require('md5');
 
@@ -20,12 +21,12 @@ export default async function handler(req, res) {
 
             const newUser: IUser = {
                 username: bodyRequest.username,
-                pwd: md5(bodyRequest.password),
+                pwd: md5(bodyRequest.pwd),
                 email: bodyRequest.email,
-                firstName: bodyRequest.first_name,
-                lastName: bodyRequest.last_name,
+                firstName: bodyRequest.firstName,
+                lastName: bodyRequest.lastName,
                 id: uuidv4(),
-                role: "s"
+                role: ERole.subscriber.toString()
             }
 
             // Create new User
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
 }
 
 const checkBodyParams = (body: any): boolean => {
-    return !(!body.username || !body.password || !body.email || !body.last_name || !body.first_name);
+    return !(!body.username || !body.pwd || !body.email || !body.lastName || !body.firstName);
 }
 
 

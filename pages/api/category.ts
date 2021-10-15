@@ -36,7 +36,7 @@ async function handler(req, res) {
                 slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : slugHelper.generateSlug(bodyRequest.name),
                 description: bodyRequest.hasOwnProperty('description') ? bodyRequest.description : "",
                 image: bodyRequest.hasOwnProperty('image') ? bodyRequest.image : "",
-                categoryParent: bodyRequest.hasOwnProperty('parent_id') ? bodyRequest.parent_id : ""
+                categoryParent: bodyRequest.hasOwnProperty('categoryParent') ? bodyRequest.categoryParent : ""
             }
 
             await categoryModel.create(newCategory, (err) => {
@@ -61,6 +61,6 @@ async function handler(req, res) {
 }
 
 const checkPostParams = (body) =>{
-    return !(!body.name || !body.parent_id); //slug and description are optional params
+    return !(!body.name); //slug and description are optional params
 }
 
