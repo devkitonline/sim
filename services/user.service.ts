@@ -42,7 +42,7 @@ export class UserService {
         localStorage.removeItem('sim_user');
         UserService.token = "";
         UserService.user = null;
-        this.userSubject.next(null);
+        UserService.userSubject.next(null);
         Router.push('/login');
     }
 }
