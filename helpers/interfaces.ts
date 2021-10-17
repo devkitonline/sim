@@ -4,18 +4,25 @@ export interface IUser {
     id?: string; //If an user hasn't his id, the user is new user.
     username: string;
     pwd: string;
-    email:string;
+    email: string;
     firstName: string;
-    lastName:string;
-    role?:string; //role's name
-    roleId?:string;
+    lastName: string;
+    role?: string; //role's name
+    roleId?: string;
     isAdmin?: boolean;
 }
 
-export interface IRole{
+export interface IUserLoginRes {
+    code: string;
+    message: string;
+    token: string;
+    user: IUser;
+}
+
+export interface IRole {
     id: string;
     name: string;
-    description?:string;
+    description?: string;
 }
 
 export interface ITag {
@@ -25,12 +32,12 @@ export interface ITag {
     description?: string;
 }
 
-export interface ICategory{
+export interface ICategory {
     id: string;
     name: string;
     slug: string;
     description?: string;
-    image?:string; //link
+    image?: string; //link
     categoryParent?: string; //parent's id
 }
 
@@ -57,7 +64,7 @@ export interface IPage {
     SEOMetaData?: IMetaData;
 }
 
-export interface IPost extends IPage{
+export interface IPost extends IPage {
     categories?: ICategory[];
 }
 

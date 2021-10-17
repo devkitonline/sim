@@ -1,6 +1,6 @@
 import {IMenu, IUser} from "./interfaces";
 
-export const cookie = {
+export const Cookie = {
     set: (name, value, days) => {
         var expires = "";
         if (days) {
