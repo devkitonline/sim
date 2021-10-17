@@ -11,7 +11,7 @@ function ForgotPassword() {
             <div className="page page-center">
                 <div className="container-tight py-4">
                     <div className="text-center mb-4">
-                        <Link href={'/'}>
+                        <Link href='/'>
                             <a><Image src="/logo.png" height="36" width='100%' alt=""/></a>
                         </Link>
                     </div>
