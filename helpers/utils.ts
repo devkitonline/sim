@@ -1,4 +1,5 @@
 import {IMenu, IUser} from "./interfaces";
+import slugify from "slugify";
 
 export const Cookie = {
     set: (name, value, days) => {
@@ -22,6 +23,12 @@ export const Cookie = {
     },
     delete: (name) => {
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+}
+
+export const slugHelper = {
+    generateSlug : (name):string =>{
+        return slugify(name);
     }
 }
 

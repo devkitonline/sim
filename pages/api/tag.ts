@@ -2,7 +2,7 @@ import {apiHandler} from "../../helpers/api/api-handle";
 import {tagModel} from "../../models/tag.model";
 import {ITag} from "helpers/interfaces";
 import {v4 as uuidv4} from 'uuid';
-import {slugHelper} from "../../helpers/slug";
+import {slugHelper} from "../../helpers/utils";
 
 export default apiHandler(handler);
 
