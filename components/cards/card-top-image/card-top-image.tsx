@@ -7,7 +7,7 @@ const CardTopImage = ({title, excerpt, noborder}) => {
             <div className="card-img-top img-responsive img-responsive-21x9 bo-goc-7" style={{backgroundImage: 'url(/images/sgaliveagaintinphung-34-536x356.jpg)'}}/>
             <div className="card-body">
                 <h2 className="card-title">
-                    <Link href=''>
+                    <Link href='/'>
                         <a>{title}</a>
                     </Link>
                 </h2>

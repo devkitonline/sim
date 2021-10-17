@@ -59,7 +59,7 @@ function Login() {
                                            onKeyDown={keyEnterHandle}/>
                                 </div>
                                 <span className="form-label-description mt-1">
-                                        <Link href={'/forgot-password'}>
+                                        <Link href='/forgotpassword'>
                                             <a>Quên mật khẩu</a>
                                         </Link>
                                     </span>
@@ -74,6 +74,12 @@ function Login() {
                             </div>
                         </div>
                     </form>
+                    <div className="text-center text-muted mt-3">
+                        Chưa có tài khoản? <Link href="/register">Đăng ký</Link>
+                    </div>
+                    <div className="text-center text-muted mt-3">
+                        <Link href="/">&gt;&gt;Về trang chủ&lt;&lt;</Link>
+                    </div>
                 </div>
             </div>
         </div>

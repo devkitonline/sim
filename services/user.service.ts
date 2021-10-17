@@ -37,6 +37,19 @@ export class UserService {
         });
     }
 
+    static register(user: IUser) {
+        return FetchApi.post('/api/auth/register', {
+            username: user.username,
+            pwd: user.pwd,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email
+        })
+        .then(res => {
+            return res;
+        });
+    }
+
     static logout() {
         localStorage.removeItem('sim_token');
         localStorage.removeItem('sim_user');
