@@ -36,7 +36,6 @@ const findAll = (callback: Function) => {
         callback(null, menus);
     })
     .catch(err => {
-        console.log(err);
         callback(err);
     })
 }
@@ -81,7 +80,6 @@ const create = async (menus: IMenu[], callback: Function) => {
             callback(null);
 
         } catch (e) { //Can't insert rows
-            console.log(e);
             const error = new Error(e.message);
             callback(error.props);
         }

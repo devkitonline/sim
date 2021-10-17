@@ -99,7 +99,7 @@ const findAll = (type: EPostType, callback: Function) => {
     callback(true);
 }
 
-const findOne =  (type: EPostType, id: string, callback: Function) => {
+const findOne = (type: EPostType, id: string, callback: Function) => {
     let queryString = "";
     if (type == EPostType.page) {
         queryString = `${pageAllFieldsQuery} AND p.id = '${id}' `;
@@ -108,40 +108,31 @@ const findOne =  (type: EPostType, id: string, callback: Function) => {
     }
 
     query(queryString)
-    .then(  (result) => {
-        const rows = <RowDataPacket[]>result;
-        let list = [];
-
+    .then(async (result) => {
+        const row = <RowDataPacket[]>result[0];
         if (type == EPostType.page) {
-            rows.forEach(async (row) => {
-                //set to Page object
-                const page = setPage(row);
-                // find the page's tags list
-                page.tags = await getTagsOfPost(type, page.id);
-                //push to list
-                list.push(page);
-            });
+            //set to Page object
+            const page = setPage(row);
+            // find the page's tags list
+            page.tags = await getTagsOfPost(type, page.id);
 
+            callback(null, page);
         } else {
-            rows.forEach( async (row) => {
-                //set to Post object
-                const post = setPost(row);
-                //find its tags
-                post.tags = await getTagsOfPost(type, post.id);
-                //find its categories
-                post.categories = await getCategoriesOfPost(post.id);
-                //push to list
-                list.push(setPost(row));
-            });
-        }
+            //set to Post object
+            const post = setPost(row);
+            //find its tags
+            post.tags = await getTagsOfPost(type, post.id);
+            //find its categories
+            post.categories = await getCategoriesOfPost(post.id);
 
-        callback(null, list);
+            callback(null, post);
+        }
     })
     .catch(err => {
+        console.log(err);
         callback(err);
     })
 }
-
 
 
 const findOneBySlug = (slug: string, callback: Function) => {
@@ -149,7 +140,7 @@ const findOneBySlug = (slug: string, callback: Function) => {
 }
 
 //tags helper
-const getTagsOfPost = async (type: EPostType, postId: string): Promise<ITag[]>=> {
+const getTagsOfPost = async (type: EPostType, postId: string): Promise<ITag[]> => {
     let queryString = "";
     if (type == EPostType.post) {
         queryString = `SELECT t.id, t.name, t.slug, t.description
@@ -163,7 +154,7 @@ const getTagsOfPost = async (type: EPostType, postId: string): Promise<ITag[]>=>
                        WHERE page_id = ?`;
     }
 
-    const result =  await query(queryString, [postId]);
+    const result = await query(queryString, [postId]);
 
     const rows = <RowDataPacket[]>result;
 
@@ -189,7 +180,7 @@ const getCategoriesOfPost = async (postId: string): Promise<ICategory[]> => {
                                 INNER JOIN categories c ON pt.category_id = c.id
                        WHERE pt.post_id = ?`;
 
-    const result =  await query(queryString, [postId]);
+    const result = await query(queryString, [postId]);
 
     const rows = <RowDataPacket[]>result;
 
@@ -208,7 +199,7 @@ const getCategoriesOfPost = async (postId: string): Promise<ICategory[]> => {
     return categories;
 }
 
-const setPage = (row: any) : IPage => {
+const setPage = (row: any): IPage => {
     // general information
     let p: IPage = {
         allowComment: row['allow_comment'] == 1,

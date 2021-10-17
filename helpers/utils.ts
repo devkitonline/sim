@@ -26,7 +26,6 @@ export const cookie = {
 }
 
 /* DATA NORMALIZATION HELPER FUNCTIONS */
-
 export const dataNormalization = {
     normalizedUser : (data): IUser => {
         return {
