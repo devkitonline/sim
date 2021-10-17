@@ -1,20 +1,30 @@
-export default function categoryHandler(req, res) {
+import {postPageModel} from "../../../models/post-page.model";
+import {EPostType} from "../../../helpers/enums";
+import { IPost} from "../../../helpers/interfaces";
+
+export default function handler(req, res) {
     const {
-        query: { id, name },
+        query: { id },
         method,
     } = req
 
     switch (method) {
         case 'GET':
-            // Get data from your database
-            res.status(200).json({ id, name: `User ${id}` })
-            break
-        case 'POST':
-            // Update or create data in your database
-            res.status(200).json({ id, name: name || `User ${id}` })
-            break
+            postPageModel.findOne(EPostType.post, id, (err, post : IPost)=>{
+                if (err){
+                    res.status(200).json({code: 400, message: err});
+                    return;
+                }else{
+                    res.status(200).json({code: 1, message: `Success`, post: post});
+                    return;
+                }
+            });
+            break;
+        case 'PUT':
+            res.status(200).json({ id, name: `PUT post` });
+            break;
         default:
-            res.setHeader('Allow', ['GET', 'POST'])
-            res.status(405).end(`Method ${method} Not Allowed`)
+            res.setHeader('Allow', ['GET', 'PUT']);
+            res.status(405).end(`Method ${method} Not Allowed`);
     }
 }

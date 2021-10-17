@@ -1,4 +1,5 @@
 import {IMenu, IUser} from "./interfaces";
+import slugify from "slugify";
 
 export const Cookie = {
     set: (name, value, days) => {
@@ -25,8 +26,13 @@ export const Cookie = {
     }
 }
 
-/* DATA NORMALIZATION HELPER FUNCTIONS */
+export const slugHelper = {
+    generateSlug : (name):string =>{
+        return slugify(name);
+    }
+}
 
+/* DATA NORMALIZATION HELPER FUNCTIONS */
 export const dataNormalization = {
     normalizedUser : (data): IUser => {
         return {
