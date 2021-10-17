@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Image from "next/image";
 import {UserService} from 'services/user.service';
 import {useRouter} from "next/router";
