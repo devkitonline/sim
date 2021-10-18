@@ -37,8 +37,8 @@ const Base_header = () => {
                                 <a href="#" className="dropdown-item">Profile & account</a>
                                 <a href="#" className="dropdown-item">Feedback</a>
                                 <div className="dropdown-divider"/>
-                                <a href="#" className="dropdown-item">Settings</a>
-                                <a href="#" onClick={UserService.logout} className="dropdown-item">Logout</a>
+                                <Link href={'/admin'}><a className="dropdown-item">Quản trị</a></Link>
+                                <a href="#" onClick={UserService.logout} className="dropdown-item">Đăng xuất</a>
                             </div>
                         </div>
                         :
