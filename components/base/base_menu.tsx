@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {useEffect, useState} from "react";
 import {FetchApi} from "../../helpers/fetchApi";
+import Image from "next/image";
 
 const Base_menu = () => {
     const [menuItems, setMenuItems] = useState([]);
@@ -44,8 +45,7 @@ const Base_menu = () => {
                                         <span className="nav-link-title text-menu-header">{item.name}</span>
                                     </a>
                                 </Link>
-                            </li>)
-                    })}
+                            </li>)})}
                 </ul>
             </div>
         </div>

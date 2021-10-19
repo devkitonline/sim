@@ -16,14 +16,14 @@ const Admin = () => {
                 <div className="page-body">
                     <div className="container-fluid">
                         <div className='row'>
-                            <div className='col-md-3'>
+                            <div className='col-md-2'>
                                 <CardTopImage noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'
                                               excerpt='Cùng theo chân nhiếp ảnh gia Tiến Phùng để cảm nhận sức sống đang tràn về trên các nẻo đường Sài Gòn sau bốn tháng...'/>
                                 <hr/>
                                 <CardLeftImage noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'
                                                excerpt='Cùng theo chân nhiếp ảnh gia Tiến Phùng để cảm nhận sức sống đang tràn về trên các nẻo đường Sài Gòn sau bốn tháng...'/>
                             </div>
-                            <div className='col-md-9'>
+                            <div className='col-md-10'>
                                 <CardLeftImageNE noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'/>
                                 <br/>
                                 <CardLeftImageNE noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'/>
