@@ -19,16 +19,23 @@ const Base_header = () => {
                 </button>
                 <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <Link href='/'>
-                        <a><Image src="/logo.png" width="110" height="32" alt="Tabler" className="navbar-brand-image"/></a>
+                        <a><Image src="/logo.png" width="110" height="35" alt="Tabler" className="navbar-brand-image"/></a>
                     </Link>
                 </h1>
                 <div className="navbar-nav flex-row order-md-last">
+                    <div className="nav-item d-none d-md-flex me-3">
+                        <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 d-none d-xl-block ps-2">
+                            <Link href='https://class.simplyinvest.vn'>
+                                <a><Image src="/images/qc.png" width="270" height="35" alt="Tabler" className="navbar-brand-image"/></a>
+                            </Link>
+                        </h1>
+                    </div>
                     {UserService.token ?
                         <div className="nav-item dropdown">
                             <a href="#" className="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
                                 <span className="avatar avatar-sm" style={{backgroundImage: 'url(/avatars/000m.jpg)'}}/>
                                 <div className="d-none d-xl-block ps-2">
-                                    <div>{UserService.user.username}</div>
+                                    <div style={{color: "#02013c"}}>{UserService.user.username}</div>
                                     <div className="mt-1 small text-muted">{UserService.user.lastName} {UserService.user.firstName}</div>
                                 </div>
                             </a>
