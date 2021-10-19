@@ -3,7 +3,7 @@ import {EFilterOperator} from "./enums";
 const moment = require('momnet');
 
 const buildSQLWhereClauseForGroup = (conditions: IFilterCondition, tablename: string): string => {
-    let filterConditionArray = [];
+    let filterConditionArray = []; debugger;
     for (let condition of conditions.conditions){
         if (condition.conditions.length > 0){
             filterConditionArray.push(buildSQLWhereClauseForGroup(condition, tablename));
@@ -114,5 +114,6 @@ const buildSQLWhereStatementForCondition = (condition: IFilterCondition , tablen
 }
 
 export const queryFilter = {
-
+    buildSQLWhereStatementForCondition,
+    buildSQLWhereClauseForGroup
 }

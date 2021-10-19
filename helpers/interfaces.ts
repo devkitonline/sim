@@ -103,11 +103,11 @@ export interface IMenu {
 
 /* for query with filter */
 export interface IFilterCondition {
-    operator: EFilterOperator;
-    field: string;
+    operator?: EFilterOperator;
+    field?: string;
     filterValue?: string | [];
     filterValueTo?: string | [];
     conditions: IFilterCondition[];
-    logicalOperator?: string;
+    logicalOperator: "AND" | "OR";
 }
 

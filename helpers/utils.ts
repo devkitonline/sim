@@ -1,4 +1,4 @@
-import {IMenu, IUser} from "./interfaces";
+import {IFilterCondition, IMenu, IUser} from "./interfaces";
 import slugify from "slugify";
 
 export const Cookie = {
@@ -64,6 +64,23 @@ export const dataNormalization = {
             name: data.name != undefined ? data.name : "",
             orderSort: data.orderSort != undefined ? data.orderSort : "",
             parentId: data.parentId != undefined ? data.parentId : ""
+        }
+    },
+    normalizedFilterCondition: (data): IFilterCondition => {
+        let conditions: IFilterCondition[] = [];
+        if (data?.conditions != undefined && Array.isArray(data.conditions) && data.conditions.length > 0){
+            for(let c of data.conditions){
+                const c1 = dataNormalization.normalizedFilterCondition(c);
+                conditions.push(c1);
+            }
+        }
+        return{
+            conditions: conditions,
+            field: data.field != undefined ? data.field : "",
+            filterValue: data.filterValue != undefined ? data.filterValue : "",
+            filterValueTo: data.filterValueTo != undefined ? data.filterValueTo : "",
+            logicalOperator: data.logicalOperator != undefined ? data.logicalOperator : "",
+            operator: data.operator != undefined ? data.operator : ""
         }
     }
 }

@@ -1,26 +1,27 @@
 import {EPostType} from "../helpers/enums";
 import {query} from "@/lib/db/db";
 import {RowDataPacket} from "mysql2";
-import {ICategory, IPage, IPost, ITag} from "../helpers/interfaces";
+import {ICategory, IFilterCondition, IPage, IPost, ITag} from "../helpers/interfaces";
+import {queryFilter} from "../helpers/queryFilter";
 
-const pageAllFieldsQuery = `SELECT p.id,
-                                   p.title,
-                                   p.content,
-                                   p.excerpt,
-                                   p.status                                 as status_id,
+const pageAllFieldsQuery = `SELECT pages.id,
+                                   pages.title,
+                                   pages.content,
+                                   pages.excerpt,
+                                   pages.status                                 as status_id,
                                    ps.name                                  as status_name,
-                                   p.date_created,
-                                   p.date_modified,
-                                   p.date_published,
-                                   p.format_type                            as format_type_id,
+                                   pages.date_created,
+                                   pages.date_modified,
+                                   pages.date_published,
+                                   pages.format_type                            as format_type_id,
                                    ft.name                                  as format_type_name,
-                                   p.author                                 as author_id,
+                                   pages.author                                 as author_id,
                                    CONCAT(u1.last_name, ' ', u1.first_name) as author,
-                                   p.publisher                              as publisher_id,
+                                   pages.publisher                              as publisher_id,
                                    CONCAT(u2.last_name, ' ', u2.first_name) as publisher,
-                                   p.slug,
-                                   p.image,
-                                   p.allow_comment,
+                                   pages.slug,
+                                   pages.image,
+                                   pages.allow_comment,
                                    meta_description,
                                    meta_robots,
                                    meta_canonical,
@@ -41,32 +42,32 @@ const pageAllFieldsQuery = `SELECT p.id,
                                    meta_twitter_title,
                                    meta_twitter_description,
                                    meta_twitter_image,
-                                   p.date_indexed
-                            FROM pages p
-                                     LEFT JOIN post_status ps ON p.status = ps.id
-                                     LEFT JOIN format_types ft ON p.format_type = ft.id
-                                     LEFT JOIN users u1 ON p.author = u1.id
-                                     LEFT JOIN users u2 ON p.publisher = u2.id
-                            WHERE p.deleted = 0`;
+                                   pages.date_indexed
+                            FROM pages pages
+                                     LEFT JOIN post_status ps ON pages.status = ps.id
+                                     LEFT JOIN format_types ft ON pages.format_type = ft.id
+                                     LEFT JOIN users u1 ON pages.author = u1.id
+                                     LEFT JOIN users u2 ON pages.publisher = u2.id
+                            WHERE pages.deleted = 0`;
 
-const postAllFieldsQuery = `SELECT p.id,
-                                   p.title,
-                                   p.content,
-                                   p.excerpt,
-                                   p.status                                 as status_id,
+const postAllFieldsQuery = `SELECT posts.id,
+                                   posts.title,
+                                   posts.content,
+                                   posts.excerpt,
+                                   posts.status                                 as status_id,
                                    ps.name                                  as status_name,
-                                   p.date_created,
-                                   p.date_modified,
-                                   p.date_published,
-                                   p.format_type                            as format_type_id,
+                                   posts.date_created,
+                                   posts.date_modified,
+                                   posts.date_published,
+                                   posts.format_type                            as format_type_id,
                                    ft.name                                  as format_type_name,
-                                   p.author                                 as author_id,
+                                   posts.author                                 as author_id,
                                    CONCAT(u1.last_name, ' ', u1.first_name) as author,
-                                   p.publisher                              as publisher_id,
+                                   posts.publisher                              as publisher_id,
                                    CONCAT(u2.last_name, ' ', u2.first_name) as publisher,
-                                   p.slug,
-                                   p.image,
-                                   p.allow_comment,
+                                   posts.slug,
+                                   posts.image,
+                                   posts.allow_comment,
                                    meta_description,
                                    meta_robots,
                                    meta_canonical,
@@ -87,17 +88,13 @@ const postAllFieldsQuery = `SELECT p.id,
                                    meta_twitter_title,
                                    meta_twitter_description,
                                    meta_twitter_image,
-                                   p.date_indexed
-                            FROM posts p
-                                     LEFT JOIN post_status ps ON p.status = ps.id
-                                     LEFT JOIN format_types ft ON p.format_type = ft.id
-                                     LEFT JOIN users u1 ON p.author = u1.id
-                                     LEFT JOIN users u2 ON p.publisher = u2.id
-                            WHERE p.deleted = 0`;
-
-const findAll = (type: EPostType, callback: Function) => {
-    callback(true);
-}
+                                   posts.date_indexed
+                            FROM posts posts
+                                     LEFT JOIN post_status ps ON posts.status = ps.id
+                                     LEFT JOIN format_types ft ON posts.format_type = ft.id
+                                     LEFT JOIN users u1 ON posts.author = u1.id
+                                     LEFT JOIN users u2 ON posts.publisher = u2.id
+                            WHERE posts.deleted = 0`;
 
 const findOne = (type: EPostType, id: string, callback: Function) => {
     let queryString = "";
@@ -129,14 +126,55 @@ const findOne = (type: EPostType, id: string, callback: Function) => {
         }
     })
     .catch(err => {
-        console.log(err);
         callback(err);
     })
 }
 
+const findByFilters = (type: EPostType, filter: IFilterCondition, callback: Function) => {
+    let queryString = "";
+    if (type == EPostType.page) {
+        const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "pages");
+        queryString = `${pageAllFieldsQuery} AND ${whereClause}`;
+        console.log(queryString);
+    } else {
+        const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "posts");
+        queryString = `${postAllFieldsQuery} AND ${whereClause}`;
+    }
+    query(queryString)
+    .then(async (result) => {
+        const rows = <RowDataPacket[]>result;
 
-const findOneBySlug = (slug: string, callback: Function) => {
+        if (type == EPostType.page) {
+            let pages: IPage[] = [];
+            for (const row of rows) {
+                //set to Page object
+                const page = setPage(row);
+                // find the page's tags list
+                page.tags = await getTagsOfPost(type, page.id);
 
+                pages.push(page);
+            }
+
+            callback(null, pages);
+        } else {
+            let posts: IPost[] = [];
+            for (const row of rows) {
+                //set to Post object
+                const post = setPost(row);
+                //find its tags
+                post.tags = await getTagsOfPost(type, post.id);
+                //find its categories
+                post.categories = await getCategoriesOfPost(post.id);
+
+                posts.push(post);
+            }
+
+            callback(null, posts);
+        }
+    })
+    .catch(err => {
+        callback(err);
+    })
 }
 
 //tags helper
@@ -296,7 +334,6 @@ const setPost = (row: any): IPost => {
 }
 
 export const postPageModel = {
-    findAll,
     findOne,
-    findOneBySlug
+    findByFilters
 }
