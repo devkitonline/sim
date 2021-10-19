@@ -2,21 +2,47 @@ version: "3"
 services:
     nginx:
         image: nginx:latest
+        restart: always
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf:ro
         ports:
-            - 3000:80
+            - 80
+
     app:
         build: .
+        restart: always
+        scale: 1
+
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+        restart: always
         ports:
-            - 9200:9200
+            - 9200
         environment:
             - "discovery.type=single-node"
         volumes:
             - $PWD/data_elasticsearch:/usr/share/elasticsearch/data
-    kibana:
-        image: docker.elastic.co/kibana/kibana:7.15.1
+
+    mysql:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: obqsI97KBicnBxs6pzUrD0qDZhWijl
+            MYSQL_DATABASE: app
+        healthcheck:
+            test: /usr/bin/mysql app --user=root --password=obqsI97KBicnBxs6pzUrD0qDZhWijl --silent --execute \"SELECT 1;\"
+            interval: 30s
+            timeout: 10s
+            retries: 5
         ports:
-            - "5601:5601"
+            - 3306
+        volumes:
+            - $PWD/data_mysql:/var/lib/mysql
+            - $PWD/sim.sql:/docker-entrypoint-initdb.d/db.sql
+    logstash:
+        image: docker.elastic.co/logstash/logstash:7.15.1
+        volumes:
+            - $PWD/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
+            - $PWD/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+            - $PWD/logstash/pipeline/:/usr/share/logstash/pipeline/
+            - $PWD/logstash/query/:/usr/share/logstash/query/
