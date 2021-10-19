@@ -518,3 +518,8 @@ body.no-transitions * {
 .cursor-pointer {
     cursor: pointer;
 }
+.text-menu-header{
+    text-transform: uppercase;
+    color: #02013c;
+    font-weight: bold;
+}

@@ -1,13 +1,17 @@
 import {UserService} from "../services/user.service";
 
 export class FetchApi {
-    // static get(url) {
-    //     const requestOptions: RequestInit = {
-    //         method: 'GET',
-    //         headers: authHeader(url)
-    //     };
-    //     return fetch(url, requestOptions).then(handleResponse);
-    // }
+    static get(url) {
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                ...FetchApi.addAuthHeader()
+            }
+        };
+        return fetch(url, requestOptions).then(FetchApi.handleResponse);
+    }
 
     static post(url, body) {
         const requestOptions: RequestInit = {

@@ -1,21 +1,27 @@
 import Link from 'next/link';
 import {useEffect, useState} from "react";
-import axios from "axios";
+import {FetchApi} from "../../helpers/fetchApi";
 
 const Base_menu = () => {
     const [menuItems, setMenuItems] = useState([]);
+    const [menuLoaded, setMenuLoaded] = useState(false);
     useEffect(() => {
-        axios.get('/api/base/menu').then(res => setMenuItems(res.data));
-    }, []);
+        if (!menuLoaded) {
+            setMenuLoaded(true);
+            FetchApi.get('/api/menu').then(res => {
+                setMenuItems(res.menus);
+            });
+        }
+    }, [menuItems]);
     return (
         <div className="collapse navbar-collapse" id="navbar-menu">
             <div className="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                 <ul className="navbar-nav">
                     {menuItems.map(item => {
-                        return (item.has_child ?
+                        return (item.children.length > 0 ?
                             <li key={item.name} className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span className="nav-link-title">{item.name}</span>
+                                    <span className="nav-link-title text-menu-header">{item.name}</span>
                                 </a>
                                 <div className="dropdown-menu">
                                     <div className="dropdown-menu-columns">
@@ -35,7 +41,7 @@ const Base_menu = () => {
                             <li key={item.name} className="nav-item">
                                 <Link href={item.link}>
                                     <a className='nav-link'>
-                                        <span className="nav-link-title">{item.name}</span>
+                                        <span className="nav-link-title text-menu-header">{item.name}</span>
                                     </a>
                                 </Link>
                             </li>)

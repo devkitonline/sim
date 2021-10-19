@@ -11,7 +11,7 @@ const CardLeftImageNE = ({title, noborder}) => {
                 <div className="col">
                     <div className="card-body">
                         <h2 className="card-title">
-                            <Link href=''>
+                            <Link href='/'>
                                 <a>{title}</a>
                             </Link>
                         </h2>
