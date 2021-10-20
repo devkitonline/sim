@@ -68,7 +68,7 @@ async function handler(req, res) {
                     }
                 });
 
-                return res.status(200).json({code: 1, message: `Success`});
+                return res.status(200).json({code: 1, message: `Success`, path: image.path});
             });
             break;
         default:

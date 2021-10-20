@@ -27,7 +27,8 @@ create table users
     role varchar(255) not null ,
     is_admin tinyint default 0 not null,
     date_created datetime not null default  now(),
-    date_modified datetime not null default  now()
+    date_modified datetime not null default  now(),
+    avatar_path varchar(255)
 );
 
 create table roles
