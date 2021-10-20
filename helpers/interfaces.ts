@@ -101,6 +101,17 @@ export interface IMenu {
     children?: IMenu[];
 }
 
+export interface IImage{
+    id: string;
+    name?: string;
+    path: string;
+    description?: string;
+    isPublic: boolean;
+    // base64?: string;
+    ownerId?: string;
+    ownerName?: string;
+}
+
 /* for query with filter */
 export interface IFilterCondition {
     operator?: EFilterOperator;
@@ -110,4 +121,3 @@ export interface IFilterCondition {
     conditions: IFilterCondition[];
     logicalOperator: "AND" | "OR";
 }
-

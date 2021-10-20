@@ -256,3 +256,16 @@ INSERT INTO comments_status (id, name)
 VALUES
 ('w', 'Waiting for approved'),
 ('a', 'Approved' );
+
+# THÊM BẢNG IMAGES
+create table images
+(
+    id varchar(255) primary key ,
+    name varchar(255),
+    description varchar(255),
+    path varchar(255) not null ,
+    owner varchar(255),
+    public tinyint default 0
+);
+ALTER TABLE images
+    ADD CONSTRAINT fk_image_user FOREIGN KEY (owner) REFERENCES users (id);
