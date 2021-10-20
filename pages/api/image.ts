@@ -17,12 +17,32 @@ export const config = {
 async function handler(req, res) {
     const {
         method,
-        query: {owner, path, id, make_public}
+        query: {owner, make_public, name, desscription}
     } = req
 
     switch (method) {
         case 'GET':
-
+            if (!owner){ //Get all public images
+                await imageModel.findAllPublic((err, images: IImage[]) => {
+                    if (err){
+                        res.status(200).json({code: 400, message: err});
+                        return;
+                    }else{
+                        res.status(200).json({code: 1, message: `Success`,type: "public", images: images});
+                        return;
+                    }
+                });
+            }else{ //Get all images by its owner
+                await imageModel.findAllByOwner(owner, (err, images: IImage[]) => {
+                    if (err){
+                        res.status(200).json({code: 400, message: err});
+                        return;
+                    }else{
+                        res.status(200).json({code: 1, message: `Success`, type: "private", owner: owner , images: images});
+                        return;
+                    }
+                });
+            }
             break
         case 'POST':
             const form = new formidable.IncomingForm();
@@ -35,7 +55,9 @@ async function handler(req, res) {
                     id: id,
                     isPublic: make_public == "true",
                     path: `./public/upload/${file.name}`,
-                    ownerId: req.user.id
+                    ownerId: req.user.id,
+                    name: name,
+                    description: desscription
                 }
                 await imageModel.create(image, async (err) => {
                     if (err) {
