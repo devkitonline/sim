@@ -1,0 +1,29 @@
+[
+    {
+        "tableName": "pages",
+        "indexName": "pages",
+        "searchFields": [
+            "title",
+            "excerpt",
+            "slug"
+        ]
+    },
+    {
+        "tableName": "posts",
+        "indexName": "posts",
+        "searchFields": [
+            "title",
+            "excerpt",
+            "slug"
+        ]
+    },
+    {
+        "tableName": "all",
+        "indexName": "all",
+        "searchFields": [
+            "title",
+            "excerpt",
+            "slug"
+        ]
+    }
+]

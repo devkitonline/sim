@@ -270,3 +270,17 @@ create table images
 );
 ALTER TABLE images
     ADD CONSTRAINT fk_image_user FOREIGN KEY (owner) REFERENCES users (id);
+
+# THÊM BẢNG MEDIA
+create table media
+(
+    id varchar(255) primary key ,
+    name varchar(255),
+    description varchar(255),
+    path varchar(255) not null ,
+    owner varchar(255),
+    public tinyint default 0,
+    type varchar(255)
+);
+ALTER TABLE media
+    ADD CONSTRAINT fk_media_user FOREIGN KEY (owner) REFERENCES users (id);
