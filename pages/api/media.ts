@@ -2,9 +2,8 @@ import {apiHandler} from "../../helpers/api/api-handle";
 import {v4 as uuidv4} from 'uuid';
 import formidable from "formidable";
 import fs from "fs";
-import {imageModel} from "../../models/image.model";
-import {IImage} from "../../helpers/interfaces";
-import imageTypes from '../../constants/imageTypes.json';
+import {mediaModel} from "../../models/media.model";
+import {IMedia} from "../../helpers/interfaces";
 
 export default apiHandler(handler);
 
@@ -23,22 +22,22 @@ async function handler(req, res) {
     switch (method) {
         case 'GET':
             if (!owner){ //Get all public images
-                await imageModel.findAllPublic((err, images: IImage[]) => {
+                await mediaModel.findAllPublic((err, media: IMedia[]) => {
                     if (err){
                         res.status(200).json({code: 400, message: err});
                         return;
                     }else{
-                        res.status(200).json({code: 1, message: `Success`,type: "public", images: images});
+                        res.status(200).json({code: 1, message: `Success`,type: "public", files: media});
                         return;
                     }
                 });
             }else{ //Get all images by its owner
-                await imageModel.findAllByOwner(owner, (err, images: IImage[]) => {
+                await mediaModel.findAllByOwner(owner, (err, media: IMedia[]) => {
                     if (err){
                         res.status(200).json({code: 400, message: err});
                         return;
                     }else{
-                        res.status(200).json({code: 1, message: `Success`, type: "private", owner: owner , images: images});
+                        res.status(200).json({code: 1, message: `Success`, type: "private", owner: owner , files: media});
                         return;
                     }
                 });
@@ -49,17 +48,18 @@ async function handler(req, res) {
             form.parse(req, async function (err, fields, files) {
                 const file = files.file;
                 const id = uuidv4();
-                // upload new file's name by id
-                file.name = id + getImageExtension(file.type, imageTypes);
-                const image: IImage = {
+                const extension = file.name.split('.').pop();
+                file.name = id + '.' + extension;
+                const image: IMedia = {
                     id: id,
                     isPublic: make_public == "true",
                     path: `./public/upload/${file.name}`,
                     ownerId: req.user.id,
                     name: name,
-                    description: desscription
+                    description: desscription,
+                    type: file.type
                 }
-                await imageModel.create(image, async (err) => {
+                await mediaModel.create(image, async (err) => {
                     if (err) {
                         res.status(200).json({code: 400, message: err});
                         return;
@@ -84,7 +84,3 @@ const saveFile = async (file) => {
     return;
 };
 
-const getImageExtension = (type: string, listTypes: any[]) =>{
-    const t = listTypes.find(t => t.type == type);
-    return t.extension;
-}
