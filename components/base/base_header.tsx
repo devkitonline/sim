@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from "next/image";
 import Base_menu from "./base_menu";
-import {IconLogin, IconUserPlus} from '@tabler/icons';
+import {IconBell, IconLogin, IconUserPlus} from '@tabler/icons';
 import {useEffect, useState} from "react";
 import {IUser} from "../../helpers/interfaces";
 import {UserService} from "../../services/user.service";
@@ -17,18 +17,30 @@ const Base_header = () => {
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span className="navbar-toggler-icon"/>
                 </button>
-                <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" style={{paddingTop:"2px",paddingBottom:0}}>
                     <Link href='/'>
-                        <a><Image src="/logo.png" width="110" height="35" alt="Tabler" className="navbar-brand-image"/></a>
+                        <a><Image src="/logo.png" width="110" height="40" alt="Tabler" className="navbar-brand-image"/></a>
                     </Link>
                 </h1>
                 <div className="navbar-nav flex-row order-md-last">
-                    <div className="nav-item d-none d-md-flex me-3">
-                        <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 d-none d-xl-block ps-2">
-                            <Link href='https://class.simplyinvest.vn'>
-                                <a><Image src="/images/qc.png" width="270" height="35" alt="Tabler" className="navbar-brand-image"/></a>
-                            </Link>
-                        </h1>
+                    {/*<div className="nav-item d-none d-md-flex me-3">*/}
+                    {/*    <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 d-none d-xl-block ps-2">*/}
+                    {/*        <Link href='https://class.simplyinvest.vn'>*/}
+                    {/*            <a><Image src="/images/qc.png" width="270" height="35" alt="Tabler" className="navbar-brand-image"/></a>*/}
+                    {/*        </Link>*/}
+                    {/*    </h1>*/}
+                    {/*</div>*/}
+                    <div className="nav-item dropdown d-none d-md-flex me-3">
+                        <a href="#" className="nav-link px-0" data-bs-toggle="dropdown" aria-label="Show notifications">
+                            <IconBell/><span className="badge bg-red"/>
+                        </a>
+                        <div className="dropdown-menu dropdown-menu-end dropdown-menu-card">
+                            <div className="card">
+                                <div className="card-body">
+                                    Amet debitis et magni maxime necessitatibus ullam.
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {UserService.token ?
                         <div className="nav-item dropdown">
