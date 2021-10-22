@@ -15,7 +15,7 @@ const getIndex = () => {
 }
 
 const deleteIndex = () => {
-
+    
 }
 
 const search = async (table: string | null, query: any) => {
