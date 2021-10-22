@@ -27,7 +27,8 @@ create table users
     role varchar(255) not null ,
     is_admin tinyint default 0 not null,
     date_created datetime not null default  now(),
-    date_modified datetime not null default  now()
+    date_modified datetime not null default  now(),
+    avatar_path varchar(255)
 );
 
 create table roles
@@ -256,3 +257,18 @@ INSERT INTO comments_status (id, name)
 VALUES
 ('w', 'Waiting for approved'),
 ('a', 'Approved' );
+
+
+# THÊM BẢNG MEDIA
+create table media
+(
+    id varchar(255) primary key ,
+    name varchar(255),
+    description varchar(255),
+    path varchar(255) not null ,
+    owner varchar(255),
+    public tinyint default 0,
+    type varchar(255)
+);
+ALTER TABLE media
+    ADD CONSTRAINT fk_media_user FOREIGN KEY (owner) REFERENCES users (id);

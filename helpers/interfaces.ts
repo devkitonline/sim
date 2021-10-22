@@ -101,6 +101,17 @@ export interface IMenu {
     children?: IMenu[];
 }
 
+export interface IMedia{
+    id: string;
+    name?: string;
+    path: string;
+    description?: string;
+    isPublic: boolean;
+    ownerId?: string;
+    ownerName?: string;
+    type?: string;
+}
+
 /* for query with filter */
 export interface IFilterCondition {
     operator?: EFilterOperator;
@@ -110,4 +121,3 @@ export interface IFilterCondition {
     conditions: IFilterCondition[];
     logicalOperator: "AND" | "OR";
 }
-

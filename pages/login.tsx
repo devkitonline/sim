@@ -4,6 +4,7 @@ import {useState} from "react";
 import Image from "next/image";
 import {UserService} from 'services/user.service';
 import {useRouter} from "next/router";
+import {FTSHandler} from "../helpers/api/ftsHandler";
 
 function Login() {
     const [username, setUsername] = useState<string>("");

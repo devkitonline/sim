@@ -1,0 +1,30 @@
+[
+    {
+        "type": "image/apng",
+        "extension": ".apng"
+    },
+    {
+        "type": "image/avif",
+        "extension": ".avif"
+    },
+    {
+        "type": "image/gif",
+        "extension": ".gif"
+    },
+    {
+        "type": "image/jpeg",
+        "extension": ".jpg"
+    },
+    {
+        "type": "image/png",
+        "extension": ".png"
+    },
+    {
+        "type": "image/svg+xml",
+        "extension": ".svg"
+    },
+    {
+        "type": "image/webp",
+        "extension": ".webp"
+    }
+]
