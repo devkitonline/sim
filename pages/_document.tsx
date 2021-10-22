@@ -10,6 +10,7 @@ class MyDocument extends Document {
                     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
                     <link rel='stylesheet' href='/styles/css/tabler.min.css'/>
                     <link rel='stylesheet' href='/styles/css/tabler-vendors.min.css'/>
+                    <title>Simplyinvest</title>
                 </Head>
                 <body className='antialiased '>
                 <div className="wrapper">

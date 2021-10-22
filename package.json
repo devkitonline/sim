@@ -6,6 +6,8 @@
         "start": "next start"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^30.0.0",
+        "@ckeditor/ckeditor5-react": "^3.0.3",
         "@elastic/elasticsearch": "^7.15.0",
         "@tabler/icons": "^1.41.2",
         "bad-words": "^3.0.4",
