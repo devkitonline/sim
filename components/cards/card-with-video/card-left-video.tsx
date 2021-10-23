@@ -8,7 +8,7 @@ const CardLeftVideo = (props: ICardProps) => {
         <div className="card no-border">
             <div className="row row-0">
                 <div className="col-4">
-                    <iframe src={link} frameBorder="0" width="420" height="236">
+                    <iframe src={link} frameBorder="0" width="100%" height="auto">
                     </iframe>
                 </div>
                 <div className="col">

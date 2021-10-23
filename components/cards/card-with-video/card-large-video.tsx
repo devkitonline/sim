@@ -6,8 +6,8 @@ const CardLargeVideo = (props: ICardProps) => {
 
     return (
         <div className="card no-border" style={{backgroundColor: "rgba(0,0,0,0)", height: "auto"}}>
-            <div className="card-body" style={{paddingRight: 0, paddingLeft: 0}}>
-                <iframe src={link} frameBorder="0" width="100%" height="500px">
+            <div className="card-body" style={{paddingRight: 0, paddingLeft: 0, height: "500px"}}>
+                <iframe src={link} frameBorder="0" width="100%" height="100%">
                 </iframe>
             </div>
         </div>
