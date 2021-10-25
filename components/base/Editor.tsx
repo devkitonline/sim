@@ -6,10 +6,7 @@ export function Editor({onChange, editorLoaded, name, value}) {
     const editorRef = useRef();
     // @ts-ignore
     const {CKEditor, ClassicEditor} = editorRef.current || {};
-    const [listFiles, setListFiles] = useState([
-        {path: '1'},
-        {path: '2'}
-    ]);
+    const [listFiles, setListFiles] = useState([]);
 
     const uploadMedia = () => {
         let input = document.querySelector('input[name="file"]')
@@ -19,22 +16,27 @@ export function Editor({onChange, editorLoaded, name, value}) {
         FetchApi.postMedia('/api/media?make_public=true&name=media', data)
         .then(res => {
             if (res.code == '1') {
-                let temp = [];
-                temp.push({path: res.path});
-                listFiles.map(m => temp.push(m));
-                setListFiles(temp);
-                console.log(temp);
+                setListFiles([...[{path: res.path, id: res.id}], ...listFiles]);
             }
-        })
+        });
     }
 
     useEffect(() => {
-        console.log(listFiles);
         // @ts-ignore
         editorRef.current = {
             CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
             ClassicEditor: require("@ckeditor/ckeditor5-build-classic")
         };
+        FetchApi.get('/api/media')
+        .then(res => {
+            if (res.code == '1') {
+                let tmps = [];
+                res.files.map(item=>{
+                    tmps.push({path: item.path, id: item.id});
+                });
+                setListFiles(tmps);
+            }
+        });
     }, []);
 
     return (
@@ -44,21 +46,21 @@ export function Editor({onChange, editorLoaded, name, value}) {
                 <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            {/*<input type='text' className='form-control' placeholder='Tìm kiếm'/>*/}
+                            <h3>Media Gallery</h3>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
                         </div>
                         <div className="modal-body">
                             <div className="mb-3">
                                 <div className="row g-2">
                                     {listFiles.map(m => {
-                                        <div className="col-4 col-sm-2">
+                                        return (<div key={m.id} className="col-4 col-sm-2">
                                             <label className="form-imagecheck mb-2">
                                                 <input name="form-imagecheck" type="checkbox" value="1" className="form-imagecheck-input"/>
                                                 <span className="form-imagecheck-figure">
-                                                <Image width='100' height='100' src={m.path} className="form-imagecheck-image"/>
-                                              </span>
+                                                    <Image objectFit='cover' width='100' height='100' src={m.path} className="form-imagecheck-image"/>
+                                                </span>
                                             </label>
-                                        </div>
+                                        </div>)
                                     })}
                                 </div>
                             </div>
