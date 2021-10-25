@@ -53,7 +53,7 @@ async function handler(req, res) {
                 const image: IMedia = {
                     id: id,
                     isPublic: make_public == "true",
-                    path: `./public/upload/${file.name}`,
+                    path: `/upload/${file.name}`,
                     ownerId: req.user.id,
                     name: name,
                     description: desscription,
