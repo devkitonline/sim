@@ -27,16 +27,16 @@ export function Editor({onChange, editorLoaded, name, value}) {
             CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
             ClassicEditor: require("@ckeditor/ckeditor5-build-classic")
         };
-        FetchApi.get('/api/media')
-        .then(res => {
-            if (res.code == '1') {
-                let tmps = [];
-                res.files.map(item=>{
-                    tmps.push({path: item.path, id: item.id});
-                });
-                setListFiles(tmps);
-            }
-        });
+        // FetchApi.get('/api/media')
+        // .then(res => {
+        //     if (res.code == '1') {
+        //         let tmps = [];
+        //         res.files.map(item => {
+        //             tmps.push({path: item.path, id: item.id});
+        //         });
+        //         setListFiles(tmps);
+        //     }
+        // });
     }, []);
 
     return (
