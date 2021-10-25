@@ -14,7 +14,7 @@ const Home = () => {
             <Base_header/>
             <div className="page-wrapper" style={{backgroundColor: '#fff'}}>
                 <div className="page-body">
-                    <div className="container-xl">
+                    <div className="container-sm">
                         <div className='row'>
                             <div className='col-md-8'>
                                 <CardTopImage noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'

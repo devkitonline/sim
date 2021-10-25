@@ -4,7 +4,7 @@ const AdminMenu = () => {
         <div className="navbar-expand-md">
             <div className="collapse navbar-collapse" id="navbar-menu-admin">
                 <div className="navbar navbar-light">
-                    <div className="container-xl">
+                    <div className="container-sm">
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <Link href='/admin'>

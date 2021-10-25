@@ -13,7 +13,7 @@ const Base_header = () => {
     }, [user]);
     return (
         <header className="navbar navbar-expand-md navbar-light d-print-none sticky-top">
-            <div className="container-xl">
+            <div className="container-sm">
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span className="navbar-toggler-icon"/>
                 </button>
@@ -23,13 +23,6 @@ const Base_header = () => {
                     </Link>
                 </h1>
                 <div className="navbar-nav flex-row order-md-last">
-                    {/*<div className="nav-item d-none d-md-flex me-3">*/}
-                    {/*    <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 d-none d-xl-block ps-2">*/}
-                    {/*        <Link href='https://class.simplyinvest.vn'>*/}
-                    {/*            <a><Image src="/images/qc.png" width="270" height="35" alt="Tabler" className="navbar-brand-image"/></a>*/}
-                    {/*        </Link>*/}
-                    {/*    </h1>*/}
-                    {/*</div>*/}
                     <div className="nav-item dropdown d-none d-md-flex me-3">
                         <a href="#" className="nav-link px-0" data-bs-toggle="dropdown" aria-label="Show notifications">
                             <IconBell/><span className="badge bg-red"/>

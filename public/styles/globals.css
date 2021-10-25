@@ -523,3 +523,6 @@ body.no-transitions * {
     color: #02013c;
     font-weight: bold;
 }
+.container-sm{
+    max-width: 1140px;
+}

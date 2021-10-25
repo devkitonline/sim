@@ -25,6 +25,17 @@ export class FetchApi {
         };
         return fetch(url, requestOptions).then(FetchApi.handleResponse);
     }
+    static postMedia(url, body) {
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                ...FetchApi.addAuthHeader()
+            },
+            body: body
+        };
+        return fetch(url, requestOptions).then(FetchApi.handleResponse);
+    }
 //
 //     static put(url, body) {
 //         const requestOptions: RequestInit = {
