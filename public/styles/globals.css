@@ -526,3 +526,25 @@ body.no-transitions * {
 .container-sm{
     max-width: 1140px;
 }
+
+.li-hover{
+    font-size: large;
+    padding: 20px 24px;
+}
+
+.li-hover:hover{
+    background-color: #f7f5f2;
+    font-weight: bolder;
+    color: #000000;
+}
+
+.li-hover.active{
+    background-color: #f7f5f2;
+    display: flex;
+    color: #292929;
+    justify-content: start;
+    align-items: center;
+    border-left: 4px solid #292929;
+    transition: 0.2s all;
+    font-weight: 600;
+}

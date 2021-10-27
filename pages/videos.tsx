@@ -56,91 +56,14 @@ const Videos = () => {
                                     <h1 className="navbar-brand navbar-brand-autodark" style={{fontSize: "x-large"}}>
                                         <IconPlaylist/> Danh sách phát
                                     </h1>
-                                    <div className="list-group list-group-flush overflow-auto" style={{maxHeight: "25rem"}}>
+                                    <div className="list-group list-group-flush overflow-auto" style={{maxHeight: "30rem"}}>
                                         <ul className="navbar-nav pt-lg-3">
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Home
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Interface
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Forms
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link">
-                                                    <span className="nav-link-title">
-                                                        Extra
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
+                                            <li className=" li-hover active">
                                                         Layout
-                                                      </span>
-                                                </a>
+
                                             </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Documentation
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Home
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Interface
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Forms
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link">
-                                                    <span className="nav-link-title">
-                                                        Extra
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
+                                            <li className="li-hover">
                                                         Layout
-                                                      </span>
-                                                </a>
-                                            </li>
-                                            <li className="nav-item">
-                                                <a className="nav-link" href="#">
-                                                    <span className="nav-link-title">
-                                                        Documentation
-                                                      </span>
-                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -173,42 +96,47 @@ const Videos = () => {
                                     </div>
                                     <div className="list-group list-group-flush overflow-auto" style={{maxHeight: "30rem"}}>
                                         <div className="divide-y">
-                                            <div className="row">
+                                            <div style={{margin: 0}} className="row">
                                                 <CardLeftVideo
                                                     title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
                                                 />
                                             </div>
-                                            <div className="row">
+                                            <div style={{margin: 0}} className="row">
                                                 <CardLeftVideo
                                                     title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
                                                 />
                                             </div>
-                                            <div className="row">
+                                            <div style={{margin: 0}} className="row">
                                                 <CardLeftVideo
                                                     title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
                                                 />
                                             </div>
-                                            <div className="row">
+                                            <div style={{margin: 0}} className="row">
                                                 <CardLeftVideo
                                                     title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
                                                 />
                                             </div>
-                                            <div className="row">
+                                            <div style={{margin: 0}} className="row">
                                                 <CardLeftVideo
                                                     title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
                                                 />
                                             </div>
-                                            <div className="row">
+                                            <div style={{margin: 0}} className="row">
                                                 <CardLeftVideo
                                                     title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
                                                 />
                                             </div>
-                                            <div className="row">
+                                            <div style={{margin: 0}} className="row">
                                                 <CardLeftVideo
                                                     title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
                                                 />
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="row justify-content-center" style={{marginTop: "1.5rem"}}>
+                                        <a href="#" className="btn btn-outline-secondary active" style={{width: "30%"}}>
+                                            Xem thêm
+                                        </a>
                                     </div>
                                 </div>
                             </div>
