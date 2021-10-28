@@ -177,7 +177,29 @@ const findByFilters = (type: EPostType, filter: IFilterCondition, callback: Func
     })
 }
 
-//tags helper
+const _delete = (type: EPostType, id: string, callback:Function) => {
+    let queryString = "";
+    if (type == EPostType.post){
+        queryString = `UPDATE posts SET deleted = 1 WHERE id = ?`;
+    }else if (type == EPostType.page){
+        queryString = `UPDATE pages SET deleted = 1 WHERE  id = ?`;
+    }
+    query(queryString, [id])
+    .then(result => {
+        callback(null);
+    })
+    .catch(err => {
+        callback(err);
+    })
+}
+
+export const postPageModel = {
+    findOne,
+    findByFilters,
+    delete: _delete
+}
+
+//Helper functions
 const getTagsOfPost = async (type: EPostType, postId: string): Promise<ITag[]> => {
     let queryString = "";
     if (type == EPostType.post) {
@@ -211,7 +233,6 @@ const getTagsOfPost = async (type: EPostType, postId: string): Promise<ITag[]> =
     return tags;
 }
 
-// tags helper
 const getCategoriesOfPost = async (postId: string): Promise<ICategory[]> => {
     let queryString = `SELECT c.id, c.name, c.slug, c.description
                        FROM posts_categories pt
@@ -331,9 +352,4 @@ const setPost = (row: any): IPost => {
         twitterTitle: row['meta_twitter_title']
     };
     return p;
-}
-
-export const postPageModel = {
-    findOne,
-    findByFilters
 }
