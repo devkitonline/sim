@@ -1,12 +1,15 @@
-import React, {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Image from 'next/image';
 import {FetchApi} from "../../helpers/fetchApi";
+import {UserService} from "../../services/user.service";
+import {ArrayUtils} from "../../helpers/utils";
 
 export function Editor({onChange, editorLoaded, name, value}) {
     const editorRef = useRef();
     // @ts-ignore
     const {CKEditor, ClassicEditor} = editorRef.current || {};
     const [listFiles, setListFiles] = useState([]);
+    let listFilesSelected = [];
 
     const uploadMedia = () => {
         let input = document.querySelector('input[name="file"]')
@@ -21,22 +24,45 @@ export function Editor({onChange, editorLoaded, name, value}) {
         });
     }
 
+    const selectMedia = () => {
+        listFilesSelected.map(id => {
+            let item = ArrayUtils.findById('id', id, listFiles);
+            // @ts-ignore
+            value = value + `<img src="${item.path}"/>`;
+        });
+        onChange(value);
+        listFilesSelected = [];
+        setListFiles([...listFiles]);
+    }
+
+    const checkMedia = (id) => {
+        if (listFilesSelected.includes(id)) {
+            listFilesSelected.splice(listFilesSelected.indexOf(id), 1);
+        } else {
+            listFilesSelected.push(id);
+        }
+    }
+
     useEffect(() => {
         // @ts-ignore
         editorRef.current = {
             CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
             ClassicEditor: require("@ckeditor/ckeditor5-build-classic")
         };
-        // FetchApi.get('/api/media')
-        // .then(res => {
-        //     if (res.code == '1') {
-        //         let tmps = [];
-        //         res.files.map(item => {
-        //             tmps.push({path: item.path, id: item.id});
-        //         });
-        //         setListFiles(tmps);
-        //     }
-        // });
+        UserService.userSubject.subscribe(user => {
+            if (user) {
+                FetchApi.get('/api/media')
+                .then(res => {
+                    if (res.code == '1') {
+                        let tmps = [];
+                        res.files.map(item => {
+                            tmps.push({path: item.path, id: item.id});
+                        });
+                        setListFiles(tmps);
+                    }
+                });
+            }
+        });
     }, []);
 
     return (
@@ -55,7 +81,7 @@ export function Editor({onChange, editorLoaded, name, value}) {
                                     {listFiles.map(m => {
                                         return (<div key={m.id} className="col-4 col-sm-2">
                                             <label className="form-imagecheck mb-2">
-                                                <input name="form-imagecheck" type="checkbox" value="1" className="form-imagecheck-input"/>
+                                                <input name="form-imagecheck mediaselector" type="checkbox" onChange={() => checkMedia(m.id)} className="form-imagecheck-input"/>
                                                 <span className="form-imagecheck-figure">
                                                     <Image objectFit='cover' width='100' height='100' src={m.path} className="form-imagecheck-image"/>
                                                 </span>
@@ -67,7 +93,7 @@ export function Editor({onChange, editorLoaded, name, value}) {
                         </div>
                         <div className="modal-footer">
                             <input type="file" className="form-control" name='file' onChange={uploadMedia}/>
-                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Chọn</button>
+                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={selectMedia}>Chọn</button>
                         </div>
                     </div>
                 </div>
