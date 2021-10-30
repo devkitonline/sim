@@ -34,7 +34,7 @@ const buildSQLWhereStatementForCondition = (condition: IFilterCondition , tablen
             break;
         case EFilterOperator.oneof:
             const valueArray = Array.isArray(condition.filterValue) ? condition.filterValue : condition.filterValue.split(',');
-            retSQLString = ` ${tablename}.${condition.field} in (${valueArray.join(',')}) `;
+            retSQLString = ` ${tablename}.${condition.field} in ( '${valueArray.join("','")}') `;
             break;
         case EFilterOperator.true:
             retSQLString = `${tablename}.${condition.field} = 1`;
