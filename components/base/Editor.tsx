@@ -32,14 +32,19 @@ export function Editor({onChange, editorLoaded, name, value}) {
         });
         onChange(value);
         listFilesSelected = [];
-        setListFiles([...listFiles]);
+
+        const ms = document.getElementsByClassName('mediaselector');
+        for (var i = 0; i < ms.length; i++) {
+            // @ts-ignore
+            ms[i].checked = false;
+        }
     }
 
-    const checkMedia = (id) => {
-        if (listFilesSelected.includes(id)) {
-            listFilesSelected.splice(listFilesSelected.indexOf(id), 1);
+    const checkMedia = (e) => {
+        if (e.target.checked) {
+            listFilesSelected.push(e.target.value);
         } else {
-            listFilesSelected.push(id);
+            listFilesSelected.splice(listFilesSelected.indexOf(e.target.value), 1);
         }
     }
 
@@ -81,7 +86,7 @@ export function Editor({onChange, editorLoaded, name, value}) {
                                     {listFiles.map(m => {
                                         return (<div key={m.id} className="col-4 col-sm-2">
                                             <label className="form-imagecheck mb-2">
-                                                <input name="form-imagecheck mediaselector" type="checkbox" onChange={() => checkMedia(m.id)} className="form-imagecheck-input"/>
+                                                <input type="checkbox" onChange={(e) => checkMedia(e)} value={m.id} className="form-imagecheck-input mediaselector"/>
                                                 <span className="form-imagecheck-figure">
                                                     <Image objectFit='cover' width='100' height='100' src={m.path} className="form-imagecheck-image"/>
                                                 </span>
