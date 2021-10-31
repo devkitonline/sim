@@ -9,8 +9,7 @@ const CardTopVideo = (props: ICardProps) => {
     return (
         <div className="card no-border" style={{backgroundColor: "rgba(0,0,0,0)"}}>
             <div className="card-body" style={{paddingRight: 0, paddingLeft: 0}}>
-                <iframe src={link} frameBorder="0" width="100%" height="auto">
-                </iframe>
+                <iframe allowFullScreen src={link} frameBorder="0" width="100%" height="auto"/>
                 <h2 className="card-title">
                     <a>{title}</a>
                 </h2>

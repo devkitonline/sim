@@ -3,9 +3,7 @@ import Base_header from "../components/base/base_header";
 import Base_footer from "../components/base/base_footer";
 import CardTopVideo from "@/components/cards/card-with-video/card-top-video";
 import CardLargeVideo from "@/components/cards/card-with-video/card-large-video";
-import {IconBrandYoutube, IconChevronDown, IconClock, IconPlaylist, IconStar} from "@tabler/icons";
-import Link from "next/link";
-import Image from "next/image";
+import {IconBrandYoutube, IconClock, IconPlaylist, IconStar} from "@tabler/icons";
 import CardLeftVideo from "@/components/cards/card-with-video/card-left-video";
 
 const Videos = () => {
@@ -17,7 +15,7 @@ const Videos = () => {
             <Base_header/>
             <div className="page-wrapper">
                 <div className="page-body">
-                    <div className="container-xl">
+                    <div className="container-sm">
                         <div className="row align-items-center">
                             <CardLargeVideo
                                 title={"Học làm "} link={"https://www.youtube.com/embed/cO3ODTxJ2nc"} views={"1234"} uploadedDate={"111"}
@@ -49,7 +47,7 @@ const Videos = () => {
             </div>
             <div className="page-wrapper" style={{backgroundColor: '#fff'}}>
                 <div className="page-body">
-                    <div className="container-xl">
+                    <div className="container-sm">
                         <div className='row'>
                             <div className='col-md-3'>
                                 <div className="container-fluid">

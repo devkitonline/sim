@@ -5,7 +5,7 @@ import {IconBrandFacebook, IconBrandGoogle, IconBrandReddit, IconBrandTwitter, I
 export default function Base_footer() {
     return (
         <footer className="footer footer-transparent d-print-none" style={{backgroundColor: '#f7f5f2'}}>
-            <div className="container-xl">
+            <div className="container-sm">
                 <div className='row'>
                     <div className='col-md-4'>
                         <a><Image src="/logo.png" width="150" height="40" alt="Tabler" className="img-responsive"/></a><br/>
