@@ -1,4 +1,4 @@
-import {IFilterCondition, IMenu, IUser} from "./interfaces";
+import {IFilterCondition, IMenu,  IPost, IUser, ISEOMetaData, ITag, ICategory} from "./interfaces";
 import slugify from "slugify";
 
 export const Cookie = {
@@ -83,6 +83,99 @@ export const dataNormalization = {
             operator: data.operator != undefined ? data.operator : "",
             limit: data.limit != undefined ? data.limit : 20,
             offset: data.offset != undefined ? data.offset : 0
+        }
+    },
+    normalizedTag: (data): ITag =>{
+        return{
+            description: data.description != undefined ?data.description : "",
+            id: data.id != undefined ?data.id : "",
+            name: data.name != undefined ?data.name : "",
+            slug: data.slug != undefined ?data.slug : ""
+        }
+    },
+    normalizeedCategory: (data) : ICategory =>{
+        return{
+            categoryParent:data.categoryParent != undefined ?data.categoryParent : "" ,
+            description: data.description != undefined ?data.description : "",
+            id: data.id != undefined ?data.id : "",
+            image: data.image != undefined ?data.image : "",
+            name: data.name != undefined ?data.name : "",
+            slug: data.slug != undefined ?data.slug : ""
+        }
+    },
+    normalizedPost: (data): IPost => {
+
+        const metaData = dataNormalization.normalizedSEOMetaData(data.SEOMetaData);
+
+        let tags = [];
+        if (data.tags != undefined && Array.isArray(data.tags) && (typeof data.tags[0] == 'object')){
+            for(let i =0; i< data.tags.length; i++){
+                tags.push(dataNormalization.normalizedTag(data.tags[i]));
+            }
+        }else if (data.tags != undefined && Array.isArray(data.tags) && (typeof data.tags[0] == 'string')){
+            for(let j=0;j<data.tags.length; j++){
+                tags.push(data.tags[j]);
+            }
+        }
+
+        let categories = [];
+        if (data.categories != undefined && Array.isArray(data.categories) && (typeof data.categories[0] == 'object')){
+            for(let i =0; i< data.categories.length; i++){
+                categories.push(dataNormalization.normalizeedCategory(data.categories[i]));
+            }
+        }else if (data.categories != undefined && Array.isArray(data.categories) && (typeof data.categories[0] == 'string')){
+            for(let j=0;j<data.categories.length; j++){
+                categories.push(data.categories[j]);
+            }
+        }
+
+        return {
+            SEOMetaData: metaData,
+            allowComment: data.allowComment != undefined ?data.allowComment :false ,
+            author: data.author != undefined ? data.author : "",
+            authorId:  data.authorId != undefined ? data.authorId : null,
+            categories: categories,
+            content: data.content != undefined ? data.content : "",
+            dateCreated: data.dateCreated != undefined ? data.dateCreated : "",
+            dateModified: data.dateModified != undefined ? data.dateModified : "",
+            datePublishes: data.datePublishes != undefined ? data.datePublishes : "" ,
+            excerpt:data.excerpt != undefined ? data.excerpt : "" ,
+            formatType: data.formatType != undefined ? data.formatType : "",
+            formatTypeId: data.formatTypeId != undefined ? data.formatTypeId : "",
+            id: data.id != undefined ? data.id : "",
+            image: data.image != undefined ? data.image : "",
+            pageStatus: data.pageStatus != undefined ? data.pageStatus : "",
+            pageStatusId:data.pageStatusId != undefined ? data.pageStatusId : "" ,
+            publisher: data.publisher != undefined ? data.publisher : "",
+            publisherId:data.publisherId != undefined ? data.publisherId : null ,
+            slug: data.slug != undefined ? data.slug : "",
+            tags: tags,
+            title: data.title != undefined ? data.title : "",
+            views: data.views != undefined ? data.views : 0
+        }
+    },
+    normalizedSEOMetaData: (data) : ISEOMetaData =>{
+        return {
+            articlePublishedTime: data.articlePublishedTime!=undefined ? data.articlePublishedTime : "",
+            articlePublisher: data.articlePublisher!=undefined ? data.articlePublisher : "",
+            metaCanonical: data.metaCanonical!=undefined ? data.metaCanonical : "",
+            metaDescription: data.metaDescription!=undefined ? data.metaDescription : "",
+            metaRobots: data.metaRobots!=undefined ? data.metaRobots : "",
+            ogDescription:data.ogDescription!=undefined ? data.ogDescription : "",
+            ogImage:data.ogImage!=undefined ? data.ogImage : "",
+            ogImageHeight: data.ogImageHeight!=undefined ? data.ogImageHeight : "",
+            ogImageSecureUrl: data.ogImageSecureUrl!=undefined ? data.ogImageSecureUrl : "",
+            ogImageWidth: data.ogImageWidth!=undefined ? data.ogImageWidth : "",
+            ogLocale: data.ogLocale!=undefined ? data.ogLocale : "",
+            ogSiteName: data.ogSiteName!=undefined ? data.ogSiteName : "",
+            ogTitle: data.ogTitle!=undefined ? data.ogTitle : "",
+            ogType: data.ogType!=undefined ? data.ogType : "",
+            ogUrl: data.ogUrl!=undefined ? data.ogUrl : "",
+            twitterCard: data.twitterCard!=undefined ? data.twitterCard : "",
+            twitterDescription: data.twitterDescription!=undefined ? data.twitterDescription : "",
+            twitterDomain: data.twitterDomain!=undefined ? data.twitterDomain : "",
+            twitterImage: data.twitterImage!=undefined ? data.twitterImage : "",
+            twitterTitle: data.twitterTitle!=undefined ? data.twitterTitle : ""
         }
     }
 }
