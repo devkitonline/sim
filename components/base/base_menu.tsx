@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import {useEffect, useState} from "react";
 import {FetchApi} from "../../helpers/fetchApi";
-import Image from "next/image";
 
 const Base_menu = () => {
     const [menuItems, setMenuItems] = useState([]);
