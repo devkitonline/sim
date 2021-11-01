@@ -298,7 +298,6 @@ async function create(type: EPostType, p: IPage | IPost, callback: Function) {
                 }
                 insertPostCateQuery+= `('${post.id}', '${c}')`;
             }
-            console.log(insertPostCateQuery);
             const insertRes = await query(insertPostCateQuery);
 
             //Insert tags
