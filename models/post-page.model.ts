@@ -50,6 +50,14 @@ const pageAllFieldsQuery = `SELECT pages.id,
                                      LEFT JOIN users u2 ON pages.publisher = u2.id
                             WHERE pages.deleted = 0`;
 
+const pageCountQuery = `SELECT COUNT(DISTINCT pages.id) as total
+                            FROM pages
+                                     LEFT JOIN post_status ps ON pages.status = ps.id
+                                     LEFT JOIN format_types ft ON pages.format_type = ft.id
+                                     LEFT JOIN users u1 ON pages.author = u1.id
+                                     LEFT JOIN users u2 ON pages.publisher = u2.id
+                            WHERE pages.deleted = 0`;
+
 const postAllFieldsQuery = `SELECT posts.id,
                                    posts.title,
                                    posts.content,
@@ -96,6 +104,14 @@ const postAllFieldsQuery = `SELECT posts.id,
                                      LEFT JOIN users u2 ON posts.publisher = u2.id
                             WHERE posts.deleted = 0`;
 
+const postCountQuery = `SELECT COUNT(DISTINCT posts.id) as total
+                            FROM posts
+                                     LEFT JOIN post_status ps ON posts.status = ps.id
+                                     LEFT JOIN format_types ft ON posts.format_type = ft.id
+                                     LEFT JOIN users u1 ON posts.author = u1.id
+                                     LEFT JOIN users u2 ON posts.publisher = u2.id
+                            WHERE posts.deleted = 0`;
+
 const findOne = (type: EPostType, id: string, callback: Function) => {
     let queryString: string;
     if (type == EPostType.page) {
@@ -132,49 +148,64 @@ const findOne = (type: EPostType, id: string, callback: Function) => {
 
 const findByFilters = (type: EPostType, filter: IFilterCondition, callback: Function) => {
     let queryString: string;
+    let queryStringTotal: string;
     if (type == EPostType.page) {
         const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "pages");
         queryString = `${pageAllFieldsQuery} AND ${whereClause} LIMIT ${filter.offset} , ${filter.limit}`;
-        console.log(queryString);
+        queryStringTotal = `${pageCountQuery} AND ${whereClause}`;
     } else {
         const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "posts");
         queryString = `${postAllFieldsQuery} AND ${whereClause} LIMIT ${filter.offset} , ${filter.limit}`;
+        queryStringTotal = `${postCountQuery} AND ${whereClause}`;
     }
-    query(queryString)
-    .then(async (result) => {
-        const rows = <RowDataPacket[]>result;
 
-        if (type == EPostType.page) {
-            let pages: IPage[] = [];
-            for (const row of rows) {
-                //set to Page object
-                const page = setPage(row);
-                // find the page's tags list
-                page.tags = await getTagsOfPost(type, page.id);
+    query(queryStringTotal)
+    .then((result)=>{
+        const row = <RowDataPacket[]> result[0];
+        const total = row['total'];
+        if (total > 0){
+            query(queryString)
+            .then(async (result) => {
+                const rows = <RowDataPacket[]>result;
 
-                pages.push(page);
-            }
+                if (type == EPostType.page) {
+                    let pages: IPage[] = [];
+                    for (const row of rows) {
+                        //set to Page object
+                        const page = setPage(row);
+                        // find the page's tags list
+                        page.tags = await getTagsOfPost(type, page.id);
 
-            callback(null, pages);
-        } else {
-            let posts: IPost[] = [];
-            for (const row of rows) {
-                //set to Post object
-                const post = setPost(row);
-                //find its tags
-                post.tags = await getTagsOfPost(type, post.id);
-                //find its categories
-                post.categories = await getCategoriesOfPost(post.id);
+                        pages.push(page);
+                    }
 
-                posts.push(post);
-            }
+                    callback(null, pages, total);
+                } else {
+                    let posts: IPost[] = [];
+                    for (const row of rows) {
+                        //set to Post object
+                        const post = setPost(row);
+                        //find its tags
+                        post.tags = await getTagsOfPost(type, post.id);
+                        //find its categories
+                        post.categories = await getCategoriesOfPost(post.id);
 
-            callback(null, posts);
+                        posts.push(post);
+                    }
+
+                    callback(null, posts, total);
+                }
+            })
+            .catch(err => {
+                callback(err);
+            })
+        }else{
+            callback(null, [], 0);
         }
     })
-    .catch(err => {
+    .catch(err=>{
         callback(err);
-    })
+    });
 }
 
 const _delete = (type: EPostType, id: string, callback:Function) => {
