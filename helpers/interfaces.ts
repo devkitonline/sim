@@ -59,16 +59,17 @@ export interface IPage {
     publisherId?: string;
     slug: string;
     image?: string;
-    tags?: ITag[];
+    tags?: ITag[] | string[];
     allowComment: boolean;
-    SEOMetaData?: IMetaData;
+    SEOMetaData?: ISEOMetaData;
+    views?: number;
 }
 
 export interface IPost extends IPage {
-    categories?: ICategory[];
+    categories?: ICategory[] | string[];
 }
 
-export interface IMetaData {
+export interface ISEOMetaData {
     metaDescription: string;
     metaRobots: string;
     metaCanonical: string;
@@ -120,4 +121,6 @@ export interface IFilterCondition {
     filterValueTo?: string | [];
     conditions: IFilterCondition[];
     logicalOperator: "AND" | "OR";
+    limit?: number;
+    offset?: number;
 }

@@ -44,7 +44,30 @@ const findOne = (id: string, callback: Function) => {
         const row = (<RowDataPacket>result)[0];
         const tag: ITag = {
             id: row.id,
-            name: row.id,
+            name: row.name,
+            slug: row.slug,
+            description: row.description
+        }
+        callback(null, tag);
+    })
+    .catch(err => {
+        callback(err);
+    })
+}
+
+const findOneByName = (name: string, callback: Function)=>{
+    const queryString = `SELECT id, name, slug, description
+                         FROM tags
+                         WHERE name = ? `;
+    query(
+        queryString,
+        [name]
+    )
+    .then(result => {
+        const row = (<RowDataPacket>result)[0];
+        const tag: ITag = {
+            id: row.id,
+            name: row.name,
             slug: row.slug,
             description: row.description
         }

@@ -18,12 +18,12 @@ export default async function handler(req, res) {
             }
 
             const filterCondition = dataNormalization.normalizedFilterCondition(bodyRequest);
-            await postPageModel.findByFilters(EPostType.page, filterCondition, (err, pages: IPage[])=>{
+            await postPageModel.findByFilters(EPostType.page, filterCondition, (err, pages: IPage[], totalResult: number)=>{
                 if (err){
                     res.status(200).json({code: 400, message: err});
                     return;
                 }else{
-                    res.status(200).json({code: 1, message: `Success`, pages: pages});
+                    res.status(200).json({code: 1, message: `Success`, pages: pages, total_records: totalResult});
                     return;
                 }
             });
