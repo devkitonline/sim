@@ -1,43 +1,24 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import Image from 'next/image';
 import {FetchApi} from "../../helpers/fetchApi";
 import {UserService} from "../../services/user.service";
 import {ArrayUtils} from "../../helpers/utils";
 
-export function Editor({onChange, editorLoaded, name, value}) {
-    const editorRef = useRef();
-    // @ts-ignore
-    const {CKEditor, ClassicEditor} = editorRef.current || {};
+export function UploadImage({name, callback}) {
     const [listFiles, setListFiles] = useState([]);
     let listFilesSelected = [];
 
     const uploadMedia = () => {
-        let input = document.querySelector('input[name="file"]')
+        let input = document.querySelector(`input[name="${name}"]`);
         let data = new FormData();
         // @ts-ignore
         data.append('file', input.files[0]);
-        FetchApi.postMedia('/api/media?make_public=true&name=media', data)
+        FetchApi.postMedia('/api/media?make_public=true&name=' + name, data)
         .then(res => {
             if (res.code == '1') {
                 setListFiles([...[{path: res.path, id: res.id}], ...listFiles]);
             }
         });
-    }
-
-    const selectMedia = () => {
-        listFilesSelected.map(id => {
-            let item = ArrayUtils.findById('id', id, listFiles);
-            // @ts-ignore
-            value = value + `<img src="${item.path}"/>`;
-        });
-        onChange(value);
-        listFilesSelected = [];
-
-        const ms = document.getElementsByClassName('mediaselector');
-        for (var i = 0; i < ms.length; i++) {
-            // @ts-ignore
-            ms[i].checked = false;
-        }
     }
 
     const checkMedia = (e) => {
@@ -49,11 +30,6 @@ export function Editor({onChange, editorLoaded, name, value}) {
     }
 
     useEffect(() => {
-        // @ts-ignore
-        editorRef.current = {
-            CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
-            ClassicEditor: require("@ckeditor/ckeditor5-build-classic")
-        };
         UserService.userSubject.subscribe(user => {
             if (user) {
                 FetchApi.get('/api/media')
@@ -72,12 +48,12 @@ export function Editor({onChange, editorLoaded, name, value}) {
 
     return (
         <div>
-            <button className="btn btn-outline btn-cyan mb-1" data-bs-toggle="modal" data-bs-target="#modal-add-media">Add Media</button>
-            <div className="modal modal-blur fade" id="modal-add-media" role="dialog" aria-hidden="true">
+            <button className="btn btn-outline mb-1" data-bs-toggle="modal" data-bs-target={"#modal-" + name}>Chọn</button>
+            <div className="modal modal-blur fade" id={"modal-" + name} role="dialog" aria-hidden="true">
                 <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h3>Media Gallery</h3>
+                            <h3>Files</h3>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
                         </div>
                         <div className="modal-body">
@@ -97,24 +73,28 @@ export function Editor({onChange, editorLoaded, name, value}) {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <input type="file" className="form-control" name='file' onChange={uploadMedia}/>
-                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={selectMedia}>Chọn</button>
+                            <input type="file" className="form-control" name={name} onChange={uploadMedia}/>
+                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => {
+                                let res = [];
+                                listFilesSelected.map(id => {
+                                    let item = ArrayUtils.findById('id', id, listFiles);
+                                    // @ts-ignore
+                                    res.push(item.path);
+                                });
+                                listFilesSelected = [];
+
+                                const ms = document.getElementsByClassName('mediaselector');
+                                for (var i = 0; i < ms.length; i++) {
+                                    // @ts-ignore
+                                    ms[i].checked = false;
+                                }
+                                callback(res);
+                            }}>Chọn
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            {editorLoaded ? (
-                <CKEditor
-                    name={name}
-                    editor={ClassicEditor}
-                    data={value}
-                    onChange={(event, editor) => {
-                        onChange(editor.getData());
-                    }}
-                />
-            ) : (
-                <div>Loading Editor</div>
-            )}
         </div>
     );
 }

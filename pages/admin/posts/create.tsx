@@ -3,11 +3,22 @@ import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
 import {Editor} from "@/components/base/Editor";
 import {useEffect, useState} from "react";
+import Image from "next/image";
+import {UploadImage} from "@/components/base/UploadImage";
 
-const AdminPostCreate = () => {
+const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const [editorLoaded, setEditorLoaded] = useState(false);
-    const [data, setData] = useState('');
+    const [content, setContent] = useState('');
+    const [title, setTitle] = useState('');
+    const [excerpt, setExcerpt] = useState('');
+    const [status, setStatus] = useState('p');
+    const [formatType, setFormatType] = useState('p');
+    const [image, setImage] = useState('/images/noimage.png');
+    const [allowComment, setAllowComment] = useState(false);
 
+    const save = () => {
+
+    }
     useEffect(() => {
         setEditorLoaded(true);
     }, []);
@@ -17,22 +28,27 @@ const AdminPostCreate = () => {
             <AdminMenu/>
             <div className="page-wrapper">
                 <div className="page-body">
-                    <div className="container-fluid">
+                    <div className="container-sm">
                         <div className='row'>
                             <div className='col-md-8'>
                                 <div className="card">
                                     <div className="card-body">
                                         <div className="form-group mb-3">
-                                            <input type="text" className="form-control" placeholder={'Tiêu đề'}/>
+                                            <label className="form-label required">Tiêu đề</label>
+                                            <input onChange={(e) => setTitle(e.target.value)} type="text" className="form-control"/>
+                                        </div>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label required">Mô tả</label>
+                                            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} className="form-control" maxLength={255}/>
                                         </div>
                                         <div className="form-group mb-3 ">
                                             <Editor
                                                 name="content"
                                                 onChange={(data) => {
-                                                    setData(data);
+                                                    setContent(data);
                                                 }}
                                                 editorLoaded={editorLoaded}
-                                                value={data}/>
+                                                value={content}/>
                                         </div>
                                     </div>
                                 </div>
@@ -40,56 +56,54 @@ const AdminPostCreate = () => {
                             <div className='col-md-4'>
                                 <div className="card">
                                     <div className="card-header">
-                                        <h3 className="card-title">Horizontal form</h3>
+                                        <h3 className="card-title">Cấu hình</h3>
                                     </div>
                                     <div className="card-body">
-                                        <form>
-                                            <div className="form-group mb-3 row">
-                                                <label className="form-label col-3 col-form-label">Email address</label>
-                                                <div className="col">
-                                                    <input type="email" className="form-control" aria-describedby="emailHelp" placeholder="Enter email"/>
-                                                    <small className="form-hint">We'll never share your email with anyone else.</small>
-                                                </div>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label">Trạng thái</label>
+                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
+                                                {Object.keys(postStatusOptions).map(key => {
+                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
+                                                })}
+                                            </select>
+                                        </div>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label">Ảnh đại diện</label>
+                                            <div className="text-center">
+                                                <UploadImage name="image" callback={(files) => {
+                                                    if (files.length > 0) setImage(files[0]);
+                                                }}/>
+                                                <Image objectFit="contain" width="200" height="200" src={image}/>
                                             </div>
-                                            <div className="form-group mb-3 row">
-                                                <label className="form-label col-3 col-form-label">Password</label>
-                                                <div className="col">
-                                                    <input type="password" className="form-control" placeholder="Password"/>
-                                                    <small className="form-hint">
-                                                        Your password must be 8-20 characters long, contain letters and numbers, and must not contain
-                                                        spaces, special characters, or emoji.
-                                                    </small>
-                                                </div>
-                                            </div>
-                                            <div className="form-group mb-3 row">
-                                                <label className="form-label col-3 col-form-label">Select</label>
-                                                <div className="col">
-                                                    <select className="form-select">
-                                                        <option>Option 1</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="form-group row">
-                                                <label className="form-label col-3 col-form-label pt-0">Checkboxes</label>
-                                                <div className="col">
-                                                    <label className="form-check">
-                                                        <input className="form-check-input" type="checkbox"/>
-                                                        <span className="form-check-label">Option 1</span>
-                                                    </label>
-                                                    <label className="form-check">
-                                                        <input className="form-check-input" type="checkbox"/>
-                                                        <span className="form-check-label">Option 2</span>
-                                                    </label>
-                                                    <label className="form-check">
-                                                        <input className="form-check-input" type="checkbox"/>
-                                                        <span className="form-check-label">Option 3</span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className="form-footer">
-                                                <button type="submit" className="btn btn-primary">Submit</button>
-                                            </div>
-                                        </form>
+                                        </div>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label">Danh mục</label>
+                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
+                                                {Object.keys(postStatusOptions).map(key => {
+                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
+                                                })}
+                                            </select>
+                                        </div>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label">Thể loại</label>
+                                            <select defaultValue={formatType} onChange={(e) => setFormatType(e.target.value)} className='form-control'>
+                                                {Object.keys(formatTypeOptions).map(key => {
+                                                    return (<option key={key} value={key}>{formatTypeOptions[key]}</option>)
+                                                })}
+                                            </select>
+                                        </div>
+                                        <div className="form-group mb-3">
+                                            <label className="form-check form-switch">
+                                                <input className="form-check-input" type="checkbox"
+                                                       defaultChecked={allowComment}
+                                                       onChange={(e) => setAllowComment(e.target.checked)}
+                                                />
+                                                <span className="form-check-label">Cho phép bình luận</span>
+                                            </label>
+                                        </div>
+                                        <div className="text-center">
+                                            <button className="btn btn-primary" onClick={save}>Lưu</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -100,6 +114,28 @@ const AdminPostCreate = () => {
             <Base_footer/>
         </div>
     )
+}
+
+AdminPostCreate.getInitialProps = async (ctx) => {
+    const postStatus = {
+        d: "Nháp",
+        h: "Ẩn",
+        p: "Công bố",
+        s: "Lên lịch",
+        w: "Đợi công bố"
+    }
+    const formatType = {
+        a: "Audio",
+        g: "Gallery",
+        i: "Image",
+        p: "Post",
+        v: "Video"
+
+    }
+    return {
+        postStatusOptions: postStatus,
+        formatTypeOptions: formatType
+    }
 }
 
 export default AdminPostCreate;

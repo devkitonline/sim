@@ -27,14 +27,14 @@ export const Cookie = {
 }
 
 export const slugHelper = {
-    generateSlug : (name):string =>{
+    generateSlug: (name): string => {
         return slugify(name);
     }
 }
 
 /* DATA NORMALIZATION HELPER FUNCTIONS */
 export const dataNormalization = {
-    normalizedUser : (data): IUser => {
+    normalizedUser: (data): IUser => {
         return {
             email: data.email != undefined ? data.email : "",
             firstName: data.firstName != undefined ? data.firstName : "",
@@ -47,7 +47,7 @@ export const dataNormalization = {
             username: data.username != undefined ? data.username : ""
         };
     },
-    normalizedMenu: (data): IMenu =>{
+    normalizedMenu: (data): IMenu => {
         let menuChildren: IMenu[] = [];
 
         if (data?.children != undefined && Array.isArray(data.children) && data.children.length > 0) {
@@ -68,13 +68,13 @@ export const dataNormalization = {
     },
     normalizedFilterCondition: (data): IFilterCondition => {
         let conditions: IFilterCondition[] = [];
-        if (data?.conditions != undefined && Array.isArray(data.conditions) && data.conditions.length > 0){
-            for(let c of data.conditions){
+        if (data?.conditions != undefined && Array.isArray(data.conditions) && data.conditions.length > 0) {
+            for (let c of data.conditions) {
                 const c1 = dataNormalization.normalizedFilterCondition(c);
                 conditions.push(c1);
             }
         }
-        return{
+        return {
             conditions: conditions,
             field: data.field != undefined ? data.field : "",
             filterValue: data.filterValue != undefined ? data.filterValue : "",
@@ -86,3 +86,34 @@ export const dataNormalization = {
         }
     }
 }
+export const ArrayUtils = {
+    findById: (key, value, arr) => {
+        for (const [k, v] of Object.entries(arr)) {
+            if (v.hasOwnProperty(key)) {
+                // @ts-ignore
+                if (v[key] == value) {
+                    return v;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+export const convertToSlug = (str: string): string => {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+
+    // remove accents, swap ñ for n, etc
+    var from = "ăâấầẩẫậắằẳẵặãàáäâêếềểễệưứừửữựơớờởỡợôốồổỗộẽèéëêìíïîỏọõòóöôùúüûñç·/_,:;";
+    var to =     "aaaaaaaaaaaaaaaaaeeeeeeuuuuuuooooooooooooeeeeeiiiiooooooouuuunc------";
+    for (var i = 0, l = from.length; i < l; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+    .replace(/\s+/g, '-') // collapse whitespace and replace by -
+    .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
+};

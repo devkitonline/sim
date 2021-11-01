@@ -43,7 +43,7 @@ const pageAllFieldsQuery = `SELECT pages.id,
                                    meta_twitter_description,
                                    meta_twitter_image,
                                    pages.date_indexed
-                            FROM pages pages
+                            FROM pages
                                      LEFT JOIN post_status ps ON pages.status = ps.id
                                      LEFT JOIN format_types ft ON pages.format_type = ft.id
                                      LEFT JOIN users u1 ON pages.author = u1.id
@@ -89,7 +89,7 @@ const postAllFieldsQuery = `SELECT posts.id,
                                    meta_twitter_description,
                                    meta_twitter_image,
                                    posts.date_indexed
-                            FROM posts posts
+                            FROM posts
                                      LEFT JOIN post_status ps ON posts.status = ps.id
                                      LEFT JOIN format_types ft ON posts.format_type = ft.id
                                      LEFT JOIN users u1 ON posts.author = u1.id
@@ -97,7 +97,7 @@ const postAllFieldsQuery = `SELECT posts.id,
                             WHERE posts.deleted = 0`;
 
 const findOne = (type: EPostType, id: string, callback: Function) => {
-    let queryString = "";
+    let queryString: string;
     if (type == EPostType.page) {
         queryString = `${pageAllFieldsQuery} AND p.id = '${id}' `;
     } else {
@@ -131,7 +131,7 @@ const findOne = (type: EPostType, id: string, callback: Function) => {
 }
 
 const findByFilters = (type: EPostType, filter: IFilterCondition, callback: Function) => {
-    let queryString = "";
+    let queryString: string;
     if (type == EPostType.page) {
         const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "pages");
         queryString = `${pageAllFieldsQuery} AND ${whereClause} LIMIT ${filter.offset} , ${filter.limit}`;
@@ -201,7 +201,7 @@ export const postPageModel = {
 
 //Helper functions
 const getTagsOfPost = async (type: EPostType, postId: string): Promise<ITag[]> => {
-    let queryString = "";
+    let queryString: string;
     if (type == EPostType.post) {
         queryString = `SELECT t.id, t.name, t.slug, t.description
                        FROM posts_tags pt
