@@ -120,4 +120,6 @@ export interface IFilterCondition {
     filterValueTo?: string | [];
     conditions: IFilterCondition[];
     logicalOperator: "AND" | "OR";
+    limit?: number;
+    offset?: number;
 }

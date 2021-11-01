@@ -80,7 +80,9 @@ export const dataNormalization = {
             filterValue: data.filterValue != undefined ? data.filterValue : "",
             filterValueTo: data.filterValueTo != undefined ? data.filterValueTo : "",
             logicalOperator: data.logicalOperator != undefined ? data.logicalOperator : "",
-            operator: data.operator != undefined ? data.operator : ""
+            operator: data.operator != undefined ? data.operator : "",
+            limit: data.limit != undefined ? data.limit : 20,
+            offset: data.offset != undefined ? data.offset : 0
         }
     }
 }

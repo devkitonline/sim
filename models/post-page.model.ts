@@ -134,11 +134,11 @@ const findByFilters = (type: EPostType, filter: IFilterCondition, callback: Func
     let queryString = "";
     if (type == EPostType.page) {
         const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "pages");
-        queryString = `${pageAllFieldsQuery} AND ${whereClause}`;
+        queryString = `${pageAllFieldsQuery} AND ${whereClause} LIMIT ${filter.offset} , ${filter.limit}`;
         console.log(queryString);
     } else {
         const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "posts");
-        queryString = `${postAllFieldsQuery} AND ${whereClause}`;
+        queryString = `${postAllFieldsQuery} AND ${whereClause} LIMIT ${filter.offset} , ${filter.limit}`;
     }
     query(queryString)
     .then(async (result) => {
