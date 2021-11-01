@@ -7,7 +7,7 @@ import Image from "next/image";
 import {UploadImage} from "@/components/base/UploadImage";
 import Head from "next/head";
 
-const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
+const AdminPageCreate = ({postStatusOptions, formatTypeOptions}) => {
     const [editorLoaded, setEditorLoaded] = useState(false);
     const [content, setContent] = useState('');
     const [title, setTitle] = useState('');
@@ -26,14 +26,14 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     return (
         <div>
             <Head>
-                <title>Viết bài mới</title>
+                <title>Tạo trang mới</title>
             </Head>
             <Base_header/>
             <AdminMenu/>
             <div className="page-wrapper">
                 <div className="page-body">
                     <div className="container-sm">
-                        <h1>Viết bài</h1>
+                        <h1>Tạo trang</h1>
                         <div className='row'>
                             <div className='col-md-8'>
                                 <div className="card">
@@ -121,7 +121,7 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     )
 }
 
-AdminPostCreate.getInitialProps = async (ctx) => {
+AdminPageCreate.getInitialProps = async (ctx) => {
     const postStatus = {
         d: "Nháp",
         h: "Ẩn",
@@ -143,4 +143,4 @@ AdminPostCreate.getInitialProps = async (ctx) => {
     }
 }
 
-export default AdminPostCreate;
+export default AdminPageCreate;

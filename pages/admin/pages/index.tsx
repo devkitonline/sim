@@ -5,11 +5,11 @@ import {IconChevronLeft, IconChevronRight, IconEdit, IconSettings, IconTrash} fr
 import Head from "next/head";
 import Link from "next/link";
 
-const AdminPosts = () => {
+const AdminPages = () => {
     return (
         <div>
             <Head>
-                <title>Bài viết</title>
+                <title>Trang bài viết</title>
             </Head>
             <Base_header/>
             <AdminMenu/>
@@ -18,14 +18,14 @@ const AdminPosts = () => {
                     <div className="container-sm">
                         <div className="row">
                             <div className="col-auto">
-                                <Link href="/admin/posts/create">
+                                <Link href="/admin/pages/create">
                                     <button className="btn btn-outline-blue">Tạo mới</button>
                                 </Link>
                             </div>
                         </div>
                         <div className="card mt-3">
                             <div className="card-header">
-                                <h3 className="card-title">Bài viết</h3>
+                                <h3 className="card-title">Trang</h3>
                             </div>
                             <div className="list-group list-group-flush">
                                 <div className="list-group-item">
@@ -115,7 +115,7 @@ const AdminPosts = () => {
                             <div className="card-footer">
                                 <div className="row">
                                     <div className="col order-first">
-                                        <a style={{textDecoration:"none"}} className="dropdown-toggle" href="#dropdown-menu-all-list-action" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                        <a style={{textDecoration: "none"}} className="dropdown-toggle" href="#dropdown-menu-all-list-action" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                                             <IconSettings/> Hành động
                                         </a>
                                         <div className="dropdown-menu dropdown-menu-list-all-action dropdown-menu-arrow">
@@ -150,4 +150,4 @@ const AdminPosts = () => {
     )
 }
 
-export default AdminPosts;
+export default AdminPages;

@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import CardLeftImageNE from "@/components/cards/card-left-image/card-left-image-noexcerpt";
 import Base_header from "@/components/base/base_header";
 import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
@@ -14,18 +13,8 @@ const Admin = () => {
             <AdminMenu/>
             <div className="page-wrapper" style={{backgroundColor: '#fff'}}>
                 <div className="page-body">
-                    <div className="container-fluid">
-                        <div className='row'>
-                            <CardLeftImageNE noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'/>
-                            <br/>
-                            <CardLeftImageNE noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'/>
-                            <br/>
-                            <CardLeftImageNE noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'/>
-                            <br/>
-                            <CardLeftImageNE noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'/>
-                            <br/>
-                            <CardLeftImageNE noborder={1} title='Cảm nhận một Sài Gòn nhộn nhịp sau giãn cách qua những bức hình'/>
-                        </div>
+                    <div className="container-sm">
+                        <h1>Dashboard</h1>
                     </div>
                 </div>
             </div>

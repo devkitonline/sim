@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 const AdminMenu = () => {
     return (
         <div className="navbar-expand-md">
@@ -13,64 +14,31 @@ const AdminMenu = () => {
                                     </a>
                                 </Link>
                             </li>
-                            <li className="nav-item active dropdown">
-                                <a className="nav-link dropdown-toggle" href="#navbar-base-admin" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span className="nav-link-title">Bài viết</span>
-                                </a>
-                                <div className="dropdown-menu">
-                                    <Link href='/admin/posts/create'>
-                                        <a className="dropdown-item">
-                                            Viết bài mới
-                                        </a>
-                                    </Link>
-                                    <a className="dropdown-item" href="./gallery.html">
-                                        Gallery
+                            <li className="nav-item">
+                                <Link href='/admin/posts'>
+                                    <a className="nav-link">
+                                        <span className="nav-link-title">Bài viết</span>
                                     </a>
-                                    <a className="dropdown-item" href="./invoice.html">
-                                        Invoice
-                                    </a>
-                                    <a className="dropdown-item" href="./search-results.html">
-                                        Search results
-                                    </a>
-                                    <a className="dropdown-item" href="./pricing.html">
-                                        Pricing cards
-                                    </a>
-                                    <a className="dropdown-item" href="./users.html">
-                                        Users
-                                    </a>
-                                    <a className="dropdown-item" href="./license.html">
-                                        License
-                                    </a>
-                                    <a className="dropdown-item" href="./music.html">
-                                        Music
-                                    </a>
-                                    <a className="dropdown-item" href="./widgets.html">
-                                        Widgets
-                                    </a>
-                                    <a className="dropdown-item" href="./wizard.html">
-                                        Wizard
-                                    </a>
-                                </div>
+                                </Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="./form-elements.html">
-                                    <span className="nav-link-title">
-                      Form elements
-                    </span>
-                                </a>
+                                <Link href='/admin/pages'>
+                                    <a className="nav-link">
+                                        <span className="nav-link-title">Trang</span>
+                                    </a>
+                                </Link>
                             </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span className="nav-link-title">
-                      Extra
-                    </span>
-                                </a>
-
+                            <li className="nav-item">
+                                <Link href='/admin/categories'>
+                                    <a className="nav-link">
+                                        <span className="nav-link-title">Danh mục</span>
+                                    </a>
+                                </Link>
                             </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                                     <span className="nav-link-title">
-                      Layout
+                      Khác
                     </span>
                                 </a>
                                 <div className="dropdown-menu">
@@ -123,13 +91,6 @@ const AdminMenu = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="./docs/index.html">
-                                    <span className="nav-link-title">
-                      Documentation
-                    </span>
-                                </a>
                             </li>
                         </ul>
                     </div>
