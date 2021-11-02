@@ -42,13 +42,18 @@ const findOne = (id: string, callback: Function) => {
     )
     .then(result => {
         const row = (<RowDataPacket>result)[0];
-        const tag: ITag = {
-            id: row.id,
-            name: row.name,
-            slug: row.slug,
-            description: row.description
+        if (row){
+            const tag: ITag = {
+                id: row.id,
+                name: row.name,
+                slug: row.slug,
+                description: row.description
+            }
+            callback(null, tag);
+        }else{
+            callback(null, undefined);
         }
-        callback(null, tag);
+
     })
     .catch(err => {
         callback(err);
@@ -65,13 +70,18 @@ const findOneByName = (name: string, callback: Function)=>{
     )
     .then(result => {
         const row = (<RowDataPacket>result)[0];
-        const tag: ITag = {
-            id: row.id,
-            name: row.name,
-            slug: row.slug,
-            description: row.description
+        if (row){
+            const tag: ITag = {
+                id: row.id,
+                name: row.name,
+                slug: row.slug,
+                description: row.description
+            }
+            callback(null, tag);
+        }else{
+            callback(null, undefined);
         }
-        callback(null, tag);
+
     })
     .catch(err => {
         callback(err);
@@ -179,6 +189,7 @@ const findPostTags = (type: EPostType, postId: string, callback: Function) => {
 export const tagModel = {
     findAll,
     findOne,
+    findOneByName,
     findPostTags,
     create,
     update,

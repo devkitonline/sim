@@ -303,7 +303,7 @@ async function create(type: EPostType, p: IPage | IPost, callback: Function) {
             //Insert tags
             const tags =<string[]> post.tags;
             for(let i =0; i < tags.length; i++){
-                tagModel.findOne(tags[i], async (err, tag: ITag) => {
+                tagModel.findOneByName(tags[i], async (err, tag: ITag) => {
                     if (!err && tag) {
                         await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [post.id, tag.id]);
                     }else if(!err && !tag){
@@ -319,13 +319,106 @@ async function create(type: EPostType, p: IPage | IPost, callback: Function) {
 
             callback(null);
         } catch (e) {
-            console.log(e);
             const error = new Error(e.message);
             callback(error.props);
         }
 
     } else {
+        const page = <IPage> p;
+        queryString = `INSERT INTO pages (id, 
+                   title, 
+                   content, 
+                   excerpt,
+                   status, 
+                   format_type, 
+                   author, 
+                   publisher, 
+                   slug, 
+                   image, 
+                   allow_comment, 
+                   meta_description, 
+                   meta_robots, 
+                   meta_canonical, 
+                   meta_og_locale, 
+                   meta_og_site_name, 
+                   meta_og_type, 
+                   meta_og_title, 
+                   meta_og_description, 
+                   meta_og_url, 
+                   meta_og_image, 
+                   meta_og_image_secure_url, 
+                   meta_og_image_width, 
+                   meta_og_image_height, 
+                   meta_article_published_time, 
+                   meta_article_publisher, 
+                   meta_twitter_card, 
+                   meta_twitter_domain, 
+                   meta_twitter_title, 
+                   meta_twitter_description, 
+                   meta_twitter_image, 
+                   deleted)
+                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) `;
+        try {
+            const result: any = await query(
+                queryString,
+                [
+                    page.id,
+                    page.title,
+                    page.content,
+                    page.excerpt,
+                    page.pageStatusId,
+                    page.formatTypeId,
+                    page.authorId,
+                    page.publisherId,
+                    page.slug,
+                    page.image,
+                    page.allowComment? 1: 0,
+                    page.SEOMetaData.metaDescription,
+                    page.SEOMetaData.metaRobots,
+                    page.SEOMetaData.metaCanonical,
+                    page.SEOMetaData.ogLocale,
+                    page.SEOMetaData.ogSiteName,
+                    page.SEOMetaData.ogType,
+                    page.SEOMetaData.ogTitle,
+                    page.SEOMetaData.ogDescription,
+                    page.SEOMetaData.ogUrl,
+                    page.SEOMetaData.ogImage,
+                    page.SEOMetaData.ogImageSecureUrl,
+                    page.SEOMetaData.ogImageWidth,
+                    page.SEOMetaData.ogImageHeight,
+                    page.SEOMetaData.articlePublishedTime,
+                    page.SEOMetaData.articlePublisher,
+                    page.SEOMetaData.twitterCard,
+                    page.SEOMetaData.twitterDomain,
+                    page.SEOMetaData.twitterTitle,
+                    page.SEOMetaData.twitterDescription,
+                    page.SEOMetaData.twitterImage,
+                    0
+                ],
+            );
 
+            //Insert tags
+            const tags =<string[]> page.tags;
+            for(let i =0; i < tags.length; i++){
+                tagModel.findOneByName(tags[i], async (err, tag: ITag) => {
+                    if (!err && tag) {
+                        await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [page.id, tag.id]);
+                    }else if(!err && !tag){
+                        const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: slugHelper.generateSlug(tags[i]), description: ""};
+                        tagModel.create(newTag, async (err) => {
+                            if (!err) {
+                                await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [page.id, newTag.id]);
+                            }
+                        });
+                    }
+                });
+            }
+
+            callback(null);
+        } catch (e) {
+            const error = new Error(e.message);
+            callback(error.props);
+        }
     }
 }
 
