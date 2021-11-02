@@ -1,6 +1,7 @@
 import {postPageModel} from "../../../models/post-page.model";
 import {EPostType} from "../../../helpers/enums";
 import {IPost} from "../../../helpers/interfaces";
+import {dataNormalization} from "../../../helpers/utils";
 
 export default function handler(req, res) {
     const {
@@ -21,7 +22,18 @@ export default function handler(req, res) {
             });
             break;
         case 'PUT':
-            res.status(200).json({id, name: `PUT post`});
+            const bodyRequest = req.body;
+            const post = dataNormalization.normalizedPost(bodyRequest);
+            post.id = id;
+            postPageModel.update(EPostType.post, post, (err)=>{
+                if (err){
+                    res.status(200).json({code: 400, message: err});
+                    return;
+                }else{
+                    res.status(200).json({code: 1, message: `Success`});
+                    return;
+                }
+            });
             break;
         case 'DELETE':
             postPageModel.delete(EPostType.post, id, (err) => {
