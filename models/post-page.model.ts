@@ -46,7 +46,8 @@ const pageAllFieldsQuery = `SELECT pages.id,
                                    meta_twitter_title,
                                    meta_twitter_description,
                                    meta_twitter_image,
-                                   pages.date_indexed
+                                   pages.date_indexed,
+                                    pages.views
                             FROM pages
                                      LEFT JOIN post_status ps ON pages.status = ps.id
                                      LEFT JOIN format_types ft ON pages.format_type = ft.id
@@ -100,7 +101,8 @@ const postAllFieldsQuery = `SELECT posts.id,
                                    meta_twitter_title,
                                    meta_twitter_description,
                                    meta_twitter_image,
-                                   posts.date_indexed
+                                   posts.date_indexed,
+                                    posts.views
                             FROM posts
                                      LEFT JOIN post_status ps ON posts.status = ps.id
                                      LEFT JOIN format_types ft ON posts.format_type = ft.id
@@ -119,9 +121,9 @@ const postCountQuery = `SELECT COUNT(DISTINCT posts.id) as total
 const findOne = (type: EPostType, id: string, callback: Function) => {
     let queryString: string;
     if (type == EPostType.page) {
-        queryString = `${pageAllFieldsQuery} AND p.id = '${id}' `;
+        queryString = `${pageAllFieldsQuery} AND pages.id = '${id}' `;
     } else {
-        queryString = `${postAllFieldsQuery} AND p.id = '${id}' `;
+        queryString = `${postAllFieldsQuery} AND posts.id = '${id}' `;
     }
 
     query(queryString)
@@ -146,6 +148,7 @@ const findOne = (type: EPostType, id: string, callback: Function) => {
         }
     })
     .catch(err => {
+        console.log(err);
         callback(err);
     })
 }
@@ -515,12 +518,34 @@ const _delete = (type: EPostType, id: string, callback: Function) => {
     })
 }
 
+const increaseView = (type: EPostType, id: string, callback:Function) => {
+    let table = "";
+    if (type == EPostType.page){
+        table = "pages";
+    }else if (type == EPostType.post){
+        table = "posts";
+    }
+    const queryString = `UPDATE ${table} SET views = views + 1 WHERE  id = ?`;
+    query(queryString,
+        [
+            id
+        ])
+    .then(result => {
+        callback(null);
+    })
+    .catch(err => {
+        const error = new Error(err.message);
+        callback(error.props);
+    })
+}
+
 export const postPageModel = {
     findOne,
     findByFilters,
     create,
     update,
-    delete: _delete
+    delete: _delete,
+    increaseView
 }
 
 //Helper functions
@@ -602,7 +627,8 @@ const setPage = (row: any): IPage => {
         publisher: row['publisher'],
         publisherId: row['publisher_id'],
         slug: row['slug'],
-        title: row['title']
+        title: row['title'],
+        views: row['views']
     }
     // meta data infomation
     p.SEOMetaData = {
@@ -650,7 +676,8 @@ const setPost = (row: any): IPost => {
         publisher: row['publisher'],
         publisherId: row['publisher_id'],
         slug: row['slug'],
-        title: row['title']
+        title: row['title'],
+        views: row['views']
     }
     // meta data infomation
     p.SEOMetaData = {
