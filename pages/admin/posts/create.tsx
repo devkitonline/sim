@@ -1,15 +1,14 @@
 import Base_header from "@/components/base/base_header";
 import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
-import {Editor} from "@/components/base/Editor";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Image from "next/image";
 import {UploadImage} from "@/components/base/UploadImage";
 import Head from "next/head";
+import FieldHtml from "@/components/fields/FieldHtml";
 
 const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
-    const [editorLoaded, setEditorLoaded] = useState(false);
-    const [content, setContent] = useState('');
+    const [content, setContent] = useState('okok');
     const [title, setTitle] = useState('');
     const [excerpt, setExcerpt] = useState('');
     const [status, setStatus] = useState('p');
@@ -20,9 +19,6 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const save = () => {
 
     }
-    useEffect(() => {
-        setEditorLoaded(true);
-    }, []);
     return (
         <div>
             <Head>
@@ -32,7 +28,7 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
             <AdminMenu/>
             <div className="page-wrapper">
                 <div className="page-body">
-                    <div className="container-sm">
+                    <div className="container-fluid">
                         <h1>Viết bài</h1>
                         <div className='row'>
                             <div className='col-md-8'>
@@ -40,20 +36,15 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
                                     <div className="card-body">
                                         <div className="form-group mb-3">
                                             <label className="form-label required">Tiêu đề</label>
-                                            <input onChange={(e) => setTitle(e.target.value)} type="text" className="form-control"/>
+                                            <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className="form-control"/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label required">Mô tả</label>
                                             <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} className="form-control" maxLength={255}/>
                                         </div>
                                         <div className="form-group mb-3 ">
-                                            <Editor
-                                                name="content"
-                                                onChange={(data) => {
-                                                    setContent(data);
-                                                }}
-                                                editorLoaded={editorLoaded}
-                                                value={content}/>
+                                            <label className="form-label required">Nội dung</label>
+                                            <FieldHtml value={content} setContent={setContent}/>
                                         </div>
                                     </div>
                                 </div>
