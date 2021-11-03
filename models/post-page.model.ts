@@ -46,7 +46,8 @@ const pageAllFieldsQuery = `SELECT pages.id,
                                    meta_twitter_title,
                                    meta_twitter_description,
                                    meta_twitter_image,
-                                   pages.date_indexed
+                                   pages.date_indexed,
+                                    pages.views
                             FROM pages
                                      LEFT JOIN post_status ps ON pages.status = ps.id
                                      LEFT JOIN format_types ft ON pages.format_type = ft.id
@@ -100,7 +101,8 @@ const postAllFieldsQuery = `SELECT posts.id,
                                    meta_twitter_title,
                                    meta_twitter_description,
                                    meta_twitter_image,
-                                   posts.date_indexed
+                                   posts.date_indexed,
+                                    posts.views
                             FROM posts
                                      LEFT JOIN post_status ps ON posts.status = ps.id
                                      LEFT JOIN format_types ft ON posts.format_type = ft.id
@@ -119,9 +121,9 @@ const postCountQuery = `SELECT COUNT(DISTINCT posts.id) as total
 const findOne = (type: EPostType, id: string, callback: Function) => {
     let queryString: string;
     if (type == EPostType.page) {
-        queryString = `${pageAllFieldsQuery} AND p.id = '${id}' `;
+        queryString = `${pageAllFieldsQuery} AND pages.id = '${id}' `;
     } else {
-        queryString = `${postAllFieldsQuery} AND p.id = '${id}' `;
+        queryString = `${postAllFieldsQuery} AND posts.id = '${id}' `;
     }
 
     query(queryString)
@@ -146,6 +148,7 @@ const findOne = (type: EPostType, id: string, callback: Function) => {
         }
     })
     .catch(err => {
+        console.log(err);
         callback(err);
     })
 }
@@ -247,8 +250,9 @@ async function create(type: EPostType, p: IPage | IPost, callback: Function) {
                    meta_twitter_title, 
                    meta_twitter_description, 
                    meta_twitter_image, 
-                   deleted)
-                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) `;
+                   deleted,
+                   date_modified)
+                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, NOW()) `;
         try {
             const result: any = await query(
                 queryString,
@@ -289,44 +293,209 @@ async function create(type: EPostType, p: IPage | IPost, callback: Function) {
             );
 
             //Insert relationship posts_categories
-            const postCategories = post.categories;
-            let insertPostCateQuery = `INSERT INTO posts_categories(post_id, category_id) VALUES `;
-            for(let i =0; i< postCategories.length; i++){
-                const c = postCategories[i];
-                if (i!=0){
-                    insertPostCateQuery+= ',';
-                }
-                insertPostCateQuery+= `('${post.id}', '${c}')`;
-            }
-            const insertRes = await query(insertPostCateQuery);
+            const postCategories = <string[]> post.categories;
+            insertPostsCategories(postCategories, post.id);
 
             //Insert tags
             const tags =<string[]> post.tags;
-            for(let i =0; i < tags.length; i++){
-                tagModel.findOne(tags[i], async (err, tag: ITag) => {
-                    if (!err && tag) {
-                        await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [post.id, tag.id]);
-                    }else if(!err && !tag){
-                        const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: slugHelper.generateSlug(tags[i]), description: ""};
-                        tagModel.create(newTag, async (err) => {
-                            if (!err) {
-                                await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [post.id, newTag.id]);
-                            }
-                        });
-                    }
-                });
-            }
+            insertPostsTags(tags, post.id);
 
             callback(null);
         } catch (e) {
-            console.log(e);
             const error = new Error(e.message);
             callback(error.props);
         }
 
     } else {
+        const page = <IPage> p;
+        queryString = `INSERT INTO pages (id, 
+                   title, 
+                   content, 
+                   excerpt,
+                   status, 
+                   format_type, 
+                   author, 
+                   publisher, 
+                   slug, 
+                   image, 
+                   allow_comment, 
+                   meta_description, 
+                   meta_robots, 
+                   meta_canonical, 
+                   meta_og_locale, 
+                   meta_og_site_name, 
+                   meta_og_type, 
+                   meta_og_title, 
+                   meta_og_description, 
+                   meta_og_url, 
+                   meta_og_image, 
+                   meta_og_image_secure_url, 
+                   meta_og_image_width, 
+                   meta_og_image_height, 
+                   meta_article_published_time, 
+                   meta_article_publisher, 
+                   meta_twitter_card, 
+                   meta_twitter_domain, 
+                   meta_twitter_title, 
+                   meta_twitter_description, 
+                   meta_twitter_image, 
+                   deleted,
+                   date_modified)
+                           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, NOW()) `;
+        try {
+            const result: any = await query(
+                queryString,
+                [
+                    page.id,
+                    page.title,
+                    page.content,
+                    page.excerpt,
+                    page.pageStatusId,
+                    page.formatTypeId,
+                    page.authorId,
+                    page.publisherId,
+                    page.slug,
+                    page.image,
+                    page.allowComment? 1: 0,
+                    page.SEOMetaData.metaDescription,
+                    page.SEOMetaData.metaRobots,
+                    page.SEOMetaData.metaCanonical,
+                    page.SEOMetaData.ogLocale,
+                    page.SEOMetaData.ogSiteName,
+                    page.SEOMetaData.ogType,
+                    page.SEOMetaData.ogTitle,
+                    page.SEOMetaData.ogDescription,
+                    page.SEOMetaData.ogUrl,
+                    page.SEOMetaData.ogImage,
+                    page.SEOMetaData.ogImageSecureUrl,
+                    page.SEOMetaData.ogImageWidth,
+                    page.SEOMetaData.ogImageHeight,
+                    page.SEOMetaData.articlePublishedTime,
+                    page.SEOMetaData.articlePublisher,
+                    page.SEOMetaData.twitterCard,
+                    page.SEOMetaData.twitterDomain,
+                    page.SEOMetaData.twitterTitle,
+                    page.SEOMetaData.twitterDescription,
+                    page.SEOMetaData.twitterImage,
+                    0
+                ],
+            );
 
+            //Insert tags
+            const tags =<string[]> page.tags;
+            insertPagesTags(tags, page.id);
+
+            callback(null);
+        } catch (e) {
+            const error = new Error(e.message);
+            callback(error.props);
+        }
     }
+}
+
+async function update(type: EPostType, p: IPage | IPost, callback: Function){
+    let updateTable = "";
+
+    if (type == EPostType.page){
+        updateTable = "pages";
+
+        //Remove pages/posts tags relationship
+        await query(`DELETE FROM pages_tags WHERE page_id = '${p.id}'`);
+
+        //Re-insert tags
+        insertPagesTags(<string[]>p.tags, p.id);
+
+    }else if (type == EPostType.post){
+        updateTable = "posts";
+
+        //Remove pages/posts tags relationship
+        await query(`DELETE FROM posts_tags WHERE post_id = '${p.id}'`);
+
+        //Re-insert tags
+        insertPostsTags(<string[]>p.tags, p.id);
+
+        //Remove posts categories relationship
+        await query(`DELETE FROM posts_categories WHERE post_id = '${p.id}'`);
+
+        //re-insert categories
+        const post = <IPost> p;
+        insertPostsCategories(<string[]> post.categories, post.id);
+    }
+
+    //Update
+    const queryString = `UPDATE ${updateTable} SET title = ?,
+                                          content = ?,
+                                          excerpt = ? ,
+                                          status= ?,
+                                          format_type = ?,
+                                          author = ?,
+                                          publisher = ?,
+                                          slug=?,
+                                          image=?,
+                                          allow_comment=?,
+                                          meta_description=?,
+                                          meta_robots=?,
+                                          meta_canonical=?,
+                                          meta_og_locale=?,
+                                          meta_og_site_name=?,
+                                          meta_og_type=?,
+                                          meta_og_title=?,
+                                          meta_og_description=?,
+                                          meta_og_url=?,
+                                          meta_og_image=?,
+                                          meta_og_image_secure_url=?,
+                                          meta_og_image_width=?,
+                                          meta_og_image_height=?,
+                                          meta_article_published_time=?,
+                                          meta_article_publisher=?,
+                                          meta_twitter_card=?,
+                                          meta_twitter_domain=?,
+                                          meta_twitter_title=?,
+                                          meta_twitter_description=?,
+                                          meta_twitter_image=?, 
+                                          date_modified = NOW()
+                                          WHERE id = ?`;
+    query(queryString,
+        [
+            p.title,
+            p.content,
+            p.excerpt,
+            p.pageStatusId,
+            p.formatTypeId,
+            p.authorId,
+            p.publisherId,
+            p.slug,
+            p.image,
+            p.allowComment? 1: 0,
+            p.SEOMetaData.metaDescription,
+            p.SEOMetaData.metaRobots,
+            p.SEOMetaData.metaCanonical,
+            p.SEOMetaData.ogLocale,
+            p.SEOMetaData.ogSiteName,
+            p.SEOMetaData.ogType,
+            p.SEOMetaData.ogTitle,
+            p.SEOMetaData.ogDescription,
+            p.SEOMetaData.ogUrl,
+            p.SEOMetaData.ogImage,
+            p.SEOMetaData.ogImageSecureUrl,
+            p.SEOMetaData.ogImageWidth,
+            p.SEOMetaData.ogImageHeight,
+            p.SEOMetaData.articlePublishedTime,
+            p.SEOMetaData.articlePublisher,
+            p.SEOMetaData.twitterCard,
+            p.SEOMetaData.twitterDomain,
+            p.SEOMetaData.twitterTitle,
+            p.SEOMetaData.twitterDescription,
+            p.SEOMetaData.twitterImage,
+            p.id
+        ])
+    .then(result => {
+        callback(null);
+    })
+    .catch(err => {
+        const error = new Error(err.message);
+        callback(error.props);
+    })
 }
 
 const _delete = (type: EPostType, id: string, callback: Function) => {
@@ -349,11 +518,34 @@ const _delete = (type: EPostType, id: string, callback: Function) => {
     })
 }
 
+const increaseView = (type: EPostType, id: string, callback:Function) => {
+    let table = "";
+    if (type == EPostType.page){
+        table = "pages";
+    }else if (type == EPostType.post){
+        table = "posts";
+    }
+    const queryString = `UPDATE ${table} SET views = views + 1 WHERE  id = ?`;
+    query(queryString,
+        [
+            id
+        ])
+    .then(result => {
+        callback(null);
+    })
+    .catch(err => {
+        const error = new Error(err.message);
+        callback(error.props);
+    })
+}
+
 export const postPageModel = {
     findOne,
     findByFilters,
     create,
-    delete: _delete
+    update,
+    delete: _delete,
+    increaseView
 }
 
 //Helper functions
@@ -435,7 +627,8 @@ const setPage = (row: any): IPage => {
         publisher: row['publisher'],
         publisherId: row['publisher_id'],
         slug: row['slug'],
-        title: row['title']
+        title: row['title'],
+        views: row['views']
     }
     // meta data infomation
     p.SEOMetaData = {
@@ -483,7 +676,8 @@ const setPost = (row: any): IPost => {
         publisher: row['publisher'],
         publisherId: row['publisher_id'],
         slug: row['slug'],
-        title: row['title']
+        title: row['title'],
+        views: row['views']
     }
     // meta data infomation
     p.SEOMetaData = {
@@ -509,4 +703,50 @@ const setPost = (row: any): IPost => {
         twitterTitle: row['meta_twitter_title']
     };
     return p;
+}
+
+const insertPostsTags = (tags: string[], postId: string)=>{
+    for(let i =0; i < tags.length; i++){
+        tagModel.findOneByName(tags[i], async (err, tag: ITag) => {
+            if (!err && tag) {
+                await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [postId, tag.id]);
+            }else if(!err && !tag){
+                const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: slugHelper.generateSlug(tags[i]), description: ""};
+                tagModel.create(newTag, async (err) => {
+                    if (!err) {
+                        await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [postId, newTag.id]);
+                    }
+                });
+            }
+        });
+    }
+}
+
+const insertPagesTags = (tags: string[], pageId: string)=>{
+    for(let i =0; i < tags.length; i++){
+        tagModel.findOneByName(tags[i], async (err, tag: ITag) => {
+            if (!err && tag) {
+                await query(`INSERT INTO pages_tags(page_id, tag_id) VALUE (?, ?) `, [pageId, tag.id]);
+            }else if(!err && !tag){
+                const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: slugHelper.generateSlug(tags[i]), description: ""};
+                tagModel.create(newTag, async (err) => {
+                    if (!err) {
+                        await query(`INSERT INTO pages_tags(page_id, tag_id) VALUE (?, ?) `, [pageId, newTag.id]);
+                    }
+                });
+            }
+        });
+    }
+}
+
+const insertPostsCategories = (cateId: string[], postId: string) => {
+    let insertPostCateQuery = `INSERT INTO posts_categories(post_id, category_id) VALUES `;
+    for(let i =0; i< cateId.length; i++){
+        const c = cateId[i];
+        if (i!=0){
+            insertPostCateQuery+= ',';
+        }
+        insertPostCateQuery+= `('${postId}', '${c}')`;
+    }
+    query(insertPostCateQuery);
 }
