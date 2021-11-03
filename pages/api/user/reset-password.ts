@@ -32,9 +32,12 @@ export default function handler(req, res) {
                         } else {
                             const emailBody = `Your account password was reset. New password is: ${newPass}. Please change your password again after login.`;
 
-                            await sendEmail(user.email, "Password reset", emailBody);
-
-                            res.status(200).json({code: 1, message: `Success.`});
+                            const sendEmailRes = await sendEmail(user.email, "Password reset", emailBody);
+                            if (sendEmailRes == true){
+                                res.status(200).json({code: 1, message: `Success.`});
+                            }else{
+                                res.status(200).json({code: 400, message: `Reset password email has not been seen.`});
+                            }
                             return;
                         }
                     });
