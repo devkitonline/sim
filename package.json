@@ -10,6 +10,7 @@
         "@ckeditor/ckeditor5-react": "^3.0.3",
         "@elastic/elasticsearch": "^7.15.0",
         "@tabler/icons": "^1.41.2",
+        "@tinymce/tinymce-react": "^3.13.0",
         "bad-words": "^3.0.4",
         "clsx": "^1.1.1",
         "dotenv": "^8.2.0",
