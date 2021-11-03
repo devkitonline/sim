@@ -42,7 +42,7 @@ const findOne = (username: string, hash: string, callback: Function) => {
                                 u.first_name,
                                 u.last_name,
                                 r.name as role,
-                                r.id as role_id,
+                                r.id   as role_id,
                                 u.is_admin
                          FROM users u
                                   LEFT JOIN roles r ON u.role = r.id
@@ -80,7 +80,7 @@ const findOneById = (id: string, callback: Function) => {
                                 u.first_name,
                                 u.last_name,
                                 r.name as role,
-                                r.id as role_id,
+                                r.id   as role_id,
                                 u.is_admin
                          FROM users u
                                   LEFT JOIN roles r ON u.role = r.id
@@ -101,6 +101,37 @@ const findOneById = (id: string, callback: Function) => {
             role: row.role,
             roleId: row.role_id,
             isAdmin: row.is_admin == 1
+        }
+        callback(null, user);
+    })
+    .catch(err => {
+        callback(err);
+    })
+}
+
+const findOneByUnOrEmail = (email: string, callback: Function) => {
+    const queryString = `SELECT u.id,
+                                u.username,
+                                u.pwd,
+                                u.email,
+                                u.last_name,
+                                u.first_name
+                         FROM users u
+                         WHERE u.username = ?
+                            OR u.email = ?`;
+    query(
+        queryString,
+        [email, email]
+    )
+    .then(result => {
+        const row = (<RowDataPacket>result)[0];
+        const user: IUser = {
+            id: row.id,
+            username: row.username,
+            pwd: row.pwd,
+            email: row.email,
+            firstName: row.first_name,
+            lastName: row.last_name,
         }
         callback(null, user);
     })
@@ -195,6 +226,7 @@ export const userModel = {
     create,
     findOne,
     findOneById,
+    findOneByUnOrEmail,
     findAll,
     update,
     updatePwd
