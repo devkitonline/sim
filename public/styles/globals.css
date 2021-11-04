@@ -548,3 +548,12 @@ body.no-transitions * {
     transition: 0.2s all;
     font-weight: 600;
 }
+.form-control{
+    background-color: #fff;
+}
+
+.form-control:active, .form-control:focus{
+    border: 1px solid #206bc4;
+    background-color: #fff;
+    box-shadow: none;
+}

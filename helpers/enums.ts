@@ -3,25 +3,33 @@ export enum EPostType {
     page
 }
 
-export enum ERole{
-    admin= 'a',
-    editor='e',
-    member='m',
-    subscriber='s',
-    writer='w'
+export enum ERole {
+    admin = 'a',
+    editor = 'e',
+    member = 'm',
+    subscriber = 's',
+    writer = 'w'
 }
 
 export enum EFormatType {
-    audio='a',
-    gallery='g',
-    image='i',
-    post='p',
-    video='v'
+    audio = 'a',
+    gallery = 'g',
+    image = 'i',
+    post = 'p',
+    video = 'v'
+}
+
+export enum EPostStatus {
+    draf = 'd',
+    hidden = 'h',
+    published = 'p',
+    scheduled = 's',
+    wait_for_published = 'w'
 }
 
 export enum ECommentStatus {
-    approved='a',
-    waitingForApproved='w'
+    approved = 'a',
+    waitingForApproved = 'w'
 }
 
 export enum EFilterOperator {

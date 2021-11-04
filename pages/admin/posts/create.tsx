@@ -3,9 +3,14 @@ import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
 import {useState} from "react";
 import Image from "next/image";
-import {UploadImage} from "@/components/base/UploadImage";
 import Head from "next/head";
 import FieldHtml from "@/components/fields/FieldHtml";
+import {FieldImage} from "@/components/fields/FieldImage";
+import {EFormatType, EPostStatus} from "../../../helpers/enums";
+import {FieldEnum} from "@/components/fields/FieldEnum";
+import {FieldText} from "@/components/fields/FieldText";
+import {FieldTextArea} from "@/components/fields/FieldTextArea";
+import {FieldCheckbox} from "@/components/fields/FieldCheckbox";
 
 const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const [content, setContent] = useState('okok');
@@ -13,11 +18,10 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const [excerpt, setExcerpt] = useState('');
     const [status, setStatus] = useState('p');
     const [formatType, setFormatType] = useState('p');
-    const [image, setImage] = useState('/images/noimage.png');
+    const [image, setImage] = useState('');
     const [allowComment, setAllowComment] = useState(false);
-
     const save = () => {
-
+        console.log(allowComment);
     }
     return (
         <div>
@@ -36,11 +40,11 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
                                     <div className="card-body">
                                         <div className="form-group mb-3">
                                             <label className="form-label required">Tiêu đề</label>
-                                            <input value={title} onChange={(e) => setTitle(e.target.value)} type="text" className="form-control"/>
+                                            <FieldText setData={setTitle} value={title}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label required">Mô tả</label>
-                                            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} className="form-control" maxLength={255}/>
+                                            <FieldTextArea setData={setExcerpt} value={excerpt}/>
                                         </div>
                                         <div className="form-group mb-3 ">
                                             <label className="form-label required">Nội dung</label>
@@ -57,45 +61,22 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
                                     <div className="card-body">
                                         <div className="form-group mb-3">
                                             <label className="form-label">Trạng thái</label>
-                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
-                                                {Object.keys(postStatusOptions).map(key => {
-                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
-                                                })}
-                                            </select>
+                                            <FieldEnum setData={setStatus} value={status} options={postStatusOptions}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Ảnh đại diện</label>
-                                            <div className="text-center">
-                                                <UploadImage name="image" callback={(files) => {
-                                                    if (files.length > 0) setImage(files[0]);
-                                                }}/>
-                                                <Image objectFit="contain" width="200" height="200" src={image}/>
-                                            </div>
+                                            <FieldImage name='image' setData={setImage} value={image}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Danh mục</label>
-                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
-                                                {Object.keys(postStatusOptions).map(key => {
-                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
-                                                })}
-                                            </select>
+                                            <FieldEnum setData={setStatus} value={status} options={postStatusOptions}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Thể loại</label>
-                                            <select defaultValue={formatType} onChange={(e) => setFormatType(e.target.value)} className='form-control'>
-                                                {Object.keys(formatTypeOptions).map(key => {
-                                                    return (<option key={key} value={key}>{formatTypeOptions[key]}</option>)
-                                                })}
-                                            </select>
+                                            <FieldEnum setData={setFormatType} value={formatType} options={formatTypeOptions}/>
                                         </div>
                                         <div className="form-group mb-3">
-                                            <label className="form-check form-switch">
-                                                <input className="form-check-input" type="checkbox"
-                                                       defaultChecked={allowComment}
-                                                       onChange={(e) => setAllowComment(e.target.checked)}
-                                                />
-                                                <span className="form-check-label">Cho phép bình luận</span>
-                                            </label>
+                                            <FieldCheckbox setData={setAllowComment} checked={allowComment} label="Cho phép bình luận"/>
                                         </div>
                                         <div className="text-center">
                                             <button className="btn btn-primary" onClick={save}>Lưu</button>
@@ -113,24 +94,22 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
 }
 
 AdminPostCreate.getInitialProps = async (ctx) => {
-    const postStatus = {
-        d: "Nháp",
-        h: "Ẩn",
-        p: "Công bố",
-        s: "Lên lịch",
-        w: "Đợi công bố"
-    }
-    const formatType = {
-        a: "Audio",
-        g: "Gallery",
-        i: "Image",
-        p: "Post",
-        v: "Video"
-
-    }
     return {
-        postStatusOptions: postStatus,
-        formatTypeOptions: formatType
+        postStatusOptions: {
+            [EPostStatus.draf]: "Nháp",
+            [EPostStatus.hidden]: "Ẩn",
+            [EPostStatus.published]: "Công bố",
+            [EPostStatus.scheduled]: "Lên lịch",
+            [EPostStatus.wait_for_published]: "Đợi công bố"
+        },
+        formatTypeOptions: {
+            [EFormatType.audio]: "Audio",
+            [EFormatType.gallery]: "Gallery",
+            [EFormatType.image]: "Image",
+            [EFormatType.post]: "Post",
+            [EFormatType.video]: "Video"
+
+        }
     }
 }
 
