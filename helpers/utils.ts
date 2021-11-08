@@ -148,7 +148,7 @@ export const dataNormalization = {
             pageStatusId:data.pageStatusId != undefined ? data.pageStatusId : "" ,
             publisher: data.publisher != undefined ? data.publisher : "",
             publisherId:data.publisherId != undefined ? data.publisherId : null ,
-            slug: data.slug != undefined ? data.slug : slugHelper.generateSlug(data.title),
+            slug: data.slug != undefined ? data.slug : convertToSlug(data.title),
             tags: tags,
             title: data.title != undefined ? data.title : "",
             views: data.views != undefined ? data.views : 0
@@ -187,7 +187,7 @@ export const dataNormalization = {
             pageStatusId:data.pageStatusId != undefined ? data.pageStatusId : "" ,
             publisher: data.publisher != undefined ? data.publisher : "",
             publisherId:data.publisherId != undefined ? data.publisherId : null ,
-            slug: data.slug != undefined ? data.slug : slugHelper.generateSlug(data.title),
+            slug: data.slug != undefined ? data.slug : convertToSlug(data.title),
             tags: tags,
             title: data.title != undefined ? data.title : "",
             views: data.views != undefined ? data.views : 0
@@ -233,19 +233,16 @@ export const ArrayUtils = {
 }
 
 export const convertToSlug = (str: string): string => {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
 
-    // remove accents, swap ñ for n, etc
-    var from = "ăâấầẩẫậắằẳẵặãàáäâêếềểễệưứừửữựơớờởỡợôốồổỗộẽèéëêìíïîỏọõòóöôùúüûñç·/_,:;";
-    var to =     "aaaaaaaaaaaaaaaaaeeeeeeuuuuuuooooooooooooeeeeeiiiiooooooouuuunc------";
+    var from = "đạăâấầẩẫậắằẳẵặãàáäâêếềểễệưứừửữựơớờởỡợôốồổỗộẽèéëêìíïîỏọõòóöôùúüûñç·/_,:;";
+    var to =     "daaaaaaaaaaaaaaaaaaeeeeeeuuuuuuooooooooooooeeeeeiiiiooooooouuuunc------";
     for (var i = 0, l = from.length; i < l; i++) {
         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
-
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-    .replace(/\s+/g, '-') // collapse whitespace and replace by -
-    .replace(/-+/g, '-'); // collapse dashes
+    str = str.replace(/[^a-z0-9 -]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
 
     return str;
 };
