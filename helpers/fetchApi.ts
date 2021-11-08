@@ -25,6 +25,7 @@ export class FetchApi {
         };
         return fetch(url, requestOptions).then(FetchApi.handleResponse);
     }
+
     static postMedia(url, body) {
         const requestOptions: RequestInit = {
             method: 'POST',
@@ -36,24 +37,32 @@ export class FetchApi {
         };
         return fetch(url, requestOptions).then(FetchApi.handleResponse);
     }
-//
-//     static put(url, body) {
-//         const requestOptions: RequestInit = {
-//             method: 'PUT',
-//             headers: {'Content-Type': 'application/json', ...authHeader(url)},
-//             body: JSON.stringify(body)
-//         };
-//         return fetch(url, requestOptions).then(handleResponse);
-//     }
-//
-// // prefixed with underscored because delete is a reserved word in javascript
-//     _delete(url) {
-//         const requestOptions: RequestInit = {
-//             method: 'DELETE',
-//             headers: authHeader(url)
-//         };
-//         return fetch(url, requestOptions).then(handleResponse);
-//     }
+
+
+    static put(url, body) {
+        const requestOptions: RequestInit = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                ...FetchApi.addAuthHeader()
+            },
+            body: JSON.stringify(body)
+        };
+        return fetch(url, requestOptions).then(FetchApi.handleResponse);
+    }
+
+
+    static delete(url) {
+        const requestOptions: RequestInit = {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                ...FetchApi.addAuthHeader()
+            },
+        };
+        return fetch(url, requestOptions).then(FetchApi.handleResponse);
+    }
 
     static addAuthHeader() {
         if (UserService.token) {
@@ -67,7 +76,6 @@ export class FetchApi {
         return response.json().then(data => {
             if (!response.ok) {
                 if ([401, 403].includes(response.status) && (UserService.user || UserService.token)) {
-                    // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
                     UserService.logout();
                 }
                 const error = (data && data.message) || response.statusText;

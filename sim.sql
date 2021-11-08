@@ -178,50 +178,50 @@ create table menus
 );
 
 ############ Ràng buộc khóa ngoại ############
-
-ALTER TABLE categories ADD CONSTRAINT fk_category_category FOREIGN KEY (parent_id) REFERENCES categories(id);
-
-ALTER TABLE users ADD CONSTRAINT fk_user_role FOREIGN KEY (role) REFERENCES roles(id);
-
-ALTER TABLE posts ADD CONSTRAINT fk_post_status FOREIGN KEY (status) REFERENCES post_status(id);
-
-ALTER TABLE posts ADD CONSTRAINT fk_post_formattype FOREIGN KEY (format_type) REFERENCES format_types(id);
-
-ALTER TABLE posts ADD CONSTRAINT fk_post_author FOREIGN KEY (author) REFERENCES users(id);
-
-ALTER TABLE posts ADD CONSTRAINT fk_post_publisher FOREIGN KEY (publisher) REFERENCES users(id);
-
-ALTER TABLE pages ADD CONSTRAINT fk_page_status FOREIGN KEY (status) REFERENCES post_status(id);
-
-ALTER TABLE pages ADD CONSTRAINT fk_page_formattype FOREIGN KEY (format_type) REFERENCES format_types(id);
-
-ALTER TABLE pages ADD CONSTRAINT fk_page_author FOREIGN KEY (author) REFERENCES users(id);
-
-ALTER TABLE pages ADD CONSTRAINT fk_page_publisher FOREIGN KEY (publisher) REFERENCES users(id);
-
-ALTER TABLE posts_categories ADD CONSTRAINT fk_postcategory_post FOREIGN KEY (post_id) REFERENCES posts(id);
-
-ALTER TABLE posts_categories ADD CONSTRAINT fk_postcategory_category FOREIGN KEY (category_id) REFERENCES categories(id);
-
-ALTER TABLE posts_tags ADD CONSTRAINT fk_posttag_post FOREIGN KEY (post_id) REFERENCES posts(id);
-
-ALTER TABLE posts_tags ADD CONSTRAINT fk_posttag_tag FOREIGN KEY (tag_id) REFERENCES tags(id);
-
-ALTER TABLE pages_tags ADD CONSTRAINT fk_pagetag_tag FOREIGN KEY (tag_id) REFERENCES tags(id);
-
-ALTER TABLE pages_tags ADD CONSTRAINT fk_pagetag_page FOREIGN KEY (page_id) REFERENCES pages(id);
-
-ALTER TABLE comments ADD CONSTRAINT fk_comment_post FOREIGN KEY (post_id) REFERENCES posts(id);
-
-ALTER TABLE comments ADD CONSTRAINT fk_comment_page FOREIGN KEY (page_id) REFERENCES pages(id);
-
-ALTER TABLE comments ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES users(id);
-
-ALTER TABLE comments ADD CONSTRAINT fk_comment_comment FOREIGN KEY (parent_id) REFERENCES comments(id);
-
-ALTER TABLE comments ADD CONSTRAINT fk_comment_status FOREIGN KEY (status) REFERENCES comments_status(id);
-
-ALTER TABLE menus ADD CONSTRAINT fk_menu_menu FOREIGN KEY (parent_id) REFERENCES menus(id);
+#
+# ALTER TABLE categories ADD CONSTRAINT fk_category_category FOREIGN KEY (parent_id) REFERENCES categories(id);
+#
+# ALTER TABLE users ADD CONSTRAINT fk_user_role FOREIGN KEY (role) REFERENCES roles(id);
+#
+# ALTER TABLE posts ADD CONSTRAINT fk_post_status FOREIGN KEY (status) REFERENCES post_status(id);
+#
+# ALTER TABLE posts ADD CONSTRAINT fk_post_formattype FOREIGN KEY (format_type) REFERENCES format_types(id);
+#
+# ALTER TABLE posts ADD CONSTRAINT fk_post_author FOREIGN KEY (author) REFERENCES users(id);
+#
+# ALTER TABLE posts ADD CONSTRAINT fk_post_publisher FOREIGN KEY (publisher) REFERENCES users(id);
+#
+# ALTER TABLE pages ADD CONSTRAINT fk_page_status FOREIGN KEY (status) REFERENCES post_status(id);
+#
+# ALTER TABLE pages ADD CONSTRAINT fk_page_formattype FOREIGN KEY (format_type) REFERENCES format_types(id);
+#
+# ALTER TABLE pages ADD CONSTRAINT fk_page_author FOREIGN KEY (author) REFERENCES users(id);
+#
+# ALTER TABLE pages ADD CONSTRAINT fk_page_publisher FOREIGN KEY (publisher) REFERENCES users(id);
+#
+# ALTER TABLE posts_categories ADD CONSTRAINT fk_postcategory_post FOREIGN KEY (post_id) REFERENCES posts(id);
+#
+# ALTER TABLE posts_categories ADD CONSTRAINT fk_postcategory_category FOREIGN KEY (category_id) REFERENCES categories(id);
+#
+# ALTER TABLE posts_tags ADD CONSTRAINT fk_posttag_post FOREIGN KEY (post_id) REFERENCES posts(id);
+#
+# ALTER TABLE posts_tags ADD CONSTRAINT fk_posttag_tag FOREIGN KEY (tag_id) REFERENCES tags(id);
+#
+# ALTER TABLE pages_tags ADD CONSTRAINT fk_pagetag_tag FOREIGN KEY (tag_id) REFERENCES tags(id);
+#
+# ALTER TABLE pages_tags ADD CONSTRAINT fk_pagetag_page FOREIGN KEY (page_id) REFERENCES pages(id);
+#
+# ALTER TABLE comments ADD CONSTRAINT fk_comment_post FOREIGN KEY (post_id) REFERENCES posts(id);
+#
+# ALTER TABLE comments ADD CONSTRAINT fk_comment_page FOREIGN KEY (page_id) REFERENCES pages(id);
+#
+# ALTER TABLE comments ADD CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES users(id);
+#
+# ALTER TABLE comments ADD CONSTRAINT fk_comment_comment FOREIGN KEY (parent_id) REFERENCES comments(id);
+#
+# ALTER TABLE comments ADD CONSTRAINT fk_comment_status FOREIGN KEY (status) REFERENCES comments_status(id);
+#
+# ALTER TABLE menus ADD CONSTRAINT fk_menu_menu FOREIGN KEY (parent_id) REFERENCES menus(id);
 
 #################### Dữ liệu đầu tiên ################
 
@@ -270,5 +270,5 @@ create table media
     public tinyint default 0,
     type varchar(255)
 );
-ALTER TABLE media
-    ADD CONSTRAINT fk_media_user FOREIGN KEY (owner) REFERENCES users (id);
+# ALTER TABLE media
+#     ADD CONSTRAINT fk_media_user FOREIGN KEY (owner) REFERENCES users (id);
