@@ -148,7 +148,7 @@ export const dataNormalization = {
             pageStatusId:data.pageStatusId != undefined ? data.pageStatusId : "" ,
             publisher: data.publisher != undefined ? data.publisher : "",
             publisherId:data.publisherId != undefined ? data.publisherId : null ,
-            slug: data.slug != undefined ? data.slug : "",
+            slug: data.slug != undefined ? data.slug : slugHelper.generateSlug(data.title),
             tags: tags,
             title: data.title != undefined ? data.title : "",
             views: data.views != undefined ? data.views : 0
@@ -187,7 +187,7 @@ export const dataNormalization = {
             pageStatusId:data.pageStatusId != undefined ? data.pageStatusId : "" ,
             publisher: data.publisher != undefined ? data.publisher : "",
             publisherId:data.publisherId != undefined ? data.publisherId : null ,
-            slug: data.slug != undefined ? data.slug : "",
+            slug: data.slug != undefined ? data.slug : slugHelper.generateSlug(data.title),
             tags: tags,
             title: data.title != undefined ? data.title : "",
             views: data.views != undefined ? data.views : 0
