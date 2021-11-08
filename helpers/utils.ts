@@ -229,8 +229,8 @@ export const convertToSlug = (str: string): string => {
     if (!str) return '';
     str = str.toLowerCase();
 
-    var from = "áàảãđạăâấầẩẫậắằẳẵặãàáäâêếềểễệưứừửữựơớờởỡợôốồổỗộẽèéëêìíïîỏọõòóöôùúüûñç·/_,:;";
-    var to = "aaaadaaaaaaaaaaaaaaaaaaeeeeeeuuuuuuooooooooooooeeeeeiiiiooooooouuuunc------";
+    var from = "íìỉĩịủụáàảãđạăâấầẩẫậắằẳẵặãàáäâêếềểễệưứừửữựơớờởỡợôốồổỗộẽèéëêìíïîỏọõòóöôùúüûñç·/_,:;";
+    var to = "iiiiiuuaaaadaaaaaaaaaaaaaaaaaaeeeeeeuuuuuuooooooooooooeeeeeiiiiooooooouuuunc------";
     for (var i = 0, l = from.length; i < l; i++) {
         str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }

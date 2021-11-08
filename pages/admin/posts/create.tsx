@@ -43,8 +43,8 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
             title: title,
             slug: slug
         };
-        let tmp=[];
-        categories.map(item=>tmp.push(item.value));
+        let tmp = [];
+        categories.map(item => tmp.push(item.value));
         postData.categories = tmp;
         FetchApi.post('/api/post', postData).then(res => {
             if (res.code == 1) {
@@ -97,7 +97,7 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label required">Mô tả</label>
-                                            <FieldTextArea setData={setExcerpt} value={excerpt}/>
+                                            <FieldTextArea options={{maxLength: 255}} setData={setExcerpt} value={excerpt}/>
                                         </div>
                                         <div className="form-group mb-3 ">
                                             <label className="form-label required">Nội dung</label>

@@ -10,18 +10,22 @@ import {FetchApi} from "../../../helpers/fetchApi";
 
 const AdminCategories = () => {
     const [listData, setListData] = useState([]);
+    const [mounted, setMounted] = useState(false);
     useEffect(() => {
-        UserService.userSubject.subscribe(user => {
-            if (user) {
-                FetchApi.get('/api/category').then(res => {
-                    if (res.code == 1) {
-                        setListData(res.categories);
-                        console.log(res.categories);
-                    }
-                });
-            }
-        });
-    }, []);
+        if(!mounted) {
+            setMounted(true);
+            UserService.userSubject.subscribe(user => {
+                if (user) {
+                    FetchApi.get('/api/category').then(res => {
+                        if (res.code == 1) {
+                            setListData(res.categories);
+                            console.log(res.categories);
+                        }
+                    });
+                }
+            });
+        }
+    }, [listData]);
     const deleteRecord = (url) => {
         FetchApi.delete(url).then(res => {
             if (res.code == 1) {
@@ -53,15 +57,14 @@ const AdminCategories = () => {
                             </div>
                         </div>
                         <div className="card mt-3">
-                            <div className="card-header">
-                                <h3 className="card-title">Danh mục</h3>
+                            <div className="card-header text-center" style={{display:"block"}}>
+                                <h3 className="card-title" style={{fontSize:'1.5rem'}}>Danh mục</h3>
                             </div>
                             <div className="list-group list-group-flush">
                                 {listData.map(item => {
                                     return (
                                         <div key={item.id} className="list-group-item">
                                             <div className="row align-items-center">
-                                                <div className="col-auto"><input type="checkbox" className="form-check-input"/></div>
                                                 <div className="col-auto">
                                                     {item.image ?
                                                         <span className="avatar" style={{backgroundImage: `url(${item.image})`}}/>

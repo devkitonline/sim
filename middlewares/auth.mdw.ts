@@ -8,7 +8,8 @@ export const  jwtMiddleware = (req, res) => {
         path: [
             // public routes that don't require authentication
             '/api/auth/register',
-            '/api/auth/login'
+            '/api/auth/login',
+            '/api/post/*'
         ]
     });
 

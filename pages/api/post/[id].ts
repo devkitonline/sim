@@ -16,7 +16,7 @@ export default function handler(req, res) {
                     res.status(200).json({code: 400, message: err});
                     return;
                 } else {
-                    res.status(200).json({code: 1, message: `Success`, post: post});
+                    res.status(200).json({code: 1, message: `Success`, data: post});
                     return;
                 }
             });

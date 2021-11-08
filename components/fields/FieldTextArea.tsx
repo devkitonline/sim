@@ -1,5 +1,5 @@
-export function FieldTextArea({setData, value}) {
+export function FieldTextArea({setData, value, options = {maxLength: 0}}) {
     return (
-        <textarea value={value} onChange={(e) => setData(e.target.value)} rows={3} className="form-control"/>
+        <textarea maxLength={options.maxLength ? options.maxLength : 5000} value={value} onChange={(e) => setData(e.target.value)} rows={3} className="form-control"/>
     );
 }

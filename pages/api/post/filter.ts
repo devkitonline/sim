@@ -23,7 +23,7 @@ export default async function handler(req, res) {
                     res.status(200).json({code: 400, message: err});
                     return;
                 }else{
-                    res.status(200).json({code: 1, message: `Success`, pages: posts, total_records: totalResult});
+                    res.status(200).json({code: 1, message: `Success`, data: posts, total_records: totalResult});
                     return;
                 }
             });
