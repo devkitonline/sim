@@ -26,12 +26,6 @@ export const Cookie = {
     }
 }
 
-export const slugHelper = {
-    generateSlug: (name): string => {
-        return slugify(name);
-    }
-}
-
 /* DATA NORMALIZATION HELPER FUNCTIONS */
 export const dataNormalization = {
     normalizedUser: (data): IUser => {
@@ -90,7 +84,7 @@ export const dataNormalization = {
             description: data.description != undefined ?data.description : "",
             id: data.id != undefined ?data.id : "",
             name: data.name != undefined ?data.name : "",
-            slug: data.slug != undefined ?data.slug : ""
+            slug: data.slug != undefined ?data.slug : convertToSlug(data.name)
         }
     },
     normalizeedCategory: (data) : ICategory =>{
@@ -100,7 +94,7 @@ export const dataNormalization = {
             id: data.id != undefined ?data.id : "",
             image: data.image != undefined ?data.image : "",
             name: data.name != undefined ?data.name : "",
-            slug: data.slug != undefined ?data.slug : ""
+            slug: data.slug != undefined ?data.slug : convertToSlug(data.name)
         }
     },
     normalizedPost: (data): IPost => {
