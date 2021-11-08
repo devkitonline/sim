@@ -1,59 +1,78 @@
 import Base_header from "@/components/base/base_header";
 import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
-import {Editor} from "@/components/base/Editor";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Image from "next/image";
-import {UploadImage} from "@/components/base/UploadImage";
 import Head from "next/head";
+import FieldHtml from "@/components/fields/FieldHtml";
+import {FieldImage} from "@/components/fields/FieldImage";
+import {EFormatType, EPostStatus} from "../../../helpers/enums";
+import {FieldEnum} from "@/components/fields/FieldEnum";
+import {FieldText} from "@/components/fields/FieldText";
+import {FieldTextArea} from "@/components/fields/FieldTextArea";
+import {FetchApi} from "../../../helpers/fetchApi";
+import {UserService} from "../../../services/user.service";
+import {useRouter} from 'next/router'
+import {IPage} from "../../../helpers/interfaces";
+import {FieldSlug} from "@/components/fields/FieldSlug";
 
 const AdminPageCreate = ({postStatusOptions, formatTypeOptions}) => {
-    const [editorLoaded, setEditorLoaded] = useState(false);
+    const router = useRouter();
     const [content, setContent] = useState('');
     const [title, setTitle] = useState('');
+    const [slug, setSlug] = useState('');
     const [excerpt, setExcerpt] = useState('');
     const [status, setStatus] = useState('p');
     const [formatType, setFormatType] = useState('p');
-    const [image, setImage] = useState('/images/noimage.png');
-    const [allowComment, setAllowComment] = useState(false);
-
+    const [image, setImage] = useState('');
     const save = () => {
-
+        const postData: IPage = {
+            allowComment: false,
+            id: "",
+            authorId: UserService.user.id,
+            content: content,
+            excerpt: excerpt,
+            formatTypeId: formatType,
+            pageStatusId: status,
+            image: image,
+            title: title,
+            slug: slug
+        };
+        FetchApi.post('/api/page', postData).then(res => {
+            if (res.code == 1) {
+                router.push('/admin/pages');
+            } else {
+                console.log(res);
+                alert('error');
+            }
+        })
     }
-    useEffect(() => {
-        setEditorLoaded(true);
-    }, []);
     return (
         <div>
             <Head>
-                <title>Tạo trang mới</title>
+                <title>Tạo Trang mới</title>
             </Head>
             <Base_header/>
             <AdminMenu/>
             <div className="page-wrapper">
                 <div className="page-body">
-                    <div className="container-sm">
-                        <h1>Tạo trang</h1>
+                    <div className="container-fluid">
+                        <h1>Viết bài</h1>
                         <div className='row'>
                             <div className='col-md-8'>
                                 <div className="card">
                                     <div className="card-body">
                                         <div className="form-group mb-3">
                                             <label className="form-label required">Tiêu đề</label>
-                                            <input onChange={(e) => setTitle(e.target.value)} type="text" className="form-control"/>
+                                            <FieldText setData={setTitle} value={title}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label required">Mô tả</label>
-                                            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} className="form-control" maxLength={255}/>
+                                            <FieldTextArea setData={setExcerpt} value={excerpt}/>
                                         </div>
                                         <div className="form-group mb-3 ">
-                                            <Editor
-                                                name="content"
-                                                onChange={(data) => {
-                                                    setContent(data);
-                                                }}
-                                                editorLoaded={editorLoaded}
-                                                value={content}/>
+                                            <label className="form-label required">Nội dung</label>
+                                            <FieldHtml value={content} setContent={setContent}/>
                                         </div>
                                     </div>
                                 </div>
@@ -66,45 +85,19 @@ const AdminPageCreate = ({postStatusOptions, formatTypeOptions}) => {
                                     <div className="card-body">
                                         <div className="form-group mb-3">
                                             <label className="form-label">Trạng thái</label>
-                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
-                                                {Object.keys(postStatusOptions).map(key => {
-                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
-                                                })}
-                                            </select>
+                                            <FieldEnum setData={setStatus} value={status} options={postStatusOptions}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Ảnh đại diện</label>
-                                            <div className="text-center">
-                                                <UploadImage name="image" callback={(files) => {
-                                                    if (files.length > 0) setImage(files[0]);
-                                                }}/>
-                                                <Image objectFit="contain" width="200" height="200" src={image}/>
-                                            </div>
-                                        </div>
-                                        <div className="form-group mb-3">
-                                            <label className="form-label">Danh mục</label>
-                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
-                                                {Object.keys(postStatusOptions).map(key => {
-                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
-                                                })}
-                                            </select>
+                                            <FieldImage name='image' setData={setImage} value={image}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Thể loại</label>
-                                            <select defaultValue={formatType} onChange={(e) => setFormatType(e.target.value)} className='form-control'>
-                                                {Object.keys(formatTypeOptions).map(key => {
-                                                    return (<option key={key} value={key}>{formatTypeOptions[key]}</option>)
-                                                })}
-                                            </select>
+                                            <FieldEnum setData={setFormatType} value={formatType} options={formatTypeOptions}/>
                                         </div>
                                         <div className="form-group mb-3">
-                                            <label className="form-check form-switch">
-                                                <input className="form-check-input" type="checkbox"
-                                                       defaultChecked={allowComment}
-                                                       onChange={(e) => setAllowComment(e.target.checked)}
-                                                />
-                                                <span className="form-check-label">Cho phép bình luận</span>
-                                            </label>
+                                            <label className="form-label">Đường dẫn tĩnh</label>
+                                            <FieldSlug setData={setSlug} value={slug} placeholder="--auto-generate--"/>
                                         </div>
                                         <div className="text-center">
                                             <button className="btn btn-primary" onClick={save}>Lưu</button>
@@ -122,24 +115,22 @@ const AdminPageCreate = ({postStatusOptions, formatTypeOptions}) => {
 }
 
 AdminPageCreate.getInitialProps = async (ctx) => {
-    const postStatus = {
-        d: "Nháp",
-        h: "Ẩn",
-        p: "Công bố",
-        s: "Lên lịch",
-        w: "Đợi công bố"
-    }
-    const formatType = {
-        a: "Audio",
-        g: "Gallery",
-        i: "Image",
-        p: "Post",
-        v: "Video"
-
-    }
     return {
-        postStatusOptions: postStatus,
-        formatTypeOptions: formatType
+        postStatusOptions: {
+            [EPostStatus.draf]: "Nháp",
+            [EPostStatus.hidden]: "Ẩn",
+            [EPostStatus.published]: "Công bố",
+            [EPostStatus.scheduled]: "Lên lịch",
+            [EPostStatus.wait_for_published]: "Đợi công bố"
+        },
+        formatTypeOptions: {
+            [EFormatType.audio]: "Audio",
+            [EFormatType.gallery]: "Gallery",
+            [EFormatType.image]: "Image",
+            [EFormatType.post]: "Post",
+            [EFormatType.video]: "Video"
+
+        }
     }
 }
 

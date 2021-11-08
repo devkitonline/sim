@@ -15,11 +15,13 @@ import {FetchApi} from "../../../helpers/fetchApi";
 import {UserService} from "../../../services/user.service";
 import {useRouter} from 'next/router'
 import {IPost} from "../../../helpers/interfaces";
+import {FieldSlug} from "@/components/fields/FieldSlug";
 
 const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const router = useRouter();
-    const [content, setContent] = useState('okok');
+    const [content, setContent] = useState('');
     const [title, setTitle] = useState('');
+    const [slug, setSlug] = useState('');
     const [excerpt, setExcerpt] = useState('');
     const [status, setStatus] = useState('p');
     const [formatType, setFormatType] = useState('p');
@@ -34,22 +36,14 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
             excerpt: excerpt,
             formatTypeId: formatType,
             pageStatusId: status,
-            image:image,
-            title: title
+            image: image,
+            title: title,
+            slug: slug,
         };
         FetchApi.post('/api/post', postData).then(res => {
             if (res.code == 1) {
                 router.push('/admin/posts');
             } else {
-                console.log({
-                    title: title,
-                    content: content,
-                    excerpt: excerpt,
-                    status: status,
-                    image: image,
-                    formatType: formatType,
-                    authorId: UserService.user.id
-                });
                 console.log(res);
                 alert('error');
             }
@@ -106,6 +100,10 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
                                         <div className="form-group mb-3">
                                             <label className="form-label">Thể loại</label>
                                             <FieldEnum setData={setFormatType} value={formatType} options={formatTypeOptions}/>
+                                        </div>
+                                        <div className="form-group mb-3">
+                                            <label className="form-label">Đường dẫn tĩnh</label>
+                                            <FieldSlug setData={setSlug} value={slug} placeholder="--auto-generate--"/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <FieldCheckbox setData={setAllowComment} checked={allowComment} label="Cho phép bình luận"/>

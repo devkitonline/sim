@@ -1,59 +1,64 @@
 import Base_header from "@/components/base/base_header";
 import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
-import {Editor} from "@/components/base/Editor";
-import {useEffect, useState} from "react";
-import Image from "next/image";
-import {UploadImage} from "@/components/base/UploadImage";
+import {useState} from "react";
 import Head from "next/head";
+import FieldHtml from "@/components/fields/FieldHtml";
+import {FieldImage} from "@/components/fields/FieldImage";
+import {FieldEnum} from "@/components/fields/FieldEnum";
+import {FieldText} from "@/components/fields/FieldText";
+import {FetchApi} from "../../../helpers/fetchApi";
+import {useRouter} from 'next/router'
+import {ICategory} from "../../../helpers/interfaces";
+import {FieldSlug} from "@/components/fields/FieldSlug";
 
-const AdminCategoryCreate = ({postStatusOptions, formatTypeOptions}) => {
-    const [editorLoaded, setEditorLoaded] = useState(false);
-    const [content, setContent] = useState('');
-    const [title, setTitle] = useState('');
-    const [excerpt, setExcerpt] = useState('');
-    const [status, setStatus] = useState('p');
-    const [formatType, setFormatType] = useState('p');
-    const [image, setImage] = useState('/images/noimage.png');
-    const [allowComment, setAllowComment] = useState(false);
-
+const AdminCategoriesCreate = () => {
+    const router = useRouter();
+    const [description, setDescription] = useState('');
+    const [name, setName] = useState('');
+    const [slug, setSlug] = useState('');
+    const [parentId, setParentId] = useState('');
+    const [image, setImage] = useState('');
     const save = () => {
-
+        const postData: ICategory = {
+            categoryParent: parentId,
+            description: description,
+            id: "",
+            image: image,
+            name: name,
+            slug: slug
+        };
+        FetchApi.post('/api/post', postData).then(res => {
+            if (res.code == 1) {
+                router.push('/admin/categories');
+            } else {
+                console.log(res);
+                alert('error');
+            }
+        })
     }
-    useEffect(() => {
-        setEditorLoaded(true);
-    }, []);
     return (
         <div>
             <Head>
-                <title>Tạo danh mục mới mới</title>
+                <title>Tạo danh mục</title>
             </Head>
             <Base_header/>
             <AdminMenu/>
             <div className="page-wrapper">
                 <div className="page-body">
-                    <div className="container-sm">
+                    <div className="container-fluid">
                         <h1>Tạo danh mục</h1>
                         <div className='row'>
                             <div className='col-md-8'>
                                 <div className="card">
                                     <div className="card-body">
                                         <div className="form-group mb-3">
-                                            <label className="form-label required">Tiêu đề</label>
-                                            <input onChange={(e) => setTitle(e.target.value)} type="text" className="form-control"/>
-                                        </div>
-                                        <div className="form-group mb-3">
-                                            <label className="form-label required">Mô tả</label>
-                                            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} className="form-control" maxLength={255}/>
+                                            <label className="form-label required">Tên</label>
+                                            <FieldText setData={setName} value={name}/>
                                         </div>
                                         <div className="form-group mb-3 ">
-                                            <Editor
-                                                name="content"
-                                                onChange={(data) => {
-                                                    setContent(data);
-                                                }}
-                                                editorLoaded={editorLoaded}
-                                                value={content}/>
+                                            <label className="form-label required">Nội dung</label>
+                                            <FieldHtml value={description} setContent={setDescription}/>
                                         </div>
                                     </div>
                                 </div>
@@ -65,46 +70,16 @@ const AdminCategoryCreate = ({postStatusOptions, formatTypeOptions}) => {
                                     </div>
                                     <div className="card-body">
                                         <div className="form-group mb-3">
-                                            <label className="form-label">Trạng thái</label>
-                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
-                                                {Object.keys(postStatusOptions).map(key => {
-                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div className="form-group mb-3">
                                             <label className="form-label">Ảnh đại diện</label>
-                                            <div className="text-center">
-                                                <UploadImage name="image" callback={(files) => {
-                                                    if (files.length > 0) setImage(files[0]);
-                                                }}/>
-                                                <Image objectFit="contain" width="200" height="200" src={image}/>
-                                            </div>
+                                            <FieldImage name='image' setData={setImage} value={image}/>
                                         </div>
                                         <div className="form-group mb-3">
-                                            <label className="form-label">Danh mục</label>
-                                            <select defaultValue={status} onChange={(e) => setStatus(e.target.value)} className='form-control'>
-                                                {Object.keys(postStatusOptions).map(key => {
-                                                    return (<option key={key} value={key}>{postStatusOptions[key]}</option>)
-                                                })}
-                                            </select>
+                                            <label className="form-label">Danh mục cha</label>
+                                            <FieldEnum setData={setParentId} value={parentId} options={{}}/>
                                         </div>
                                         <div className="form-group mb-3">
-                                            <label className="form-label">Thể loại</label>
-                                            <select defaultValue={formatType} onChange={(e) => setFormatType(e.target.value)} className='form-control'>
-                                                {Object.keys(formatTypeOptions).map(key => {
-                                                    return (<option key={key} value={key}>{formatTypeOptions[key]}</option>)
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div className="form-group mb-3">
-                                            <label className="form-check form-switch">
-                                                <input className="form-check-input" type="checkbox"
-                                                       defaultChecked={allowComment}
-                                                       onChange={(e) => setAllowComment(e.target.checked)}
-                                                />
-                                                <span className="form-check-label">Cho phép bình luận</span>
-                                            </label>
+                                            <label className="form-label">Đường dẫn tĩnh</label>
+                                            <FieldSlug setData={setSlug} value={slug} placeholder="--auto-generate--"/>
                                         </div>
                                         <div className="text-center">
                                             <button className="btn btn-primary" onClick={save}>Lưu</button>
@@ -121,26 +96,4 @@ const AdminCategoryCreate = ({postStatusOptions, formatTypeOptions}) => {
     )
 }
 
-AdminCategoryCreate.getInitialProps = async (ctx) => {
-    const postStatus = {
-        d: "Nháp",
-        h: "Ẩn",
-        p: "Công bố",
-        s: "Lên lịch",
-        w: "Đợi công bố"
-    }
-    const formatType = {
-        a: "Audio",
-        g: "Gallery",
-        i: "Image",
-        p: "Post",
-        v: "Video"
-
-    }
-    return {
-        postStatusOptions: postStatus,
-        formatTypeOptions: formatType
-    }
-}
-
-export default AdminCategoryCreate;
+export default AdminCategoriesCreate;
