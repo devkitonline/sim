@@ -1,7 +1,7 @@
 import Base_header from "@/components/base/base_header";
 import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Image from "next/image";
 import Head from "next/head";
 import FieldHtml from "@/components/fields/FieldHtml";
@@ -16,6 +16,7 @@ import {UserService} from "../../../services/user.service";
 import {useRouter} from 'next/router'
 import {IPost} from "../../../helpers/interfaces";
 import {FieldSlug} from "@/components/fields/FieldSlug";
+import {FieldMultiEnum} from "@/components/fields/FieldMultiEnum";
 
 const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const router = useRouter();
@@ -26,6 +27,8 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const [status, setStatus] = useState('p');
     const [formatType, setFormatType] = useState('p');
     const [image, setImage] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [categoriesOptions, setCategoriesOptions] = useState([]);
     const [allowComment, setAllowComment] = useState(false);
     const save = () => {
         const postData: IPost = {
@@ -38,8 +41,11 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
             pageStatusId: status,
             image: image,
             title: title,
-            slug: slug,
+            slug: slug
         };
+        let tmp=[];
+        categories.map(item=>tmp.push(item.value));
+        postData.categories = tmp;
         FetchApi.post('/api/post', postData).then(res => {
             if (res.code == 1) {
                 router.push('/admin/posts');
@@ -49,6 +55,27 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
             }
         })
     }
+    useEffect(() => {
+        UserService.userSubject.subscribe(user => {
+            if (user) {
+                FetchApi.get('/api/category').then(res => {
+                    console.log(res);
+                    if (res.code == 1) {
+                        let tmp = [];
+                        res.categories.map(c => {
+                            const o = {
+                                label: c.name,
+                                value: c.id
+                            }
+                            tmp.push(o);
+                        });
+                        console.log(tmp);
+                        setCategoriesOptions(tmp);
+                    }
+                });
+            }
+        })
+    }, []);
     return (
         <div>
             <Head>
@@ -95,7 +122,7 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Danh mục</label>
-                                            <FieldEnum setData={setStatus} value={status} options={postStatusOptions}/>
+                                            <FieldMultiEnum setData={setCategories} value={categories} options={categoriesOptions}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Thể loại</label>

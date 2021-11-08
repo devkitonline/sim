@@ -1,6 +1,6 @@
-import {dataNormalization} from "../../helpers/utils";
-import {postPageModel} from "../../models/post-page.model";
-import {EPostType} from "../../helpers/enums";
+import {dataNormalization} from "../../../helpers/utils";
+import {postPageModel} from "../../../models/post-page.model";
+import {EPostType} from "../../../helpers/enums";
 import {v4 as uuidv4} from 'uuid';
 
 export default async function handler(req, res) {

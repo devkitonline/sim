@@ -15,17 +15,17 @@ import {UserService} from "../../../services/user.service";
 
 const AdminCategoriesCreate = () => {
     const router = useRouter();
-    const [description, setDescription] = useState('');
-    const [name, setName] = useState('');
-    const [slug, setSlug] = useState('');
-    const [parentId, setParentId] = useState('');
+    const [description, setDescription] = useState(null);
+    const [name, setName] = useState(null);
+    const [slug, setSlug] = useState(null);
+    const [parentId, setParentId] = useState(null);
     const [parent, setParent] = useState({});
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(null);
     const save = () => {
         const postData: ICategory = {
             categoryParent: parentId,
             description: description,
-            id: "",
+            id: null,
             image: image,
             name: name,
             slug: slug
@@ -45,10 +45,7 @@ const AdminCategoriesCreate = () => {
                 FetchApi.get('/api/category').then(res => {
                     if (res.code == 1) {
                         let tmp = {};
-                        res.categories.map(c => {
-                            if (!parentId) setParentId(c.id);
-                            tmp[c.id] = c.name
-                        });
+                        res.categories.map(c => tmp[c.id] = c.name);
                         setParent(tmp);
                     }
                 });
