@@ -43,10 +43,12 @@ const AdminCategoriesCreate = () => {
         UserService.userSubject.subscribe(user => {
             if (user) {
                 FetchApi.get('/api/category').then(res => {
-                    console.log(res);
                     if (res.code == 1) {
                         let tmp = {};
-                        res.categories.map(c => tmp[c.id]= c.name);
+                        res.categories.map(c => {
+                            if (!parentId) setParentId(c.id);
+                            tmp[c.id] = c.name
+                        });
                         setParent(tmp);
                     }
                 });
