@@ -11,8 +11,13 @@ import {FieldEnum} from "@/components/fields/FieldEnum";
 import {FieldText} from "@/components/fields/FieldText";
 import {FieldTextArea} from "@/components/fields/FieldTextArea";
 import {FieldCheckbox} from "@/components/fields/FieldCheckbox";
+import {FetchApi} from "../../../helpers/fetchApi";
+import {UserService} from "../../../services/user.service";
+import {useRouter} from 'next/router'
+import {IPost} from "../../../helpers/interfaces";
 
 const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
+    const router = useRouter();
     const [content, setContent] = useState('okok');
     const [title, setTitle] = useState('');
     const [excerpt, setExcerpt] = useState('');
@@ -21,7 +26,34 @@ const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const [image, setImage] = useState('');
     const [allowComment, setAllowComment] = useState(false);
     const save = () => {
-        console.log(allowComment);
+        const postData: IPost = {
+            id: "",
+            allowComment: allowComment,
+            authorId: UserService.user.id,
+            content: content,
+            excerpt: excerpt,
+            formatTypeId: formatType,
+            pageStatusId: status,
+            image:image,
+            title: title
+        };
+        FetchApi.post('/api/post', postData).then(res => {
+            if (res.code == 1) {
+                router.push('/admin/posts');
+            } else {
+                console.log({
+                    title: title,
+                    content: content,
+                    excerpt: excerpt,
+                    status: status,
+                    image: image,
+                    formatType: formatType,
+                    authorId: UserService.user.id
+                });
+                console.log(res);
+                alert('error');
+            }
+        })
     }
     return (
         <div>
