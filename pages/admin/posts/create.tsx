@@ -19,7 +19,7 @@ import {FieldSlug} from "@/components/fields/FieldSlug";
 
 const AdminPostCreate = ({postStatusOptions, formatTypeOptions}) => {
     const router = useRouter();
-    const [content, setContent] = useState('okok');
+    const [content, setContent] = useState('');
     const [title, setTitle] = useState('');
     const [slug, setSlug] = useState('');
     const [excerpt, setExcerpt] = useState('');
