@@ -2,7 +2,7 @@ import {apiHandler} from "../../helpers/api/api-handle";
 import {tagModel} from "../../models/tag.model";
 import {ITag} from "helpers/interfaces";
 import {v4 as uuidv4} from 'uuid';
-import {slugHelper} from "../../helpers/utils";
+import {convertToSlug} from "../../helpers/utils";
 
 export default apiHandler(handler);
 
@@ -33,7 +33,7 @@ async function handler(req, res) {
             const newTag: ITag = {
                 id: uuidv4(),
                 name: bodyRequest.name,
-                slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : slugHelper.generateSlug(bodyRequest.name),
+                slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : convertToSlug(bodyRequest.name),
                 description: bodyRequest.hasOwnProperty('description') ? bodyRequest.description : ""
             }
 

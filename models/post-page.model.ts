@@ -6,7 +6,7 @@ import {queryFilter} from "../helpers/queryFilter";
 import Error from "next/error";
 import {tagModel} from "./tag.model";
 import {v4 as uuidv4} from 'uuid';
-import {slugHelper} from "helpers/utils";
+import {convertToSlug} from "helpers/utils";
 
 const pageAllFieldsQuery = `SELECT pages.id,
                                    pages.title,
@@ -711,7 +711,7 @@ const insertPostsTags = (tags: string[], postId: string)=>{
             if (!err && tag) {
                 await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [postId, tag.id]);
             }else if(!err && !tag){
-                const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: slugHelper.generateSlug(tags[i]), description: ""};
+                const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: convertToSlug(tags[i]), description: ""};
                 tagModel.create(newTag, async (err) => {
                     if (!err) {
                         await query(`INSERT INTO posts_tags(post_id, tag_id) VALUE (?, ?) `, [postId, newTag.id]);
@@ -728,7 +728,7 @@ const insertPagesTags = (tags: string[], pageId: string)=>{
             if (!err && tag) {
                 await query(`INSERT INTO pages_tags(page_id, tag_id) VALUE (?, ?) `, [pageId, tag.id]);
             }else if(!err && !tag){
-                const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: slugHelper.generateSlug(tags[i]), description: ""};
+                const newTag:ITag = {id: uuidv4(), name: tags[i] , slug: convertToSlug(tags[i]), description: ""};
                 tagModel.create(newTag, async (err) => {
                     if (!err) {
                         await query(`INSERT INTO pages_tags(page_id, tag_id) VALUE (?, ?) `, [pageId, newTag.id]);

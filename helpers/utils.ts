@@ -26,12 +26,6 @@ export const Cookie = {
     }
 }
 
-export const slugHelper = {
-    generateSlug: (name): string => {
-        return slugify(name);
-    }
-}
-
 /* DATA NORMALIZATION HELPER FUNCTIONS */
 export const dataNormalization = {
     normalizedUser: (data): IUser => {
@@ -148,7 +142,7 @@ export const dataNormalization = {
             pageStatusId:data.pageStatusId != undefined ? data.pageStatusId : "" ,
             publisher: data.publisher != undefined ? data.publisher : "",
             publisherId:data.publisherId != undefined ? data.publisherId : null ,
-            slug: data.slug != undefined ? data.slug : slugHelper.generateSlug(data.title),
+            slug: data.slug != undefined ? data.slug : convertToSlug(data.title),
             tags: tags,
             title: data.title != undefined ? data.title : "",
             views: data.views != undefined ? data.views : 0
@@ -187,7 +181,7 @@ export const dataNormalization = {
             pageStatusId:data.pageStatusId != undefined ? data.pageStatusId : "" ,
             publisher: data.publisher != undefined ? data.publisher : "",
             publisherId:data.publisherId != undefined ? data.publisherId : null ,
-            slug: data.slug != undefined ? data.slug : slugHelper.generateSlug(data.title),
+            slug: data.slug != undefined ? data.slug : convertToSlug(data.title),
             tags: tags,
             title: data.title != undefined ? data.title : "",
             views: data.views != undefined ? data.views : 0
