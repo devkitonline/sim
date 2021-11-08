@@ -2,6 +2,7 @@ import {dataNormalization} from "../../../helpers/utils";
 import {postPageModel} from "../../../models/post-page.model";
 import {EPostType} from "../../../helpers/enums";
 import {IPage} from "../../../helpers/interfaces";
+import {encrypt} from "../../../helpers/encryption";
 
 export default async function handler(req, res) {
     const {
@@ -35,5 +36,6 @@ export default async function handler(req, res) {
 }
 
 const checkParams = (body) => {
+    encrypt();
     return !(!body.conditions);
 }

@@ -33,11 +33,13 @@ async function handler(req, res) {
             const newCategory: ICategory = {
                 id: uuidv4(),
                 name: bodyRequest.name,
-                slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : convertToSlug(bodyRequest.name),
+                slug: bodyRequest.hasOwnProperty('slug') && bodyRequest.slug !="" ? bodyRequest.slug : convertToSlug(bodyRequest.name),
                 description: bodyRequest.hasOwnProperty('description') ? bodyRequest.description : "",
                 image: bodyRequest.hasOwnProperty('image') ? bodyRequest.image : "",
                 categoryParent: bodyRequest.hasOwnProperty('categoryParent') ? bodyRequest.categoryParent : ""
             }
+
+            console.log(newCategory.slug);
 
             await categoryModel.create(newCategory, (err) => {
                 if (err){

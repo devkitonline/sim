@@ -33,7 +33,7 @@ async function handler(req, res) {
             const newTag: ITag = {
                 id: uuidv4(),
                 name: bodyRequest.name,
-                slug: bodyRequest.hasOwnProperty('slug') ? bodyRequest.slug : convertToSlug(bodyRequest.name),
+                slug: bodyRequest.hasOwnProperty('slug') && bodyRequest.slug != "" ? bodyRequest.slug : convertToSlug(bodyRequest.name),
                 description: bodyRequest.hasOwnProperty('description') ? bodyRequest.description : ""
             }
 
