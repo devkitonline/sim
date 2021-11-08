@@ -1,7 +1,7 @@
 import Base_header from "@/components/base/base_header";
 import Base_footer from "@/components/base/base_footer";
 import AdminMenu from "@/components/base/AdminMenu";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Head from "next/head";
 import FieldHtml from "@/components/fields/FieldHtml";
 import {FieldImage} from "@/components/fields/FieldImage";
@@ -11,6 +11,7 @@ import {FetchApi} from "../../../helpers/fetchApi";
 import {useRouter} from 'next/router'
 import {ICategory} from "../../../helpers/interfaces";
 import {FieldSlug} from "@/components/fields/FieldSlug";
+import {UserService} from "../../../services/user.service";
 
 const AdminCategoriesCreate = () => {
     const router = useRouter();
@@ -18,6 +19,7 @@ const AdminCategoriesCreate = () => {
     const [name, setName] = useState('');
     const [slug, setSlug] = useState('');
     const [parentId, setParentId] = useState('');
+    const [parent, setParent] = useState({});
     const [image, setImage] = useState('');
     const save = () => {
         const postData: ICategory = {
@@ -28,7 +30,7 @@ const AdminCategoriesCreate = () => {
             name: name,
             slug: slug
         };
-        FetchApi.post('/api/post', postData).then(res => {
+        FetchApi.post('/api/category', postData).then(res => {
             if (res.code == 1) {
                 router.push('/admin/categories');
             } else {
@@ -37,6 +39,20 @@ const AdminCategoriesCreate = () => {
             }
         })
     }
+    useEffect(() => {
+        UserService.userSubject.subscribe(user => {
+            if (user) {
+                FetchApi.get('/api/category').then(res => {
+                    console.log(res);
+                    if (res.code == 1) {
+                        let tmp = {};
+                        res.categories.map(c => tmp[c.id]= c.name);
+                        setParent(tmp);
+                    }
+                });
+            }
+        })
+    }, []);
     return (
         <div>
             <Head>
@@ -75,7 +91,7 @@ const AdminCategoriesCreate = () => {
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Danh mục cha</label>
-                                            <FieldEnum setData={setParentId} value={parentId} options={{}}/>
+                                            <FieldEnum setData={setParentId} value={parentId} options={parent}/>
                                         </div>
                                         <div className="form-group mb-3">
                                             <label className="form-label">Đường dẫn tĩnh</label>

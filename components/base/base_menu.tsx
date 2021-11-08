@@ -12,7 +12,7 @@ const Base_menu = () => {
                 setMenuItems(res.menus);
             });
         }
-    }, [menuItems]);
+    }, []);
     return (
         <div className="collapse navbar-collapse" id="navbar-menu">
             <div className="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
