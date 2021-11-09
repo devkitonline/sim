@@ -11,7 +11,8 @@ export const  jwtMiddleware = (req, res) => {
             '/api/auth/login',
             '/api/post/*',
             '/api/page/*',
-            '/api/category/*'
+            '/api/category/*',
+            '/api/category',
         ]
     });
 

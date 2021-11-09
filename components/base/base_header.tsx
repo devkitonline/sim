@@ -62,7 +62,7 @@ const Base_header = () => {
                                     </a>
                                 </Link>
                                 <Link href='/register'>
-                                    <a className="btn btn-outline-white">
+                                    <a className="btn btn-warning">
                                         <IconUserPlus/> Đăng ký
                                     </a>
                                 </Link>

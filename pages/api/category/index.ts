@@ -18,7 +18,7 @@ async function handler(req, res) {
                     res.status(200).json({code: 400, message: err});
                     return;
                 } else {
-                    res.status(200).json({code: 1, message: `Success`, categories: categories});
+                    res.status(200).json({code: 1, message: `Success`, data: categories});
                     return;
                 }
             });
