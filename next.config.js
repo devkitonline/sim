@@ -1,11 +1,5 @@
-/**
- * @type {import('next').NextConfig}
- */
-const nextConfig = {
-    /* config options here */
-    publicRuntimeConfig: {
-        apiUrl: '/api'
-    }
+module.exports = {
+    env: {
+        siteURL: 'http://localhost:3000',
+    },
 }
-
-module.exports = nextConfig;
