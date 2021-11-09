@@ -64,7 +64,7 @@ const AdminPosts = () => {
                         <div className="row">
                             <div className="col-auto">
                                 <Link href="/admin/posts/create">
-                                    <button className="btn btn-outline-blue">Tạo mới</button>
+                                    <button className="btn btn-primary">Tạo mới</button>
                                 </Link>
                             </div>
                         </div>

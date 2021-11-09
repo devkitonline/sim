@@ -64,7 +64,7 @@ const AdminPages = () => {
                         <div className="row">
                             <div className="col-auto">
                                 <Link href="/admin/pages/create">
-                                    <button className="btn btn-outline-blue">Tạo mới</button>
+                                    <button className="btn btn-primary">Tạo mới</button>
                                 </Link>
                             </div>
                         </div>
