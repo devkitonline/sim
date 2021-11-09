@@ -97,7 +97,7 @@ const AdminPages = () => {
                                                         <IconEdit/>
                                                     </a>
                                                     <div className="dropdown-menu dropdown-menu-list-action dropdown-menu-arrow">
-                                                        <Link href={"/admin/posts/" + item.id}>
+                                                        <Link href={"/admin/pages/" + item.id}>
                                                             <a className="dropdown-item" href="#"><IconEdit/> sửa</a>
                                                         </Link>
                                                         <a className="dropdown-item" href="#" onClick={() => deleteRecord('/api/page/' + item.id)}><IconTrash/> xóa</a>
