@@ -86,13 +86,13 @@ const AdminPosts = () => {
                                                 </div>
                                                 <div className="col text-truncate">
                                                     <Link href={"/admin/posts/" + item.id}>
-                                                        <a href="" className="text-body d-block" style={{fontSize: '1rem'}}>{item.title}</a>
+                                                        <a href="" className="text-body d-block" style={{fontSize: '1.1rem'}}>{item.title}</a>
                                                     </Link>
                                                     <small className="d-block text-muted text-truncate mt-n1">{item.excerpt}</small>
                                                     <small className="d-block text-muted text-truncate mt-n1">
                                                         {item.categories.map(category => {
                                                             return (
-                                                                <a key={category.id} href="#" className="btn btn-light btn-pill" style={{padding: "0rem 0.5rem", fontSize: "0.8rem", borderRadius: "5px"}}>
+                                                                <a key={category.id} href="#" className="btn btn-light btn-pill m-1" style={{padding: "0rem 0.5rem", fontSize: "0.8rem", borderRadius: "5px"}}>
                                                                     {category.name}
                                                                 </a>
                                                             )

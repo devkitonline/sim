@@ -38,3 +38,4 @@ next-env.d.ts
 public/upload
 data_elasticsearch
 data_mysql
+/public/wp-content

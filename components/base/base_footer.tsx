@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {IconBrandFacebook, IconBrandGoogle, IconBrandReddit, IconBrandTwitter, IconBrandYoutube, IconEdit, IconSettings} from "@tabler/icons";
+import {IconBrandFacebook, IconBrandGoogle, IconBrandReddit, IconBrandTwitter, IconBrandVimeo, IconBrandYoutube, IconEdit, IconSettings} from "@tabler/icons";
 
 export default function Base_footer() {
     return (
@@ -13,11 +13,23 @@ export default function Base_footer() {
                         <b>Email:</b> info@simplyinvest.edu.vn<br/>
                         <b>Phone:</b> 0938 994 127<br/><br/>
                         <h3>Theo dõi chúng tôi</h3>
-                        <Link href={'#'}><a><IconBrandFacebook/></a></Link>&nbsp;
-                        <Link href={'#'}><a><IconBrandYoutube/></a></Link>&nbsp;
-                        <Link href={'#'}><a><IconBrandTwitter/></a></Link>&nbsp;
-                        <Link href={'#'}><a><IconBrandGoogle/></a></Link>&nbsp;
-                        <Link href={'#'}><a><IconBrandReddit/></a></Link>&nbsp;
+                        <div className={"row g-2 align-items-center mb-n3"}>
+                            <div className={"col-6 col-sm-4 col-md-2 col-xl-auto mb-3"}>
+                                <Link href={'#'}><a className="btn btn-facebook w-100 btn-icon"><IconBrandFacebook/></a></Link>
+                            </div>
+                            <div className={"col-6 col-sm-4 col-md-2 col-xl-auto mb-3"}>
+                                <Link href={'#'}><a className="btn btn-youtube w-100 btn-icon"><IconBrandYoutube/></a></Link>
+                            </div>
+                            <div className={"col-6 col-sm-4 col-md-2 col-xl-auto mb-3"}>
+                                <Link href={'#'}><a className="btn btn-twitter w-100 btn-icon"><IconBrandTwitter/></a></Link>
+                            </div>
+                            <div className={"col-6 col-sm-4 col-md-2 col-xl-auto mb-3"}>
+                                <Link href={'#'}><a className="btn btn-google w-100 btn-icon"><IconBrandGoogle/></a></Link>
+                            </div>
+                            <div className={"col-6 col-sm-4 col-md-2 col-xl-auto mb-3"}>
+                                <Link href={'#'}><a className="btn btn-vimeo w-100 btn-icon"><IconBrandVimeo/></a></Link>
+                            </div>
+                        </div>
                     </div>
                     <div className='col-md-2'>
                         <ul>
