@@ -123,4 +123,6 @@ export interface IFilterCondition {
     logicalOperator: "AND" | "OR";
     limit?: number;
     offset?: number;
+    order?:string,
+    orderBy?:string
 }

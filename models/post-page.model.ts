@@ -158,11 +158,11 @@ const findByFilters = (type: EPostType, filter: IFilterCondition, callback: Func
     let queryStringTotal: string;
     if (type == EPostType.page) {
         const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "pages");
-        queryString = `${pageAllFieldsQuery} ${whereClause !="" ? "AND " + whereClause : ""} LIMIT ${filter.offset} , ${filter.limit}`;
+        queryString = `${pageAllFieldsQuery} ${whereClause !="" ? "AND " + whereClause : ""} ${filter.orderBy} ${filter.order} LIMIT ${filter.offset} , ${filter.limit}`;
         queryStringTotal = `${pageCountQuery} ${whereClause !="" ? "AND " + whereClause : ""}`;
     } else {
         const whereClause = queryFilter.buildSQLWhereClauseForGroup(filter, "posts");
-        queryString = `${postAllFieldsQuery} ${whereClause !="" ? "AND " + whereClause : ""} LIMIT ${filter.offset} , ${filter.limit}`;
+        queryString = `${postAllFieldsQuery} ${whereClause !="" ? "AND " + whereClause : ""} ${filter.orderBy} ${filter.order} LIMIT ${filter.offset} , ${filter.limit}`;
         queryStringTotal = `${postCountQuery} ${whereClause !="" ? "AND " + whereClause : ""}`;
     }
 

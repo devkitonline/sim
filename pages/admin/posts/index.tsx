@@ -20,7 +20,9 @@ const AdminPosts = () => {
                         "conditions": [],
                         "logicalOperator": "OR",
                         "limit": 20,
-                        "offset": 0
+                        "offset": 0,
+                        orderBy: "date_created",
+                        order: "desc"
                     }
                     FetchApi.post('/api/post/filter', postData).then(res => {
                         if (res.code == 1) {
@@ -50,6 +52,17 @@ const AdminPosts = () => {
                 });
             }
         })
+    }
+    const btnColor = [
+        "primary",
+        "secondary",
+        'success',
+        'warning',
+        "danger",
+        'info'
+    ]
+    const colorRand = (s: string) => {
+        return btnColor[s.length % 6];
     }
     return (
         <div>
@@ -92,7 +105,7 @@ const AdminPosts = () => {
                                                     <small className="d-block text-muted text-truncate mt-n1">
                                                         {item.categories.map(category => {
                                                             return (
-                                                                <a key={category.id} href="#" className="btn btn-light btn-pill m-1" style={{padding: "0rem 0.5rem", fontSize: "0.8rem", borderRadius: "5px"}}>
+                                                                <a key={category.id} href="#" className={"btn btn-" + colorRand(category.name) + " btn-pill m-1"} style={{padding: "0rem 0.5rem", fontSize: "0.8rem", borderRadius: "5px"}}>
                                                                     {category.name}
                                                                 </a>
                                                             )

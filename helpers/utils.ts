@@ -75,7 +75,9 @@ export const dataNormalization = {
             logicalOperator: data.logicalOperator != undefined ? data.logicalOperator : "",
             operator: data.operator != undefined ? data.operator : "",
             limit: data.limit != undefined ? data.limit : 20,
-            offset: data.offset != undefined ? data.offset : 0
+            offset: data.offset != undefined ? data.offset : 0,
+            order: data.order != undefined ? data.order : '',
+            orderBy: data.orderBy != undefined ? 'order by '+data.orderBy : ''
         }
     },
     normalizedTag: (data): ITag => {
