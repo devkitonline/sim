@@ -16,15 +16,7 @@ const AdminPosts = () => {
             setMounted(true);
             UserService.userSubject.subscribe(user => {
                 if (user) {
-                    const postData = {
-                        "conditions": [],
-                        "logicalOperator": "OR",
-                        "limit": 20,
-                        "offset": 0,
-                        orderBy: "date_created",
-                        order: "desc"
-                    }
-                    FetchApi.post('/api/post/filter', postData).then(res => {
+                    FetchApi.get('/api/public/posts').then(res => {
                         if (res.code == 1) {
                             setListData(res.data);
                             console.log(res.data);
@@ -38,13 +30,8 @@ const AdminPosts = () => {
         FetchApi.delete(url).then(res => {
             if (res.code == 1) {
                 alert('Delete success');
-                const postData = {
-                    "conditions": [],
-                    "logicalOperator": "OR",
-                    "limit": 20,
-                    "offset": 0
-                }
-                FetchApi.post('/api/post/filter', postData).then(res => {
+
+                FetchApi.get('/api/public/posts').then(res => {
                     if (res.code == 1) {
                         setListData(res.data);
                         console.log(res.data);
