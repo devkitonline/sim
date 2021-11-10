@@ -191,7 +191,7 @@ Home.getInitialProps = async (ctx) => {
     ];
     let postsNew = [];
     let categories = [];
-    await FetchApi.get(process.env.siteURL + '/api/public/posts.ts').then(res => {
+    await FetchApi.get(process.env.siteURL + '/api/public/posts').then(res => {
         if (res.code == 1) {
             postsNew = res.data;
         }
