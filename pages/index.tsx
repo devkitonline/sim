@@ -191,7 +191,15 @@ Home.getInitialProps = async (ctx) => {
     ];
     let postsNew = [];
     let categories = [];
-    await FetchApi.get(process.env.siteURL + '/api/public/posts').then(res => {
+    const postData = {
+        "conditions": [],
+        "logicalOperator": "OR",
+        "limit": 22,
+        "offset": 0,
+        orderBy: "date_created",
+        order: "desc"
+    }
+    await FetchApi.post(process.env.siteURL + '/api/post/filter', postData).then(res => {
         if (res.code == 1) {
             postsNew = res.data;
         }
