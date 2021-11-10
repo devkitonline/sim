@@ -3,7 +3,7 @@
     "scripts": {
         "dev": "next",
         "build": "next build",
-        "start": "next start -p 49111"
+        "start": "next start -p 3000"
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^30.0.0",
