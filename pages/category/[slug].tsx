@@ -101,10 +101,10 @@ const HomeCategory = ({category,posts}) => {
 }
 HomeCategory.getInitialProps = async (ctx) => {
     let category, posts;
-    await FetchApi.post(process.env.siteURL + '/api/public/category', {slug: ctx.query.slug}).then(res => {
+    await FetchApi.post(process.env.SITE_URL + '/api/public/category', {slug: ctx.query.slug}).then(res => {
         category = res.data;
     });
-    await FetchApi.post(process.env.siteURL + '/api/public/postsbycategory', {id: category.id}).then(res => {
+    await FetchApi.post(process.env.SITE_URL + '/api/public/postsbycategory', {id: category.id}).then(res => {
         posts = res.data;
     });
     return {

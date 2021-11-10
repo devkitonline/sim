@@ -199,12 +199,12 @@ Home.getInitialProps = async (ctx) => {
         orderBy: "date_created",
         order: "desc"
     }
-    await FetchApi.post(process.env.siteURL + '/api/post/filter', postData).then(res => {
+    await FetchApi.post(process.env.SITE_URL + '/api/post/filter', postData).then(res => {
         if (res.code == 1) {
             postsNew = res.data;
         }
     });
-    await FetchApi.get(process.env.siteURL + '/api/category').then(res => {
+    await FetchApi.get(process.env.SITE_URL + '/api/category').then(res => {
         if (res.code == 1) {
             categories = res.data;
         }

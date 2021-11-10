@@ -1,6 +1,6 @@
 module.exports = {
     env: {
-        siteURL: 'http://localhost:3000',
+        SITE_URL: 'https://beta.simplyinvest.vn',
         MYSQL_HOST:"103.245.249.104",
         MYSQL_DATABASE:"sim",
         MYSQL_USERNAME:"root",

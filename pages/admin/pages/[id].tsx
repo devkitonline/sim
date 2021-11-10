@@ -119,7 +119,7 @@ const AdminPage = ({postStatusOptions, formatTypeOptions, propData}) => {
 
 AdminPage.getInitialProps = async (ctx) => {
     let data;
-    await FetchApi.get(process.env.siteURL + '/api/page/' + ctx.query.id).then(res => {
+    await FetchApi.get(process.env.SITE_URL + '/api/page/' + ctx.query.id).then(res => {
         if (res.code == 1) {
             data = res.data;
         }
