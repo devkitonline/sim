@@ -5,6 +5,7 @@ module.exports = {
         MYSQL_DATABASE:"sim",
         MYSQL_USERNAME:"root",
         MYSQL_PASSWORD:"adminpasstkt",
-        MYSQL_PORT:3306
+        MYSQL_PORT:3306,
+        JWT_SECRET_KEY:"sim"
     },
 }
